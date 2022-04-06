@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Isolation_Mode" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.2;fill:#8FD2FF;enable-background:new    ;}
+	.st1{fill:#6EF0F5;}
+	.st2{fill:#B8E2FF;}
+	.st3{fill:none;stroke:#2C3E50;stroke-width:2;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st0" d="M200,100c0,55.2-44.8,100-100,100S0,155.2,0,100S44.8,0,100,0S200,44.8,200,100z"/>
+	<g>
+		<g>
+			<circle class="st1" cx="80" cy="78" r="38.1"/>
+			<circle class="st2" cx="128" cy="140.1" r="16"/>
+		</g>
+		<g>
+			<g>
+				<circle class="st3" cx="152.1" cy="47.9" r="10"/>
+				<path class="st3" d="M134.1,72h14c1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.2-1.8,1.2-2.8v-4"/>
+				<line class="st3" x1="150.1" y1="47.9" x2="154.1" y2="47.9"/>
+			</g>
+			<g>
+				<circle class="st3" cx="47.9" cy="47.9" r="10"/>
+				<path class="st3" d="M65.9,72h-14c-1,0-2.1-0.4-2.8-1.2C48.3,70,47.9,69,47.9,68v-4"/>
+				<line class="st3" x1="49.9" y1="47.9" x2="45.9" y2="47.9"/>
+			</g>
+			<g>
+				<circle class="st3" cx="152.1" cy="152.1" r="10"/>
+				<path class="st3" d="M134.1,128h14c1,0,2.1,0.4,2.8,1.2c0.8,0.8,1.2,1.8,1.2,2.8v4"/>
+				<line class="st3" x1="150.1" y1="152.1" x2="154.1" y2="152.1"/>
+			</g>
+			<g>
+				<circle class="st3" cx="47.9" cy="152.1" r="10"/>
+				<path class="st3" d="M65.9,128h-14c-1,0-2.1,0.4-2.8,1.2c-0.8,0.8-1.2,1.8-1.2,2.8v4"/>
+				<line class="st3" x1="49.9" y1="152.1" x2="45.9" y2="152.1"/>
+			</g>
+			<g>
+				<polyline class="st3" points="128,94 128,90 72,90 72,94 				"/>
+				<polyline class="st3" points="128,106 128,110 72,110 72,106 				"/>
+				<g>
+					<line class="st3" x1="90" y1="100" x2="94" y2="100"/>
+					<line class="st3" x1="98" y1="100" x2="102" y2="100"/>
+					<line class="st3" x1="106" y1="100" x2="110" y2="100"/>
+				</g>
+			</g>
+			<g>
+				<rect x="72" y="61.9" class="st3" width="56.1" height="20"/>
+				<g>
+					<line class="st3" x1="90" y1="72" x2="94" y2="72"/>
+					<line class="st3" x1="98" y1="72" x2="102" y2="72"/>
+					<line class="st3" x1="106" y1="72" x2="110" y2="72"/>
+				</g>
+			</g>
+			<g>
+				<rect x="72" y="118" class="st3" width="56.1" height="20"/>
+				<g>
+					<line class="st3" x1="90" y1="128" x2="94" y2="128"/>
+					<line class="st3" x1="98" y1="128" x2="102" y2="128"/>
+					<line class="st3" x1="106" y1="128" x2="110" y2="128"/>
+				</g>
+			</g>
+			<g>
+				<rect x="142.1" y="90" class="st3" width="20" height="20"/>
+				<line class="st3" x1="142.1" y1="100" x2="126" y2="100"/>
+				<line class="st3" x1="150.1" y1="100" x2="154.1" y2="100"/>
+			</g>
+			<g>
+				<rect x="37.9" y="90" class="st3" width="20" height="20"/>
+				<line class="st3" x1="57.9" y1="100" x2="74" y2="100"/>
+				<line class="st3" x1="45.9" y1="100" x2="49.9" y2="100"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
