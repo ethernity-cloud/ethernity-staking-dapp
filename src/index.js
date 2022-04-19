@@ -7,6 +7,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ErrorBoundary } from 'react-error-boundary';
 import reportWebVitals from './reportWebVitals';
 import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -15,27 +16,30 @@ import App from './App';
 
 // redux
 import { persistor, store } from './redux/store';
+import ErrorHandler from './components/error/ErrorHandler';
 
-const getLibrary = (provider, connector) => new Web3Provider(provider);
+const getLibrary = (provider) => new Web3Provider(provider);
 
 ReactDOM.render(
-  <HelmetProvider>
-    <React.StrictMode>
-      <ReduxProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <CollapseDrawerProvider>
-            <ThemeProvider>
-              <BrowserRouter>
-                <Web3ReactProvider getLibrary={getLibrary}>
-                  <App />
-                </Web3ReactProvider>
-              </BrowserRouter>
-            </ThemeProvider>
-          </CollapseDrawerProvider>
-        </PersistGate>
-      </ReduxProvider>
-    </React.StrictMode>
-  </HelmetProvider>,
+  <ErrorBoundary FallbackComponent={ErrorHandler}>
+    <HelmetProvider>
+      <React.StrictMode>
+        <ReduxProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <CollapseDrawerProvider>
+              <ThemeProvider>
+                <BrowserRouter>
+                  <Web3ReactProvider getLibrary={getLibrary}>
+                    <App />
+                  </Web3ReactProvider>
+                </BrowserRouter>
+              </ThemeProvider>
+            </CollapseDrawerProvider>
+          </PersistGate>
+        </ReduxProvider>
+      </React.StrictMode>
+    </HelmetProvider>
+  </ErrorBoundary>,
   document.getElementById('root')
 );
 

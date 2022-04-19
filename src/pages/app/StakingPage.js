@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { Button, Drawer, PageHeader, Space, Tabs } from 'antd';
 import { FaCoins, FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import { UserOutlined, ClockCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  ClockCircleOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  HomeOutlined
+} from '@ant-design/icons';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import StakingForm from '../../components/staking/StakingForm';
@@ -25,10 +31,15 @@ const StakingPage = () => {
   };
 
   return (
-    <Page title="Staking overview | ETNY" className="p-2">
-      <HeaderBreadcrumbs links={[{ name: 'Staking Overview', href: '/staking' }]} />
+    <Page title="Staking overview | ETNY" className="w-4/5 mx-auto my-4">
+      {/* <HeaderBreadcrumbs links={[{ name: 'Staking Overview', href: '/staking' }]} /> */}
       <PageHeader
-        title={<span className="text-black dark:text-white">Staking Overview</span>}
+        title={
+          <span className="uppercase text-black dark:text-white">
+            <HomeOutlined className="text-black dark:text-white mr-2" />
+            Staking Overview
+          </span>
+        }
         extra={[
           <Button key="3" className="uppercase font-semibold w-28">
             <Space>
@@ -50,12 +61,16 @@ const StakingPage = () => {
           </Button>
         ]}
         footer={
-          <Tabs defaultActiveKey="1" className="text-black dark:text-white">
+          <Tabs
+            defaultActiveKey="1"
+            className="text-black dark:text-white"
+            // tabBarStyle={{ backgroundColor: '#191C1F', borderRadius: 8, border: '2px #26292C solid' }}
+          >
             <TabPane
               tab={
                 <span>
-                  <UserOutlined />
-                  ACCOUNT
+                  {/* <UserOutlined /> */}
+                  Account
                 </span>
               }
               key="1"
@@ -65,8 +80,8 @@ const StakingPage = () => {
             <TabPane
               tab={
                 <span>
-                  <ClockCircleOutlined />
-                  PENDING
+                  {/* <ClockCircleOutlined /> */}
+                  Pending
                 </span>
               }
               key="2"
@@ -76,8 +91,8 @@ const StakingPage = () => {
             <TabPane
               tab={
                 <span>
-                  <CheckCircleOutlined />
-                  APPROVED
+                  {/* <CheckCircleOutlined /> */}
+                  Approved
                 </span>
               }
               key="3"
@@ -87,8 +102,8 @@ const StakingPage = () => {
             <TabPane
               tab={
                 <span>
-                  <CloseCircleOutlined />
-                  DECLINED
+                  {/* <CloseCircleOutlined /> */}
+                  Declined
                 </span>
               }
               key="4"

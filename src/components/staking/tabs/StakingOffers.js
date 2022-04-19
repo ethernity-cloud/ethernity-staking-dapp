@@ -1,7 +1,6 @@
 import { Button, Col, Empty, Modal, notification, Row } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { ethers, utils } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import MarketplaceOfferCardV1 from '../../marketplace/MarketplaceOfferCardV1';
 import { randomIntFromInterval } from '../../../utils/Math';
@@ -10,8 +9,7 @@ import { formatNumber } from '../../../utils/numberFormatter';
 import StakingStatusTag from '../StakingStatusTag';
 import { updateStakeStatus } from '../../../redux/slices/staking';
 import { StakingPotStatus } from '../../../utils/StakingPotStatus';
-import { isMessageSigned } from '../../../utils/signer';
-import StakingOptionCard from '../StakingOptionCard';
+import { isMessageSigned } from '../../../operations/signer';
 
 const ratesPerYear = {
   2022: 10,
@@ -29,7 +27,7 @@ const ratesPerYear = {
 
 const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
   const dispatch = useDispatch();
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { error, isLoading, stakes } = useSelector((state) => state.staking);
 
   const getDaysUntil = (createdOn, months) => {
@@ -49,7 +47,7 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: async () => {
-        if (await isMessageSigned(account, JSON.stringify({ account, offerId: id, status }))) {
+        if (await isMessageSigned(library, account, JSON.stringify({ account, offerId: id, status }))) {
           dispatch(updateStakeStatus({ status, id }));
           notification.success({
             placement: 'bottomRight',
@@ -75,7 +73,7 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: async () => {
-        if (await isMessageSigned(account, JSON.stringify({ account, offerId: id, status }))) {
+        if (await isMessageSigned(library, account, JSON.stringify({ account, offerId: id, status }))) {
           dispatch(updateStakeStatus({ status, id }));
           notification.success({
             placement: 'bottomRight',

@@ -20,13 +20,10 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from '../../redux/store';
 import { createStake } from '../../redux/slices/staking';
-import { randomIntFromInterval } from '../../utils/Math';
 import { StakingPotStatus } from '../../utils/StakingPotStatus';
 import { uuidv4 } from '../../utils/uuid';
 
 const { Option } = Select;
-
-// const statuses = ['PENDING', 'APPROVED', 'DECLINED'];
 
 const StakingForm = ({ onClose }) => {
   const BASE_REQUEST = 'Base Staking';
