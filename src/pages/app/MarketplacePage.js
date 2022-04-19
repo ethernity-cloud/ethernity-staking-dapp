@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Button, DatePicker, PageHeader, Select, Space, Tabs } from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
+import { Button, DatePicker, PageHeader, Space, Tabs } from 'antd';
+import { ReloadOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import Page from '../../components/Page';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import StakingOffers from '../../components/staking/tabs/StakingOffers';
 import { StakingPotStatus } from '../../utils/StakingPotStatus';
 
@@ -20,10 +19,15 @@ const MarketplacePage = () => {
   };
 
   return (
-    <Page title="Marketplace | ETNY" className="bg-gray-50 p-2 h-full">
-      <HeaderBreadcrumbs links={[{ name: 'Marketplace', href: '/staking' }]} />
+    <Page title="Marketplace | ETNY" className="w-4/5 mx-auto my-4">
+      {/* <HeaderBreadcrumbs links={[{ name: 'Marketplace', href: '/staking' }]} /> */}
       <PageHeader
-        title={<span className="text-black dark:text-white">Marketplace Overview</span>}
+        title={
+          <span className="uppercase text-black dark:text-white">
+            <ShoppingCartOutlined className="text-black dark:text-white mr-2" />
+            Marketplace Overview
+          </span>
+        }
         extra={[
           <RangePicker key="1" />,
           <Button key="2" type="primary" onClick={onCreateStake}>

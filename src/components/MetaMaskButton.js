@@ -2,32 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { WalletOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Badge, Button, Dropdown, Menu, notification } from 'antd';
+import { WalletFilled, LogoutOutlined, CopyOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Badge, Button, Dropdown, Menu, notification, Row, Spin } from 'antd';
 import { isMobile } from 'react-device-detect';
+import PropTypes from 'prop-types';
 import { contract } from '../contract/erc20';
-
-// declare supported chains
-export const injectedConnector = new InjectedConnector({
-  supportedChainIds: [8995]
-});
+import { injectedConnector } from '../connectors/connectors';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const MetaMaskButton = ({ className }) => {
   const navigate = useNavigate();
-
+  const [isMetamaskLoggedIn, setIsMetamaskLoggedIn] = useLocalStorage('etny-metamask-logged-in', null);
   const [loading, setLoading] = useState(false);
 
   // here we can destructure out various things from web3React such as
   // active (which is true if the user is connected and false otherwise)
   // activate and deactivate which we use to instantiate and break the users
   // connection
-  const { active, account, activate, deactivate } = useWeb3React();
+  const { active, account, activate, library, deactivate } = useWeb3React();
 
-  const bloxberChainId = `0x${Number(8995).toString(16)}`;
+  const bloxbergChainId = `0x${Number(8995).toString(16)}`;
   const bloxbergNetwork = {
     // '0x2323'
-    chainId: bloxberChainId,
+    chainId: bloxbergChainId,
     chainName: 'bloxberg',
     nativeCurrency: {
       name: 'BERG',
@@ -37,32 +34,26 @@ const MetaMaskButton = ({ className }) => {
     rpcUrls: ['https://core.bloxberg.org'],
     blockExplorerUrls: ['https://blockexplorer.bloxberg.org']
   };
-  // set up an element in local storage that we use to hold the connected account
-  let acc = localStorage.getItem('metamask_account');
 
   // here we use a useEffect so that on page load we can check if there is
   // an account in local storage. if there is we call the connect onLoad func
-  // above which allows us to presist the connection and i also call connectWalletHandler
-  // which sets up web3.js so we can call web3.eth.getAccounts()
   useEffect(() => {
-    if (acc != null) {
+    if (isMetamaskLoggedIn !== null) {
       connectOnLoad();
     }
     // in case we want to auto connect disable the code below
     // connectWalletHandler();
-  }, []);
+  }, [isMetamaskLoggedIn]);
 
   useEffect(() => {
     subscribeToEvents();
   }, []);
 
-  const getProvider = () => new ethers.providers.Web3Provider(window.ethereum);
-
   const trySwitchOrAddBloxbergNetwork = async () => {
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: bloxberChainId }]
+        params: [{ chainId: bloxbergChainId }]
       });
     } catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
@@ -122,12 +113,12 @@ const MetaMaskButton = ({ className }) => {
   };
 
   const getAccountBalance = async () => {
-    const provider = getProvider();
-    await provider.send('eth_requestAccounts', []);
-    const signer = provider.getSigner();
+    // const provider = getProvider();
+    await library.send('eth_requestAccounts', []);
+    const signer = library.getSigner();
     const walletAddress = await signer.getAddress();
 
-    const etnyContract = new ethers.Contract(contract.address, contract.abi, provider);
+    const etnyContract = new ethers.Contract(contract.address, contract.abi, library);
     const balance = await etnyContract.balanceOf(walletAddress);
     // const balance = await provider.getBalance(walletAddress);
 
@@ -138,9 +129,6 @@ const MetaMaskButton = ({ className }) => {
 
   const connectWalletHandler = async () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
-      // console.log('MetaMask Here!');
-      // window.ethereum.request({ method: 'eth_requestAccounts' });
-
       await trySwitchOrAddBloxbergNetwork();
       await getAccountBalance();
     } else {
@@ -170,22 +158,18 @@ const MetaMaskButton = ({ className }) => {
     }
 
     // we use web3.eth to get the accounts to store it in local storage
-    const accounts = await getProvider().listAccounts();
-    acc = localStorage.setItem('metamask_account', accounts[0]);
+    const accounts = await library.listAccounts();
+    setIsMetamaskLoggedIn(accounts[0]);
   };
 
-  // however in the case where there is no item in local storage we use this
-  // function to connect which is called when we click the connect button. its
-  // essentially the same but we check if local storage is null if it is we activate
-  // if its not then we disconnect. And when we disconnect we remove the acccount from local storage
   const connectOnClick = async () => {
     try {
-      if (localStorage.getItem('metamask_account') == null) {
+      if (isMetamaskLoggedIn == null) {
         setLoading(true);
         await trySwitchOrAddBloxbergNetwork();
         await activate(injectedConnector);
-        const accounts = await getProvider().listAccounts();
-        localStorage.setItem('metamask_account', accounts[0]);
+        const accounts = await library.listAccounts();
+        setIsMetamaskLoggedIn(accounts[0]);
 
         navigate('/staking');
 
@@ -196,7 +180,7 @@ const MetaMaskButton = ({ className }) => {
             message: `MetaMask`,
             description: 'Successfully logged in'
           });
-        }, 1600); // wait 2 seconds
+        }, 2000); // wait 2 seconds
       } else {
         await disconnect();
       }
@@ -214,7 +198,7 @@ const MetaMaskButton = ({ className }) => {
   const disconnect = async () => {
     try {
       await deactivate();
-      localStorage.removeItem('metamask_account');
+      setIsMetamaskLoggedIn(null);
       notification.success({
         placement: 'bottomRight',
         message: `MetaMask`,
@@ -232,33 +216,99 @@ const MetaMaskButton = ({ className }) => {
   };
 
   const menu = (
-    <Menu>
-      <Menu.Item key={1} icon={<LogoutOutlined />} onClick={disconnect}>
+    <Menu className="w-48 bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
+      <Menu.Item
+        key={1}
+        icon={<CopyOutlined className="text-blue-500" />}
+        className="text-black dark:text-white dark:hover:bg-gray-800"
+        onClick={disconnect}
+      >
+        Copy Wallet Address
+      </Menu.Item>
+      <Menu.Item
+        key={1}
+        icon={<LogoutOutlined className="text-red-500" />}
+        className="text-black dark:text-white dark:hover:bg-gray-800"
+        onClick={disconnect}
+      >
         Logout
       </Menu.Item>
     </Menu>
   );
 
+  // const menu = (
+  //   <Card style={{ width: 220 }} bodyStyle={{ padding: 0 }}>
+  //     <Row>
+  //       <Button type="primary" size="large" className="w-full">
+  //         <Row justify="space-around">
+  //           <Col>
+  //             <CopyOutlined />
+  //           </Col>
+  //           <Col>Copy wallet address</Col>
+  //         </Row>
+  //       </Button>
+  //     </Row>
+  //     <Row>
+  //       <Button type="primary" size="large" className="w-full">
+  //         <Row justify="space-around">
+  //           <Col>
+  //             <LogoutOutlined />
+  //           </Col>
+  //           <Col>Logout</Col>
+  //         </Row>
+  //       </Button>
+  //     </Row>
+  //   </Card>
+  // );
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
   return (
     <div className={`${className}`}>
-      {active ? (
-        <Dropdown overlay={menu} className="hidden md:block">
-          <Button loading={loading}>
-            <WalletOutlined />
-            <span className="px-2">
-              {account.substring(0, 6)}...{account.substring(account.length - 4)}
-            </span>
-            <Badge dot status="success" size="default" />
+      {active && isMetamaskLoggedIn !== null ? (
+        <Dropdown overlay={menu} trigger="click" className="hidden md:block">
+          <Button
+            // loading={loading}
+            type="primary"
+            className="h-16 w-48 rounded-lg bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]"
+          >
+            {loading && (
+              <Row justify="center" align="middle">
+                <Spin indicator={antIcon} />
+              </Row>
+            )}
+            {!loading && (
+              <>
+                <Row>
+                  <span>My Wallet</span>
+                </Row>
+                <Row align="middle" justify="space-between" className="w-full">
+                  <Badge dot status="success" size="default" />
+                  <span className="px-2">
+                    {account.substring(0, 6)}...{account.substring(account.length - 4)}
+                  </span>
+                  <WalletFilled />
+                </Row>
+              </>
+            )}
           </Button>
         </Dropdown>
       ) : (
-        <Button onClick={connectOnClick} loading={loading}>
-          {!isMobile && <span>Connect Wallet</span>}
-          <WalletOutlined />
+        <Button
+          onClick={connectOnClick}
+          loading={loading}
+          size="large"
+          className="hidden md:block bg-etny-button-primary hover:bg-etny-button-hover hover:text-white focus:bg-etny-button-focus focus:text-white text-white border-0 rounded-lg"
+        >
+          <span>Connect Wallet</span>
+          <WalletFilled />
         </Button>
       )}
     </div>
   );
+};
+
+MetaMaskButton.propTypes = {
+  className: PropTypes.string
 };
 
 export default MetaMaskButton;
