@@ -26,7 +26,8 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
         if (!balance) {
           notification.error({
             placement: 'bottomRight',
-            message: `Ethernity`,
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
             description: 'Not able to retrieve wallet balance'
           });
         } else {

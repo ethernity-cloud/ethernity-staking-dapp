@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Icon, { MenuUnfoldOutlined, BellOutlined, EditOutlined, ClearOutlined, BellFilled } from '@ant-design/icons';
-import { Avatar, Badge, Button, Card, Col, Layout, List, Menu, Popover, Row, Space, Switch, Tabs, Tag } from 'antd';
+import Icon, { MenuUnfoldOutlined, EditOutlined, ClearOutlined, BellFilled } from '@ant-design/icons';
+import { Avatar, Badge, Button, Card, Col, Layout, List, Menu, Popover, Row, Tag } from 'antd';
 import { useWeb3React } from '@web3-react/core';
 import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router-dom';
@@ -12,8 +12,6 @@ import { randomIntFromInterval } from '../../utils/Math';
 import { authRoutes } from '../../routes/routes';
 import Logo from '../../components/Logo';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import SunIcon from '../../components/icons/SunIcon';
-import MoonIcon from '../../components/icons/MoonIcon';
 
 const { Header } = Layout;
 
@@ -147,13 +145,16 @@ const Navbar = ({ onMenuClick }) => {
             theme={theme}
             mode="horizontal"
             defaultSelectedKeys={['/staking']}
-            className="h-10 w-72 bg-[#3FA9FF] dark:bg-[#191C1F] text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
+            className="h-10 w-72 bg-[#FFFFFF] dark:bg-[#191C1F] text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
           >
             {authRoutes.map((route, index) =>
               // eslint-disable-next-line no-nested-ternary
               route.visible && !route.welcome ? (
                 index % 2 === 0 ? (
-                  <Menu.Item key={route.path || '/404'} className="w-1/2 leading-8 rounded-lg text-center">
+                  <Menu.Item
+                    key={route.path || '/404'}
+                    className="w-1/2 bg-[#3FA9FF] dark:bg-white leading-8 rounded-lg text-center"
+                  >
                     <Link to={route.path || '/404'} className="h-1">
                       <Icon component={route.icon} className="font-bold text-lg" />
                       <span className="font-bold">{route.name}</span>
@@ -174,7 +175,7 @@ const Navbar = ({ onMenuClick }) => {
           </Menu>
         )}
 
-        <div className="flex justify-between items-center space-x-2">
+        <div className="flex justify-between items-center space-x-6">
           {theme === THEME_LIGHT && (
             <Button
               shape="circle"
@@ -194,8 +195,9 @@ const Navbar = ({ onMenuClick }) => {
               icon={<FaSun className="w-4 h-4 text-black dark:text-white pt-1" />}
             />
           )}
+
           {active && isMetamaskLoggedIn && (
-            <Popover content={menu} trigger="click" className="m-0 p-0">
+            <Popover content={menu} trigger="click">
               <Badge count={99}>
                 <Button
                   shape="circle"

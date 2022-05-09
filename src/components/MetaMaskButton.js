@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { WalletFilled, LogoutOutlined, CopyOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Badge, Button, Dropdown, Menu, notification, Row, Spin } from 'antd';
-import { isMobile } from 'react-device-detect';
-import PropTypes from 'prop-types';
+import { QRCode } from 'react-qrcode-logo';
 import { contract } from '../contract/erc20';
 import { injectedConnector } from '../connectors/connectors';
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -37,9 +37,9 @@ const MetaMaskButton = ({ className }) => {
 
   // here we use a useEffect so that on page load we can check if there is
   // an account in local storage. if there is we call the connect onLoad func
-  useEffect(() => {
+  useEffect(async () => {
     if (isMetamaskLoggedIn !== null) {
-      connectOnLoad();
+      await connectOnLoad();
     }
     // in case we want to auto connect disable the code below
     // connectWalletHandler();
@@ -68,7 +68,8 @@ const MetaMaskButton = ({ className }) => {
           console.log(addError);
           notification.error({
             placement: 'bottomRight',
-            message: `MetaMask`,
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">MetaMask</span>,
             description: 'MetaMask Wallet is not able to configure Bloxberg network'
           });
         }
@@ -77,7 +78,8 @@ const MetaMaskButton = ({ className }) => {
         console.log(switchError);
         notification.error({
           placement: 'bottomRight',
-          message: `MetaMask`,
+          className: 'bg-white dark:bg-black text-black dark:text-white',
+          message: <span className="text-black dark:text-white">MetaMask</span>,
           description: 'MetaMask Wallet is not able to configure Bloxberg network'
         });
       }
@@ -93,7 +95,8 @@ const MetaMaskButton = ({ className }) => {
         localStorage.removeItem('metamask_account');
         notification.success({
           placement: 'bottomRight',
-          message: `MetaMask`,
+          className: 'bg-white dark:bg-black text-black dark:text-white',
+          message: <span className="text-black dark:text-white">MetaMask</span>,
           description: 'Successfully logged out'
         });
         navigate('/welcome');
@@ -107,9 +110,9 @@ const MetaMaskButton = ({ className }) => {
       window.location.reload();
     });
 
-    ethereum.on('disconnect', (error) => {
-      console.log('disconnected');
-    });
+    // ethereum.on('disconnect', (error) => {
+    //   console.log('disconnected');
+    // });
   };
 
   const getAccountBalance = async () => {
@@ -135,7 +138,8 @@ const MetaMaskButton = ({ className }) => {
       console.log('Need to install MetaMask');
       notification.error({
         placement: 'bottomRight',
-        message: `MetaMask`,
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">MetaMask</span>,
         description: 'MetaMask Wallet is not working or it is not installed'
       });
     }
@@ -152,8 +156,9 @@ const MetaMaskButton = ({ className }) => {
       console.log(ex);
       notification.error({
         placement: 'bottomRight',
-        message: `MetaMask`,
-        description: 'An error occurred while trying to connect on MetaMask Wallet'
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">MetaMask</span>,
+        description: 'An error occurred while trying to connect to MetaMask Wallet'
       });
     }
 
@@ -177,7 +182,8 @@ const MetaMaskButton = ({ className }) => {
           setLoading(false);
           notification.success({
             placement: 'bottomRight',
-            message: `MetaMask`,
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">MetaMask</span>,
             description: 'Successfully logged in'
           });
         }, 2000); // wait 2 seconds
@@ -189,8 +195,9 @@ const MetaMaskButton = ({ className }) => {
       setLoading(false);
       notification.error({
         placement: 'bottomRight',
-        message: `MetaMask`,
-        description: 'An error occurred while trying to connect on MetaMask Wallet'
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">MetaMask</span>,
+        description: 'An error occurred while trying to connect to MetaMask Wallet'
       });
     }
   };
@@ -201,7 +208,8 @@ const MetaMaskButton = ({ className }) => {
       setIsMetamaskLoggedIn(null);
       notification.success({
         placement: 'bottomRight',
-        message: `MetaMask`,
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">MetaMask</span>,
         description: 'Successfully logged out'
       });
       navigate('/welcome');
@@ -209,7 +217,8 @@ const MetaMaskButton = ({ className }) => {
       console.log(ex);
       notification.error({
         placement: 'bottomRight',
-        message: `MetaMask`,
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">MetaMask</span>,
         description: 'An error occurred while trying to disconnect from MetaMask Wallet'
       });
     }
@@ -217,8 +226,18 @@ const MetaMaskButton = ({ className }) => {
 
   const menu = (
     <Menu className="w-48 bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
+      <Menu.Item key={1} className="text-black dark:text-white dark:hover:bg-gray-800">
+        <QRCode
+          value="0x56312e27367c059ae2719def4d247845ba0a671d"
+          removeQrCodeBehindLogo
+          ecLevel="H"
+          logoWidth={48}
+          logoHeight={48}
+          logoImage="/static/logo/logo_200x200.png"
+        />
+      </Menu.Item>
       <Menu.Item
-        key={1}
+        key={2}
         icon={<CopyOutlined className="text-blue-500" />}
         className="text-black dark:text-white dark:hover:bg-gray-800"
         onClick={disconnect}
@@ -226,7 +245,7 @@ const MetaMaskButton = ({ className }) => {
         Copy Wallet Address
       </Menu.Item>
       <Menu.Item
-        key={1}
+        key={3}
         icon={<LogoutOutlined className="text-red-500" />}
         className="text-black dark:text-white dark:hover:bg-gray-800"
         onClick={disconnect}
@@ -236,30 +255,6 @@ const MetaMaskButton = ({ className }) => {
     </Menu>
   );
 
-  // const menu = (
-  //   <Card style={{ width: 220 }} bodyStyle={{ padding: 0 }}>
-  //     <Row>
-  //       <Button type="primary" size="large" className="w-full">
-  //         <Row justify="space-around">
-  //           <Col>
-  //             <CopyOutlined />
-  //           </Col>
-  //           <Col>Copy wallet address</Col>
-  //         </Row>
-  //       </Button>
-  //     </Row>
-  //     <Row>
-  //       <Button type="primary" size="large" className="w-full">
-  //         <Row justify="space-around">
-  //           <Col>
-  //             <LogoutOutlined />
-  //           </Col>
-  //           <Col>Logout</Col>
-  //         </Row>
-  //       </Button>
-  //     </Row>
-  //   </Card>
-  // );
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   return (
@@ -267,7 +262,6 @@ const MetaMaskButton = ({ className }) => {
       {active && isMetamaskLoggedIn !== null ? (
         <Dropdown overlay={menu} trigger="click" className="hidden md:block">
           <Button
-            // loading={loading}
             type="primary"
             className="h-16 w-48 rounded-lg bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]"
           >
