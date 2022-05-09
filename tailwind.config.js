@@ -13,7 +13,9 @@ module.exports = {
         'logo-pattern': "url('../public/static/hero_logo.png')",
         'logo-mobile-pattern': "url('../public/static/hero_logo_mobile.png')",
         'square-pattern': "url('../public/static/square_pattern.png')",
-        'map-pattern': "url('../public/static/world_map.png')"
+        'map-pattern': "url('../public/static/world_map.png')",
+        'map-pattern-light': "url('../public/static/world_map_light.png')",
+        'card-etny-logo-pattern': "url('../public/static/card_etny_logo.png')"
       },
       fontFamily: {
         sans: ['Inter']

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button, Card, Col, Drawer, Modal, notification, Row, Space, Statistic, Tag, Tooltip, Typography } from 'antd';
 import { ExclamationCircleOutlined, FileDoneOutlined, FileExclamationOutlined, InfoOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import StakingForm from '../staking/StakingForm';
 
 const { Title } = Typography;
@@ -30,12 +30,14 @@ const MarketplaceOfferCard = ({ index, status, type }) => {
     Modal.confirm({
       title: 'Warning',
       icon: <ExclamationCircleOutlined />,
+      wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: 'Are you sure you want to decline staking pot #001?',
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: () => {
         notification.success({
-          message: `Staking pot #001`,
+          className: 'bg-white dark:bg-black text-black dark:text-white',
+          message: <span className="text-black dark:text-white">Staking pot #001</span>,
           description: 'Offer for the staking pot #001 has been approved'
         });
       }
@@ -46,12 +48,14 @@ const MarketplaceOfferCard = ({ index, status, type }) => {
     Modal.confirm({
       title: 'Warning',
       icon: <ExclamationCircleOutlined />,
+      wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: 'Are you sure you want to approve staking pot #001?',
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: () => {
         notification.error({
-          message: `Staking pot #001`,
+          className: 'bg-white dark:bg-black text-black dark:text-white',
+          message: <span className="text-black dark:text-white">Staking pot #001</span>,
           description: 'Offer for staking pot #001 has been rejected'
         });
       }

@@ -122,7 +122,7 @@ const MarketplaceOfferCardV1 = ({
     {status !== StakingPotStatus.DECLINED && (
       <div className="flex items-center justify-between w-full space-x-2">
         {status !== StakingPotStatus.APPROVED && !isMarketplace && (
-          <Button type="text" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onApprove}>
+          <Button type="primary" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onApprove}>
             Approve
             <RightOutlined />
           </Button>

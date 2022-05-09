@@ -1,15 +1,8 @@
 import { useState } from 'react';
 import { Button, Drawer, PageHeader, Space, Tabs } from 'antd';
 import { FaCoins, FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import {
-  UserOutlined,
-  ClockCircleOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  HomeOutlined
-} from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
 import Page from '../../components/Page';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import StakingForm from '../../components/staking/StakingForm';
 import useTheme from '../../hooks/useTheme';
 import AccountTab from '../../components/staking/tabs/AccountTab';
@@ -61,53 +54,17 @@ const StakingPage = () => {
           </Button>
         ]}
         footer={
-          <Tabs
-            defaultActiveKey="1"
-            className="text-black dark:text-white"
-            // tabBarStyle={{ backgroundColor: '#191C1F', borderRadius: 8, border: '2px #26292C solid' }}
-          >
-            <TabPane
-              tab={
-                <span>
-                  {/* <UserOutlined /> */}
-                  Account
-                </span>
-              }
-              key="1"
-            >
+          <Tabs defaultActiveKey="1" className="etny-tabs dark:etny-tabs text-black dark:text-white">
+            <TabPane tab={<span>Account</span>} key="1">
               <AccountTab />
             </TabPane>
-            <TabPane
-              tab={
-                <span>
-                  {/* <ClockCircleOutlined /> */}
-                  Pending
-                </span>
-              }
-              key="2"
-            >
+            <TabPane tab={<span>Pending</span>} key="2">
               <StakingOffers status={StakingPotStatus.PENDING} onOpenDrawer={onCreateStake} />
             </TabPane>
-            <TabPane
-              tab={
-                <span>
-                  {/* <CheckCircleOutlined /> */}
-                  Approved
-                </span>
-              }
-              key="3"
-            >
+            <TabPane tab={<span>Approved</span>} key="3">
               <StakingOffers status={StakingPotStatus.APPROVED} onOpenDrawer={onCreateStake} />
             </TabPane>
-            <TabPane
-              tab={
-                <span>
-                  {/* <CloseCircleOutlined /> */}
-                  Declined
-                </span>
-              }
-              key="4"
-            >
+            <TabPane tab={<span>Declined</span>} key="4">
               <StakingOffers status={StakingPotStatus.DECLINED} onOpenDrawer={onCreateStake} />
             </TabPane>
           </Tabs>
@@ -121,18 +78,17 @@ const StakingPage = () => {
         onClose={onDrawerClosed}
         visible={stakingDrawerVisible}
         bodyStyle={{
-          backgroundColor: theme === THEME_LIGHT ? '#FFFFFF' : '#374151',
-          paddingBottom: 80,
-          border: 'none'
+          backgroundColor: theme === THEME_LIGHT ? '#FFFFFF' : '#151515',
+          paddingBottom: 80
         }}
         headerStyle={{
-          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#1F2937',
+          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#0F0F0F',
           color: '#fff',
           height: 64,
           border: 'none'
         }}
         footerStyle={{
-          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#1F2937',
+          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#101010',
           color: '#fff',
           height: 64,
           border: 'none'

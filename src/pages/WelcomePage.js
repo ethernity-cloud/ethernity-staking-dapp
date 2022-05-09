@@ -1,6 +1,5 @@
 import { Button, Col, Collapse, Row, Space } from 'antd';
-import { isMobile } from 'react-device-detect';
-import { ArrowRightOutlined, DownOutlined, SendOutlined, WalletFilled } from '@ant-design/icons';
+import { ArrowRightOutlined, DownOutlined, WalletFilled } from '@ant-design/icons';
 import React from 'react';
 import { FaDiscord, FaFacebook, FaGithub, FaLinkedin, FaTelegram, FaTwitter } from 'react-icons/fa';
 import Page from '../components/Page';
@@ -21,7 +20,7 @@ const text = `
 const WelcomePage = () => (
   <Page title="Welcome to ETNY Staking Page | ETNY">
     <div className="bg-white dark:bg-[#0F0F0F]">
-      <Row className="flex items-center overflow-hidden bg-square-pattern bg-contain bg-center">
+      <Row className="flex items-center overflow-hidden bg-square-pattern bg-contain bg-center py-16">
         <div className="lg:hidden mx-8 w-full h-60 text-right bg-logo-mobile-pattern bg-contain bg-no-repeat bg-center" />
         <Row className="max-w-screen-xl mx-auto container mx-auto px-6 flex md:py-16">
           <Col className="sm:w-4/5 lg:w-2/5 flex flex-col mx-auto">
@@ -67,9 +66,10 @@ const WelcomePage = () => (
           </Row>
           <p className="text-center my-12 text-xl font-normal dark:text-white text-gray-500">
             Ethernity Cloud Staking Dapp allows stakers to allocate staking requests to operators node.
-            <p className="text-center mb-12 text-xl font-normal dark:text-white text-gray-500">
+            <br />
+            <span className="text-center mb-12 text-xl font-normal dark:text-white text-gray-500">
               The actions are performed through the Dapp using the SmartContract.
-            </p>
+            </span>
           </p>
 
           <Row justify="center" align="middle" gutter={[32, 32]} className="overflow-hidden p-2">
@@ -104,9 +104,10 @@ const WelcomePage = () => (
           </Row>
           <p className="text-center my-12 text-xl font-normal dark:text-white text-gray-500">
             Ethernity Cloud Staking Dapp allows stakers to allocate staking requests to operators node.
-            <p className="text-center mb-12 text-xl font-normal dark:text-white text-gray-500">
+            <br />
+            <span className="text-center mb-12 text-xl font-normal dark:text-white text-gray-500">
               The actions are performed through the Dapp using the SmartContract.
-            </p>
+            </span>
           </p>
           <StakingCalculatorCard
             type="base"
@@ -129,9 +130,10 @@ const WelcomePage = () => (
           </Row>
           <p className="text-center my-12 text-xl font-normal dark:text-white text-gray-500">
             Here are answers to some of the questions our community has asked us.
-            <p className="text-center mb-12 text-xl font-normal dark:text-white text-gray-500">
+            <br />
+            <span className="text-center mb-12 text-xl font-normal dark:text-white text-gray-500">
               Get in touch if there’s more you would like to know.
-            </p>
+            </span>
           </p>
 
           <Collapse

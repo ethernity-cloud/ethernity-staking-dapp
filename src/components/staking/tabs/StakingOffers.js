@@ -2,6 +2,7 @@ import { Button, Col, Empty, Modal, notification, Row } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { useWeb3React } from '@web3-react/core';
+import PropTypes from 'prop-types';
 import MarketplaceOfferCardV1 from '../../marketplace/MarketplaceOfferCardV1';
 import { randomIntFromInterval } from '../../../utils/Math';
 import { useDispatch, useSelector } from '../../../redux/store';
@@ -10,20 +11,7 @@ import StakingStatusTag from '../StakingStatusTag';
 import { updateStakeStatus } from '../../../redux/slices/staking';
 import { StakingPotStatus } from '../../../utils/StakingPotStatus';
 import { isMessageSigned } from '../../../operations/signer';
-
-const ratesPerYear = {
-  2022: 10,
-  2023: 9,
-  2024: 8,
-  2025: 7,
-  2026: 6,
-  2027: 5,
-  2028: 4,
-  2029: 3,
-  2030: 2,
-  2031: 1,
-  2032: 0
-};
+import { ratesPerYear } from '../../../utils/StakingPotCalculator';
 
 const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
   const dispatch = useDispatch();
@@ -43,6 +31,7 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
     Modal.confirm({
       title: 'Warning',
       icon: <ExclamationCircleOutlined />,
+      wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: `Are you sure you want to approve the offer for the staking pot ${id}?`,
       okText: 'Confirm',
       cancelText: 'Cancel',
@@ -51,13 +40,15 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
           dispatch(updateStakeStatus({ status, id }));
           notification.success({
             placement: 'bottomRight',
-            message: `Ethernity`,
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
             description: `Offer for staking pot ${id} has been approved.`
           });
         } else {
           notification.error({
             placement: 'bottomRight',
-            message: `Ethernity`,
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
             description: `There was a problem approving the request!`
           });
         }
@@ -69,6 +60,7 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
     Modal.confirm({
       title: 'Warning',
       icon: <ExclamationCircleOutlined />,
+      wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: `Are you sure you want to reject the offer for the staking pot ${id}?`,
       okText: 'Confirm',
       cancelText: 'Cancel',
@@ -83,7 +75,8 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
         } else {
           notification.error({
             placement: 'bottomRight',
-            message: `Ethernity`,
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
             description: `There was a problem approving the request!`
           });
         }
@@ -161,8 +154,10 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
   );
 };
 
-StakingOffers.defaultProps = {
-  hasActionButtonWhenEmpty: false
+StakingOffers.propTypes = {
+  status: PropTypes.oneOf(['APPROVED', 'DECLINED', 'PENDING']),
+  onOpenDrawer: PropTypes.func,
+  isMarketplace: PropTypes.bool
 };
 
 export default StakingOffers;

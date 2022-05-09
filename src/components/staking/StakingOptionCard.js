@@ -32,7 +32,7 @@ const StakingOptionCard = ({
 
       <p className="text-gray-600 dark:text-gray-100 text-center text-md my-8">{description}</p>
 
-      <div className="bg-map-pattern bg-cover bg-no-repeat bg-center">
+      <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center">
         <div className="flex items-center justify-between py-2 space-x-4">
           <div className="mt-6 md:mt-0 text-black dark:text-white font-bold text-2xl">
             <span className="uppercase text-lg text-neutral-450 font-bold">APR</span>
