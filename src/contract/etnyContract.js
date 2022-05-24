@@ -1,5 +1,6 @@
 export const contract = {
-  address: '0x549A6E06BB2084100148D50F51CF77a3436C3Ae7',
+  // address: '0x549A6E06BB2084100148D50F51CF77a3436C3Ae7',
+  address: '0xfb1b8c7bef3fc44496d2ee483e6e11db7ee9ef2b', // ropsten
   abi: [
     {
       constant: true,

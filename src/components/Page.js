@@ -5,7 +5,7 @@ import { forwardRef } from 'react';
 // ----------------------------------------------------------------------
 
 const Page = forwardRef(({ children, title = '', className, ...other }, ref) => (
-  <div ref={ref} {...other} className={`bg-white dark:bg-[#0F0F0F] h-full ${className}`}>
+  <div ref={ref} {...other} className={`bg-white dark:bg-etny-background h-full ${className}`}>
     <Helmet>
       <title>{title}</title>
     </Helmet>

@@ -1,5 +1,6 @@
 export const StakingPotStatus = {
-  PENDING: 'PENDING',
-  APPROVED: 'APPROVED',
-  DECLINED: 'DECLINED'
+  PENDING: 0,
+  APPROVED: 1,
+  DECLINED: 2,
+  CANCELED: 3
 };

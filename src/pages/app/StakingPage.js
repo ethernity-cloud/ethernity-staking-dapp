@@ -64,7 +64,10 @@ const StakingPage = () => {
             <TabPane tab={<span>Approved</span>} key="3">
               <StakingOffers status={StakingPotStatus.APPROVED} onOpenDrawer={onCreateStake} />
             </TabPane>
-            <TabPane tab={<span>Declined</span>} key="4">
+            <TabPane tab={<span>Canceled</span>} key="4">
+              <StakingOffers status={StakingPotStatus.CANCELED} onOpenDrawer={onCreateStake} />
+            </TabPane>
+            <TabPane tab={<span>Declined</span>} key="5">
               <StakingOffers status={StakingPotStatus.DECLINED} onOpenDrawer={onCreateStake} />
             </TabPane>
           </Tabs>

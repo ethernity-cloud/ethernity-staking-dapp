@@ -3,6 +3,7 @@ import { Button, Card } from 'antd';
 import { NotCheckmarkSvg } from '../common/svg/NotCheckmarkSvg';
 import { CheckmarkSvg } from '../common/svg/CheckmarkSvg';
 import useTheme from '../../hooks/useTheme';
+import { CardStatistics } from '../cards/CardStatistics';
 
 const StakingOptionCard = ({
   title,
@@ -18,31 +19,25 @@ const StakingOptionCard = ({
 }) => {
   const { theme, onThemeChange, THEME_LIGHT, THEME_DARK } = useTheme();
 
-  const background = theme === THEME_LIGHT ? 'white' : 'rgba(255, 255, 255, 0.08)';
+  const background = theme === THEME_LIGHT ? 'white' : '#000046';
+
   return (
     <Card
       style={{
         background,
         boxShadow: 'inset 0px 0px 4.63297px rgba(255, 255, 255, 0.23)'
       }}
-      className="bg-white rounded-3xl my-2 p-6 dark:border-1 dark:border-[#333333]"
+      className="bg-white rounded-3xl my-2 p-6 border-none"
     >
       <p className="text-gray-800 dark:text-gray-50 text-4xl text-center font-medium mb-4">{title}</p>
       <p className="text-gray-800 dark:text-gray-50 text-4xl text-center font-medium mb-4">{subtitle}</p>
 
-      <p className="text-gray-600 dark:text-gray-100 text-center text-md my-8">{description}</p>
+      <p className="text-gray-600 dark:text-gray-100 text-center text-md my-8 mb-20">{description}</p>
 
-      <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center">
+      <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center my-8">
         <div className="flex items-center justify-between py-2 space-x-4">
-          <div className="mt-6 md:mt-0 text-black dark:text-white font-bold text-2xl">
-            <span className="uppercase text-lg text-neutral-450 font-bold">APR</span>
-            <p className="text-primary text-2xl">{apr}% </p>
-          </div>
-
-          <div className="mt-6 md:mt-0 text-black dark:text-white font-bold text-xl text-right">
-            <span className="uppercase text-lg text-gray-400">maturity period</span>
-            <p className="text-primary text-2xl">{maturityPeriod}</p>
-          </div>
+          <CardStatistics label="APR" value={apr} valueSuffix="%" />
+          <CardStatistics label="maturity period" value={maturityPeriod} hasTextOnRight />
         </div>
 
         {pro.length > 0 && (
@@ -69,17 +64,8 @@ const StakingOptionCard = ({
         )}
 
         <div className="flex items-center justify-between py-2 space-x-4">
-          <div>
-            <p className="uppercase text-neutral-450 text-lg font-medium mb-1">Pool size</p>
-            <p className="uppercase text-primary text-2xl font-medium mb-4">
-              {poolSize}M <span className="text-xl">ETNY</span>
-            </p>
-          </div>
-
-          <div>
-            <p className="uppercase text-neutral-450 text-right text-lg font-medium mb-1">Reward split</p>
-            <p className="uppercase text-primary text-right text-2xl font-medium mb-4">{rewardSplit}</p>
-          </div>
+          <CardStatistics label="Pool size" value={poolSize} valueSuffix="M ETNY" />
+          <CardStatistics label="Reward split" value={rewardSplit} hasTextOnRight />
         </div>
       </div>
 

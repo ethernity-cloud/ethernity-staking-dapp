@@ -3,13 +3,14 @@ import { Button, Card, notification, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import useTheme from '../../hooks/useTheme';
-import { getWalletBalance } from '../../operations/wallet';
+import EtnyContract from '../../operations/etnyContract';
 
 // this card should handle all kind of operation like displaying data about account balance / available tokens, staked tokens, reward claimed
 const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction, className }) => {
+  const { account, library } = useWeb3React();
+  const etnyContract = new EtnyContract(library);
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState('0.0');
-  const { library } = useWeb3React();
   const { theme, THEME_LIGHT } = useTheme();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
     try {
       setLoading(true);
 
-      const balance = await getWalletBalance(library);
+      const balance = await etnyContract.getBalance(account);
 
       setTimeout(() => {
         if (!balance) {

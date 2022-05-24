@@ -402,56 +402,61 @@
 }
 
 .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    background-color: #FFFFFF;
     color: white;
     font-size: 22px;
 }
 
 .ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content {
+    background-color: #FFFFFF;
     color: white;
     font-size: 16px;
 }
 
-.welcome-faq-collapse .welcome-faq-collapse-panel,
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
+    color: #0C86FF;
+    font-weight: bold;
+    font-size: 16px;
+}
+
 .welcome-faq-collapse .welcome-faq-collapse-panel {
     margin-bottom: 24px;
     padding: 22px;
     overflow: hidden;
-    background: #E6F3FF;
+    background: #FFFFFF;
     box-shadow: inset 0px 0px 4.63297px rgba(255, 255, 255, 0.23);
     color: #000000;
     border: 0;
     border-radius: 2px;
 }
 
-.dark .welcome-faq-collapse .dark\:welcome-faq-collapse-panel,
 .dark .welcome-faq-collapse .dark\:welcome-faq-collapse-panel {
     margin-bottom: 24px;
     padding: 22px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0px 0px 4.63297px rgba(255, 255, 255, 0.23);
+    background: #FFFFFF;
     color: #ffffff;
-    border: 0;
+    border: transparent;
     border-radius: 2px;
 }
 
 /*TABLE DARK MODE*/
 .dark .dark\:welcome-calculator .ant-table-content {
-    background-color: #080808;
+    background-color: #070E1D;
     color: white;
     text-align: center;
     border-radius: 0;
 }
 
 .dark .dark\:welcome-calculator .ant-table-thead > tr > th {
-    background-color: #080808 !important;
+    background-color: #070E1D !important;
     border-radius: 0;
-    color: #2F80ED;
+    color: #0C86FF;
     text-align: center;
 }
 
 .dark .dark\:welcome-calculator .ant-table-thead {
-    background-color: #080808;
+    background-color: #070E1D;
     border-radius: 0;
 }
 
@@ -459,14 +464,18 @@
     text-align: center;
 }
 .dark .dark\:welcome-calculator .ant-table-tbody > tr > td.ant-table-cell-row-hover {
-    background-color: #080808;
+    background-color: #070E1D;
     border-radius: 0;
-    color: #2F80ED;
+    color: #0C86FF;
     /*font-weight: bold;*/
     text-align: center;
 }
 
 /*TABLE LIGHT MODE*/
+.ant-table-container table > thead > tr:first-child th:last-child {
+    color: #F89430;
+}
+
 .welcome-calculator .ant-table-content {
     background-color: #ffffff;
     color: black;
@@ -479,7 +488,7 @@
     background-color: #ffffff !important;
     border: none;
     border-radius: 0;
-    color: #2F80ED;
+    color: #0C86FF;
     text-align: center;
 }
 
@@ -495,73 +504,79 @@
 .welcome-calculator .ant-table-tbody > tr > td.ant-table-cell-row-hover {
     background-color: #ffffff;
     border-radius: 0;
-    color: #2F80ED;
+    color: #0C86FF;
     /*font-weight: bold;*/
     text-align: center;
 }
 
 /*SELECT DARK THEME*/
 .dark .dark\:select.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: transparent;
-    border-color: #393939;
+    background-color: #01014F;
+    border-color: transparent;
+    border-radius: 6px;
 }
 .dark .dark\:select.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: #4C4C4C;
-    border-color: #393939;
-    color: #2F80ED;
+    background-color: #0B1324;
+    border-color: transparent;
+    border-radius: 6px;
+    color: #828282;
 }
 
 .dark .dark\:select.ant-select {
     background-color: transparent;
-    color: #2F80ED;
+    color: #0C86FF;
+    border-radius: 6px;
 }
 
 .dark .dark\:select.ant-select-arrow {
-    color: #2F80ED;
+    color: #0C86FF;
 }
 
 /*SELECT LIGHT THEME*/
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: #F4F4F4;
-    border-color: #393939;
+    background-color: #C4E2FF;
+    border-color: transparent;
+    border-radius: 6px;
 }
 .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: #4C4C4C;
-    border-color: #393939;
-    color: #2F80ED;
+    background-color: #F3F3F3;
+    border-color: transparent;
+    border-radius: 6px;
+    color: #8A8A8A;
 }
 
 .ant-select {
-    background-color: #F4F4F4;
-    color: #2F80ED;
+    background-color: #C4E2FF;
+    color: #0C86FF;
+    border-radius: 6px;
 }
 
 .ant-select-arrow {
-    color: #2F80ED;
+    color: #0C86FF;
 }
 
 /*INPUT*/
 .dark .dark\:input-calculator .ant-input-group .ant-input {
-    background-color: transparent;
-    border-color: #393939;
-    color: #2F80ED;
+    background-color: #01014F;
+    border-color: transparent;
+    color: #0C86FF;
 }
 
 .dark .dark\:input-calculator .ant-input-group .ant-input-disabled {
     background-color: transparent;
     border-color: #393939;
-    color: #2F80ED;
+    color: #0C86FF;
 }
 
 .dark .dark\:input-calculator .ant-input-group-addon {
-    color: #2F80ED;
-    background-color: transparent;
+    color: #0C86FF;
+    background-color: #01014F;
     border: 1px solid #393939;
     border-radius: 2px;
 }
 
 .ant-input-group-addon {
-    color: #2F80ED;
+    color: #0C86FF;
     background-color: #F4F4F4;
     border: 1px solid #393939;
     border-radius: 2px;
@@ -569,28 +584,29 @@
 
 .ant-input-group .ant-input {
     background-color: #F4F4F4;
-    border-color: #393939;
-    color: #2F80ED;
+    border-color: transparent;
+    color: #0C86FF;
 }
 
 .ant-input-group .ant-input-disabled {
     background-color: #F4F4F4;
-    border-color: #393939;
-    color: #2F80ED;
+    border-color: transparent;
+    color: #0C86FF;
 }
 
 
 /*INPUT NUMBER*/
 .dark .dark\:input-number-calculator.ant-input-number {
-    background-color: transparent;
-    border-color: #393939;
-    color: #2F80ED;
+    background-color: #01014F;
+    border-color: transparent;
+    color: #0C86FF;
 }
 
 .ant-input-number {
-    background-color: #F4F4F4;
-    border-color: #393939;
-    color: #2F80ED;
+    background-color: #C4E2FF;
+    border-color: transparent;
+    border-radius: 6px;
+    color: #0C86FF;
 }
 
 
@@ -616,7 +632,7 @@
 
 /*WELCOME PAGE*/
 .dark .dark\:welcome-section-1 {
-    background: linear-gradient(174.18deg, rgba(16, 16, 52, 0) -34.8%, #101034 96.41%);
+    /*background: linear-gradient(174.18deg, rgba(16, 16, 52, 0) -34.8%, #101034 96.41%);*/
 }
 
 .dark .dark\:welcome-section-2 {
@@ -624,3 +640,78 @@
 }
 
 
+
+
+
+
+
+
+
+/*!*ANTD COLLAPSE LIGHT*!*/
+/*.ant-collapse-borderless {*/
+/*    background-color: transparent;*/
+/*    border: 0;*/
+/*}*/
+
+/*.ant-collapse > .ant-collapse-item > .ant-collapse-header {*/
+/*    background-color: #FFFFFF;*/
+/*    color: white;*/
+/*    font-size: 22px;*/
+/*}*/
+
+/*.ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content {*/
+/*    background-color: #FFFFFF;*/
+/*    color: white;*/
+/*    font-size: 16px;*/
+/*}*/
+
+/*.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {*/
+/*    color: #0C86FF;*/
+/*    font-weight: bold;*/
+/*    font-size: 16px;*/
+/*}*/
+
+/*.welcome-faq-collapse .welcome-faq-collapse-panel {*/
+/*    margin-bottom: 24px;*/
+/*    padding: 22px;*/
+/*    overflow: hidden;*/
+/*    background: #FFFFFF;*/
+/*    color: #000000;*/
+/*    border: 0;*/
+/*    border-radius: 2px;*/
+/*}*/
+
+/*!*ANTD COLLAPSE DARK*!*/
+
+/*.dark .dark\:welcome-faq-collapse-panel .ant-collapse-borderless {*/
+/*    background-color: transparent;*/
+/*    border: 0;*/
+/*}*/
+
+/*.dark .dark\:welcome-faq-collapse-panel .ant-collapse > .ant-collapse-item > .ant-collapse-header {*/
+/*    background-color: #01014F;*/
+/*    color: white;*/
+/*    font-size: 22px;*/
+/*}*/
+
+/*.dark .dark\:welcome-faq-collapse-panel .ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content {*/
+/*    background-color: #01014F;*/
+/*    color: white;*/
+/*    font-size: 16px;*/
+/*}*/
+
+/*.dark .dark\:welcome-faq-collapse-panel .ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {*/
+/*    color: #0C86FF;*/
+/*    font-weight: bold;*/
+/*    font-size: 16px;*/
+/*}*/
+
+/*.dark .dark\:welcome-faq-collapse-panel {*/
+/*    margin-bottom: 24px;*/
+/*    padding: 22px;*/
+/*    overflow: hidden;*/
+/*    background: #01014F;*/
+/*    color: #ffffff;*/
+/*    border: transparent;*/
+/*    border-radius: 2px;*/
+/*}*/
