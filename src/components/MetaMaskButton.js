@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { WalletFilled, LogoutOutlined, CopyOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Badge, Button, Dropdown, Menu, notification, Row, Spin } from 'antd';
 import { QRCode } from 'react-qrcode-logo';
-import { contract } from '../contract/erc20';
 import { injectedConnector } from '../connectors/connectors';
 import useLocalStorage from '../hooks/useLocalStorage';
+import EtnyContract from '../operations/etnyContract';
 
 const MetaMaskButton = ({ className }) => {
   const navigate = useNavigate();
-  const [isMetamaskLoggedIn, setIsMetamaskLoggedIn] = useLocalStorage('etny-metamask-logged-in', null);
-  const [loading, setLoading] = useState(false);
-
+  const useBloxberg = process.env.USE_BLOXBERG;
   // here we can destructure out various things from web3React such as
   // active (which is true if the user is connected and false otherwise)
   // activate and deactivate which we use to instantiate and break the users
   // connection
-  const { active, account, activate, library, deactivate } = useWeb3React();
+  const web3React = useWeb3React();
+  const { active, account, activate, library, deactivate } = web3React;
+  const etnyContract = new EtnyContract(library);
+  const [isMetamaskLoggedIn, setIsMetamaskLoggedIn] = useLocalStorage('etny-metamask-logged-in', null);
+  const [loading, setLoading] = useState(false);
 
   const bloxbergChainId = `0x${Number(8995).toString(16)}`;
   const bloxbergNetwork = {
@@ -35,11 +36,26 @@ const MetaMaskButton = ({ className }) => {
     blockExplorerUrls: ['https://blockexplorer.bloxberg.org']
   };
 
+  const ropstenChainId = `0x${Number(3).toString(16)}`;
+  const ropstenNetwork = {
+    // '0x2323'
+    chainId: ropstenChainId,
+    chainName: 'Ropsten',
+    nativeCurrency: {
+      name: 'Ropsten Ether',
+      symbol: 'ROP',
+      decimals: 18
+    },
+    rpcUrls: [`https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`],
+    blockExplorerUrls: ['https://ropsten.etherscan.io']
+  };
+
   // here we use a useEffect so that on page load we can check if there is
   // an account in local storage. if there is we call the connect onLoad func
-  useEffect(async () => {
+  useEffect(() => {
     if (isMetamaskLoggedIn !== null) {
-      await connectOnLoad();
+      console.log(isMetamaskLoggedIn);
+      connectOnLoad();
     }
     // in case we want to auto connect disable the code below
     // connectWalletHandler();
@@ -86,6 +102,43 @@ const MetaMaskButton = ({ className }) => {
     }
   };
 
+  const trySwitchOrAddRopstenNetwork = async () => {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: ropstenChainId }]
+      });
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [ropstenNetwork]
+          });
+        } catch (addError) {
+          // handle "add" error
+          console.log(addError);
+          notification.error({
+            placement: 'bottomRight',
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">MetaMask</span>,
+            description: 'MetaMask Wallet is not able to configure Ropsten network'
+          });
+        }
+      } else {
+        // handle other "switch" errors
+        console.log(switchError);
+        notification.error({
+          placement: 'bottomRight',
+          className: 'bg-white dark:bg-black text-black dark:text-white',
+          message: <span className="text-black dark:text-white">MetaMask</span>,
+          description: 'MetaMask Wallet is not able to configure Ropsten network'
+        });
+      }
+    }
+  };
+
   const subscribeToEvents = () => {
     const { ethereum } = window;
     ethereum.on('accountsChanged', (accounts) => {
@@ -115,25 +168,14 @@ const MetaMaskButton = ({ className }) => {
     // });
   };
 
-  const getAccountBalance = async () => {
-    // const provider = getProvider();
-    await library.send('eth_requestAccounts', []);
-    const signer = library.getSigner();
-    const walletAddress = await signer.getAddress();
-
-    const etnyContract = new ethers.Contract(contract.address, contract.abi, library);
-    const balance = await etnyContract.balanceOf(walletAddress);
-    // const balance = await provider.getBalance(walletAddress);
-
-    // convert a currency unit from wei to ether
-    const balanceInEth = ethers.utils.formatEther(balance);
-    console.log(`balance: ${balanceInEth} ETNYYYYY`);
-  };
-
   const connectWalletHandler = async () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
-      await trySwitchOrAddBloxbergNetwork();
-      await getAccountBalance();
+      if (useBloxberg) {
+        await trySwitchOrAddBloxbergNetwork();
+      } else {
+        await trySwitchOrAddRopstenNetwork();
+      }
+      await etnyContract.getBalance();
     } else {
       console.log('Need to install MetaMask');
       notification.error({
@@ -163,19 +205,22 @@ const MetaMaskButton = ({ className }) => {
     }
 
     // we use web3.eth to get the accounts to store it in local storage
-    const accounts = await library.listAccounts();
-    setIsMetamaskLoggedIn(accounts[0]);
+    // const accounts = await library.listAccounts();
+    setIsMetamaskLoggedIn(account);
   };
 
   const connectOnClick = async () => {
     try {
       if (isMetamaskLoggedIn == null) {
         setLoading(true);
-        await trySwitchOrAddBloxbergNetwork();
+        if (useBloxberg) {
+          await trySwitchOrAddBloxbergNetwork();
+        } else {
+          await trySwitchOrAddRopstenNetwork();
+        }
         await activate(injectedConnector);
-        const accounts = await library.listAccounts();
-        setIsMetamaskLoggedIn(accounts[0]);
-
+        // const accounts = await library.listAccounts();
+        setIsMetamaskLoggedIn(account);
         navigate('/staking');
 
         setTimeout(() => {
@@ -291,7 +336,10 @@ const MetaMaskButton = ({ className }) => {
           onClick={connectOnClick}
           loading={loading}
           size="large"
-          className="hidden md:block bg-etny-button-primary hover:bg-etny-button-hover hover:text-white focus:bg-etny-button-focus focus:text-white text-white border-0 rounded-lg"
+          className="hidden md:block
+          bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+          text-white hover:text-white focus:text-white
+          border-0 rounded-lg"
         >
           <span>Connect Wallet</span>
           <WalletFilled />

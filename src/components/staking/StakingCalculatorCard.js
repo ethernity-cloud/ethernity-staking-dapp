@@ -65,18 +65,19 @@ const StakingCalculatorCard = ({ description, pro, cons }) => {
     setMode(STAKING_MODE_TABLE);
   };
 
-  const border = theme === THEME_LIGHT ? '8px solid rgba(109, 109, 109, 0.03)' : '4px solid rgba(255, 255, 255, 0.2)';
+  const border = theme === THEME_LIGHT ? '15px solid #C4E2FF' : '15px solid #01014F';
 
   return (
     <Row
       style={{ border }}
-      className="pricing-box max-w-lg mx-auto rounded-2xl bg-white dark:bg-[#080808] border-4 border-[#6D6D6D] dark:border-[#333333] overflow-hidden lg:max-w-none lg:flex mt-4"
+      className="max-w-lg lg:max-w-none lg:flex mx-auto
+      bg-white dark:bg-etny-background
+      border-4 border-etny-100 dark:border-[#333333] rounded-2xl
+      overflow-hidden mt-4"
     >
       {mode === STAKING_MODE_TEXT && (
         <Col className="hidden md:block w-full md:w-4/6 p-8 lg:p-12 transition-all ease-in-out duration-1000 opacity-100">
-          <p className="text-xl leading-8 text-gray-900 sm:text-2xl sm:leading-9 dark:text-primary">
-            {requestType} Request
-          </p>
+          <p className="text-xl leading-8 sm:text-2xl sm:leading-9 text-etny-500">{requestType} Request</p>
           <p className="mt-6 text-base leading-6 text-gray-500 dark:text-gray-200">{description}</p>
           <div className="mt-8">
             <div className="flex items-center">
@@ -117,8 +118,8 @@ const StakingCalculatorCard = ({ description, pro, cons }) => {
           }`}
         >
           <p className="text-xl leading-8 text-gray-900 sm:text-2xl sm:leading-9 dark:text-primary">
-            <LeftOutlined onClick={() => setMode(STAKING_MODE_TEXT)} className="text-primary" />
-            <span className="px-2 text-primary">{requestType} Request</span>
+            <LeftOutlined onClick={() => setMode(STAKING_MODE_TEXT)} className="text-etny-500" />
+            <span className="px-2 text-etny-500">{requestType} Request</span>
           </p>
 
           <div className="bg-white dark:bg-gray-600 my-6 dark:shadow overflow-hidden sm:rounded-md">
@@ -138,7 +139,7 @@ const StakingCalculatorCard = ({ description, pro, cons }) => {
           mode === STAKING_MODE_TABLE && isMobile ? 'hidden' : 'block'
         } w-full md:w-2/6 p-8 text-center lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12`}
       >
-        <p className="text-xl leading-8 text-gray-900 sm:text-2xl sm:leading-9 dark:text-primary">Staking Calculator</p>
+        <p className="text-xl leading-8 sm:text-2xl sm:leading-9 text-etny-500">Staking Calculator</p>
         <Form
           layout="vertical"
           requiredMark={false}
@@ -222,7 +223,11 @@ const StakingCalculatorCard = ({ description, pro, cons }) => {
               type="primary"
               htmlType="submit"
               size="large"
-              className="w-full rounded-md bg-blue-500 border-2 border-transparent text-white text-md font-semibold mr-4 hover:bg-blue-400 hover:text-white"
+              className="w-full rounded-md
+              bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+              text-white hover:text-white focus:text-white
+              text-md font-semibold
+              border-none mr-4"
             >
               Calculate
             </Button>

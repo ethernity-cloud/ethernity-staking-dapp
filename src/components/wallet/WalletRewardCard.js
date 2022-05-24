@@ -3,20 +3,20 @@ import { Button, Card, Col, notification, Row, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import useTheme from '../../hooks/useTheme';
-import { getWalletBalance } from '../../operations/wallet';
-import { StakingRequestType } from '../../utils/StakingRequestType';
 import { calculate } from '../../utils/StakingPotCalculator';
+import EtnyContract from '../../operations/etnyContract';
 
 const WalletRewardCard = ({ requestType, amount, period, split, value, actionLabel, className }) => {
+  const { account, library } = useWeb3React();
+  const etnyContract = new EtnyContract(library);
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState('0.0');
   const [estimatedReward, setEstimatedReward] = useState(0.0);
-  const { library } = useWeb3React();
   const { theme, THEME_LIGHT } = useTheme();
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!value) {
-      await getAccountBalance();
+      getAccountBalance();
     }
   }, []);
 
@@ -31,7 +31,7 @@ const WalletRewardCard = ({ requestType, amount, period, split, value, actionLab
     try {
       setLoading(true);
 
-      const balance = await getWalletBalance(library);
+      const balance = await etnyContract.getBalance(account);
 
       setTimeout(() => {
         if (!balance) {

@@ -129,7 +129,7 @@ const Navbar = ({ onMenuClick }) => {
   };
 
   return (
-    <div className="fixed z-10 h-20 w-full bg-white dark:bg-[#0F0F0F]">
+    <div className="fixed z-10 h-20 w-full bg-white dark:bg-etny-background">
       <Row justify="space-between" align="middle" className="h-20 w-full md:w-4/5 mx-auto px-4">
         {active && isMetamaskLoggedIn && isMobile && (
           <MenuUnfoldOutlined

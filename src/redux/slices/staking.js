@@ -54,7 +54,6 @@ export function getStakes() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      // const response = await http.get('/avize/ipoteci-mobiliare');
       dispatch(slice.actions.getStakesSuccess([]));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

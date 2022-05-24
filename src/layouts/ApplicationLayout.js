@@ -25,7 +25,7 @@ const ApplicationLayout = () => {
   return (
     <Layout className="h-full font-sans">
       <Navbar onMenuClick={() => setMobileMenuVisible(!mobileMenuVisible)} />
-      <Layout className="pt-24 bg-white dark:bg-[#0F0F0F] h-full min-h-screen">
+      <Layout className="pt-24 bg-white dark:bg-etny-background h-full min-h-screen">
         {/* <SidebarMenu className="hidden md:block" /> */}
         <Drawer
           className="md:hidden"
@@ -39,7 +39,7 @@ const ApplicationLayout = () => {
         >
           <MobileSidebarMenu onMenuItemSelect={onDrawerClosed} />
         </Drawer>
-        <Content className="bg-white dark:bg-[#0F0F0F]">
+        <Content className="bg-white dark:bg-etny-background">
           <Suspense fallback={loading()}>
             <Routes>
               {authRoutes.map((route, index) => (
