@@ -7,6 +7,8 @@ import WalletRewardCard from '../wallet/WalletRewardCard';
 import { StakingRequestType } from '../../utils/StakingRequestType';
 import EtnyStakingContract from '../../operations/etnyStakingContract';
 import { isAddress } from '../../utils/web3Utils';
+import { PrimaryButton } from '../buttons/PrimaryButton';
+import { CancelButton } from '../buttons/CancelButton';
 
 const { Option } = Select;
 
@@ -81,7 +83,14 @@ const StakingForm = ({ onClose }) => {
   };
   return (
     <>
-      <WalletRewardCard requestType={requestType} amount={amount} period={period} split={split} actionLabel="Refresh" />
+      <WalletRewardCard
+        className="mb-6"
+        requestType={requestType}
+        amount={amount}
+        period={period}
+        split={split}
+        actionLabel="Refresh"
+      />
       <Form
         layout="vertical"
         requiredMark={false}
@@ -282,19 +291,16 @@ const StakingForm = ({ onClose }) => {
         <Row gutter={16} className="mt-4 mx-1 float-right">
           <Space size="middle">
             <Form.Item>
-              <Button className="w-28">Cancel</Button>
+              <CancelButton
+                onCancel={() => {
+                  onClose();
+                }}
+                hasIcon={false}
+              />
             </Form.Item>
 
             <Form.Item>
-              <Button className="w-28" type="danger">
-                Reset
-              </Button>
-            </Form.Item>
-
-            <Form.Item>
-              <Button className="w-28" type="primary" htmlType="submit">
-                Review stake
-              </Button>
+              <PrimaryButton className="w-28" isSubmitButton label="Review Stake" />
             </Form.Item>
           </Space>
         </Row>

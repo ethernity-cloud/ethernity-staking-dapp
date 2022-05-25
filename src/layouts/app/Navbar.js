@@ -128,8 +128,9 @@ const Navbar = ({ onMenuClick }) => {
     }
   };
 
+  const backgroundColor = isMetamaskLoggedIn ? `bg-etny-500 dark:bg-etny-800` : `bg-white dark:bg-etny-background`;
   return (
-    <div className="fixed z-10 h-20 w-full bg-white dark:bg-etny-background">
+    <div className={`fixed z-10 h-20 w-full ${backgroundColor}`}>
       <Row justify="space-between" align="middle" className="h-20 w-full md:w-4/5 mx-auto px-4">
         {active && isMetamaskLoggedIn && isMobile && (
           <MenuUnfoldOutlined
@@ -180,19 +181,18 @@ const Navbar = ({ onMenuClick }) => {
             <Button
               shape="circle"
               style={{ boxShadow: 'inset 0px 0px 2px rgba(255, 255, 255, 0.23)' }}
-              className="bg-[#F0F0F0] dark:bg-[#191C1F] border-0 hover:bg-gray-500"
+              className="bg-etny-200 dark:bg-etny-dark-100 border-2 border-etny-200 dark:border-etny-blue-gray-600 hover:bg-gray-500"
               onClick={onThemeChanged}
-              icon={<FaMoon className="w-4 h-4 text-black dark:text-white pt-1" />}
+              icon={<FaMoon className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
           )}
 
           {theme === THEME_DARK && (
             <Button
               shape="circle"
-              style={{ boxShadow: 'inset 0px 0px 2px rgba(255, 255, 255, 0.23)' }}
-              className="bg-white dark:bg-[#191C1F] border-0 hover:bg-gray-500"
+              className="bg-etny-200 dark:bg-etny-dark-100 border-2 border-etny-200 dark:border-etny-blue-gray-600 hover:bg-gray-500"
               onClick={onThemeChanged}
-              icon={<FaSun className="w-4 h-4 text-black dark:text-white pt-1" />}
+              icon={<FaSun className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
           )}
 
@@ -201,7 +201,7 @@ const Navbar = ({ onMenuClick }) => {
               <Badge count={99}>
                 <Button
                   shape="circle"
-                  className="bg-[#0F0F0F] border-0 hover:bg-gray-500"
+                  className="bg-etny-200 dark:bg-etny-dark-100 border-2 border-etny-200 dark:border-etny-blue-gray-600 hover:bg-gray-500"
                   icon={<BellFilled className="text-white" />}
                 />
               </Badge>

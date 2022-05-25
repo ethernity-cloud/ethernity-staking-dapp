@@ -6,9 +6,18 @@ class EtnyContract {
 
   etnyContract = null;
 
+  ethereum = null;
+
   constructor(library) {
     this.library = library;
     this.etnyContract = new ethers.Contract(contract.address, contract.abi, library);
+    this.ethereum = window.ethereum;
+  }
+
+  getProvider() {
+    const provider = new ethers.providers.Web3Provider(this.ethereum, 'any');
+    const { provider: ethereum } = provider;
+    return ethereum;
   }
 
   async getBalance(account) {

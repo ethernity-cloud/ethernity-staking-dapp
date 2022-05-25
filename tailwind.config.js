@@ -20,12 +20,14 @@ module.exports = {
         'card-etny-logo-pattern': "url('../public/static/card_etny_logo.png')"
       },
       fontFamily: {
-        sans: ['Inter']
+        sans: ['Inter'],
+        grotesk: ['Space Grotesk']
       }
     },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      success: '#61C454',
       primary: '#F89430',
       'etny-navbar': '#070E1D',
       'etny-background': '#070E1D',
@@ -41,18 +43,22 @@ module.exports = {
       },
       'etny-blue-gray': {
         100: '#677D9E',
-        500: '#161D2D'
+        450: '#161639',
+        500: '#161D2D',
+        600: '#203345'
       },
       'etny-orange': {
         100: '#FFECD8',
         200: '#FDE4CB',
         300: '#FFCFA0',
+        350: '#FFDE69',
         400: '#FFB259',
+        450: '#FFC121',
         500: '#F89430',
         600: '#D1711D'
       },
       'etny-dark': {
-        100: '#161D2D',
+        100: '#131345',
         200: '#161D2D',
         300: '#161D2D',
         400: '#161D2D',
@@ -62,8 +68,10 @@ module.exports = {
       },
       etny: {
         100: '#C4E2FF',
+        200: '#48A4FF',
         500: '#0C86FF',
-        900: '#030363'
+        800: '#030363',
+        900: '#131345'
       },
       neutral: {
         40: '#F4F4F4',
@@ -87,6 +95,7 @@ module.exports = {
       indigo: colors.indigo,
       yellow: colors.yellow,
       red: colors.red,
+      green: colors.green,
       blue: colors.blue
     }
   },

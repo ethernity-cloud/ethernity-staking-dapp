@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import { Button, Card, notification, Statistic } from 'antd';
+import { Button, Card, notification, Row, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
 import useTheme from '../../hooks/useTheme';
 import EtnyContract from '../../operations/etnyContract';
 
@@ -13,15 +14,30 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
   const [balance, setBalance] = useState('0.0');
   const { theme, THEME_LIGHT } = useTheme();
 
+  const getProvider = () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    const { provider: ethereum } = provider;
+    return ethereum;
+  };
+
+  useEffect(() => {
+    // The "any" network will allow spontaneous network changes
+    const provider = getProvider();
+    provider.on('accountsChanged', async (accounts) => {
+      if (accounts.length === 1) await getAccountBalance(accounts[0]);
+    });
+  }, []);
+
   useEffect(() => {
     getAccountBalance();
   }, []);
 
-  const getAccountBalance = async () => {
+  const getAccountBalance = async (accountFromEvent) => {
     try {
       setLoading(true);
 
-      const balance = await etnyContract.getBalance(account);
+      console.log('here');
+      const balance = await etnyContract.getBalance(accountFromEvent || account);
 
       setTimeout(() => {
         if (!balance) {
@@ -41,20 +57,45 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
     }
   };
 
+  const onRefresh = () => {
+    getAccountBalance();
+  };
+
   return (
-    <Card className={`bg-white dark:bg-[#151515] border-1 border-[#26292C] rounded-lg ${className}`} loading={loading}>
-      <Statistic
-        title={<span className="text-black dark:text-white">{title}</span>}
-        value={value || balance}
-        precision={2}
-        valueStyle={{ color: theme === THEME_LIGHT ? '#000000' : '#FFFFFF' }}
-        style={{ fontWeight: 500 }}
-        prefix={prefix}
-        suffix={suffix}
-      />
-      <Button type="primary" className="border-0 mt-4" onClick={getAccountBalance}>
-        {actionLabel}
-      </Button>
+    <Card
+      className={`bg-white dark:bg-etny-blue-gray-500 border-2 border-etny-blue-gray-450 rounded-lg
+      bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center 
+      ${className}`}
+      loading={loading}
+    >
+      <div className="bg-card-etny-logo-pattern bg-no-repeat bg-left-bottom">
+        <Statistic
+          title={<span className="text-black dark:text-white">{title}</span>}
+          value={value || balance}
+          precision={2}
+          valueStyle={{
+            fontFamily: 'Space Grotesk',
+            fontWeight: 'bold',
+            fontFeatureSettings: `'zero' 1`,
+            fontVariantNumeric: 'slashed-zero',
+            color: theme === THEME_LIGHT ? '#000000' : '#FFFFFF'
+          }}
+          style={{ fontWeight: 500 }}
+          prefix={prefix}
+          suffix={suffix}
+        />
+        <Row justify="end" align="middle">
+          <Button
+            type="primary"
+            className="bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+                  text-white hover:text-white focus:text-white
+                  border-0 rounded-lg mt-4"
+            onClick={onRefresh}
+          >
+            {actionLabel}
+          </Button>
+        </Row>
+      </div>
     </Card>
   );
 };

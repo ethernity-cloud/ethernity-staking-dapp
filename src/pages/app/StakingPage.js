@@ -14,6 +14,10 @@ const { TabPane } = Tabs;
 const StakingPage = () => {
   const [stakingDrawerVisible, setStakingDrawerVisible] = useState(false);
   const { theme, THEME_LIGHT } = useTheme();
+  const [updatingPending, setUpdatingPending] = useState(false);
+  const [updatingApproved, setUpdatingApproved] = useState(false);
+  const [updatingCanceled, setUpdatingCanceled] = useState(false);
+  const [updatingDeclined, setUpdatingDeclined] = useState(false);
 
   const onCreateStake = () => {
     setStakingDrawerVisible(true);
@@ -21,6 +25,24 @@ const StakingPage = () => {
 
   const onDrawerClosed = () => {
     setStakingDrawerVisible(false);
+  };
+
+  const onStakingTabChanged = (activeKey) => {
+    // eslint-disable-next-line default-case
+    switch (parseInt(activeKey, 10)) {
+      case 2:
+        setUpdatingPending(true);
+        break;
+      case 3:
+        setUpdatingApproved(true);
+        break;
+      case 4:
+        setUpdatingCanceled(true);
+        break;
+      case 5:
+        setUpdatingDeclined(true);
+        break;
+    }
   };
 
   return (
@@ -34,19 +56,39 @@ const StakingPage = () => {
           </span>
         }
         extra={[
-          <Button key="3" className="uppercase font-semibold w-28">
+          <Button
+            key="3"
+            className="bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+                        text-white hover:text-white focus:text-white
+                        border-0 rounded-lg
+                        uppercase font-semibold w-28"
+          >
             <Space>
               <FaArrowUp className="pt-1" />
               Send
             </Space>
           </Button>,
-          <Button key="2" className="uppercase font-semibold w-28">
+          <Button
+            key="2"
+            className="bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+                  text-white hover:text-white focus:text-white
+                  border-0 rounded-lg
+                  uppercase font-semibold w-28"
+          >
             <Space>
               <FaArrowDown className="pt-1" />
               Receive
             </Space>
           </Button>,
-          <Button key="1" type="primary" className="uppercase font-semibold w-28" onClick={onCreateStake}>
+          <Button
+            key="1"
+            type="primary"
+            className="uppercase font-semibold w-28
+                bg-white hover:bg-etny-secondary-button-hover focus:bg-etny-secondary-button-focus
+                text-etny-orange-500 hover:text-etny-orange-500 focus:text-etny-orange-500
+                border-2 border-primary hover:border-primary dark:border-0 rounded-md"
+            onClick={onCreateStake}
+          >
             <Space>
               <FaCoins className="pt-1" />
               Stake
@@ -54,21 +96,45 @@ const StakingPage = () => {
           </Button>
         ]}
         footer={
-          <Tabs defaultActiveKey="1" className="etny-tabs dark:etny-tabs text-black dark:text-white">
+          <Tabs
+            defaultActiveKey="1"
+            className="etny-tabs dark:etny-tabs text-black dark:text-white"
+            onChange={onStakingTabChanged}
+          >
             <TabPane tab={<span>Account</span>} key="1">
               <AccountTab />
             </TabPane>
             <TabPane tab={<span>Pending</span>} key="2">
-              <StakingOffers status={StakingPotStatus.PENDING} onOpenDrawer={onCreateStake} />
+              <StakingOffers
+                status={StakingPotStatus.PENDING}
+                onOpenDrawer={onCreateStake}
+                onUpdateFinished={() => setUpdatingPending(false)}
+                updating={updatingPending}
+              />
             </TabPane>
             <TabPane tab={<span>Approved</span>} key="3">
-              <StakingOffers status={StakingPotStatus.APPROVED} onOpenDrawer={onCreateStake} />
+              <StakingOffers
+                status={StakingPotStatus.APPROVED}
+                onOpenDrawer={onCreateStake}
+                onUpdateFinished={() => setUpdatingApproved(false)}
+                updating={updatingApproved}
+              />
             </TabPane>
             <TabPane tab={<span>Canceled</span>} key="4">
-              <StakingOffers status={StakingPotStatus.CANCELED} onOpenDrawer={onCreateStake} />
+              <StakingOffers
+                status={StakingPotStatus.CANCELED}
+                onOpenDrawer={onCreateStake}
+                onUpdateFinished={() => setUpdatingCanceled(false)}
+                updating={updatingCanceled}
+              />
             </TabPane>
             <TabPane tab={<span>Declined</span>} key="5">
-              <StakingOffers status={StakingPotStatus.DECLINED} onOpenDrawer={onCreateStake} />
+              <StakingOffers
+                status={StakingPotStatus.DECLINED}
+                onOpenDrawer={onCreateStake}
+                onUpdateFinished={() => setUpdatingDeclined(false)}
+                updating={updatingDeclined}
+              />
             </TabPane>
           </Tabs>
         }
@@ -81,17 +147,17 @@ const StakingPage = () => {
         onClose={onDrawerClosed}
         visible={stakingDrawerVisible}
         bodyStyle={{
-          backgroundColor: theme === THEME_LIGHT ? '#FFFFFF' : '#151515',
+          backgroundColor: theme === THEME_LIGHT ? '#FFFFFF' : '#070E1D',
           paddingBottom: 80
         }}
         headerStyle={{
-          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#0F0F0F',
+          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#030363',
           color: '#fff',
           height: 64,
           border: 'none'
         }}
         footerStyle={{
-          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#101010',
+          backgroundColor: theme === THEME_LIGHT ? '#3FA9FF' : '#030363',
           color: '#fff',
           height: 64,
           border: 'none'

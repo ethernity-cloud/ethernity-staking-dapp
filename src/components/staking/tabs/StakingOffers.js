@@ -1,17 +1,16 @@
 import { Button, Col, Empty, Form, Input, Modal, notification, Row, Spin, Tooltip } from 'antd';
 import { CopyOutlined, ExclamationCircleOutlined, LoadingOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import { useWeb3React } from '@web3-react/core';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import MarketplaceOfferCardV1 from '../../marketplace/MarketplaceOfferCardV1';
 import { formatNumber } from '../../../utils/numberFormatter';
 import StakingStatusTag from '../StakingStatusTag';
-import { ratesPerYear } from '../../../utils/StakingPotCalculator';
+import { getDaysUntil, getPercentOfDaysUntil, getRatePerYear } from '../../../utils/StakingPotCalculator';
 import EtnyStakingContract from '../../../operations/etnyStakingContract';
 import { StakingRequestType } from '../../../utils/StakingRequestType';
 
-const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
+const StakingOffers = ({ status, updating, onOpenDrawer, onUpdateFinished, isMarketplace }) => {
   const { account, library } = useWeb3React();
   const etnyStakingContract = new EtnyStakingContract(library);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +35,7 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
       amount: item.amount.toNumber(),
       period: item.period.toNumber(),
       status: item.status,
+      // timestamp received is in seconds, so we have to convert it to milliseconds
       timestamp: item.timestamp.toNumber() * 1000,
       type: StakingRequestType.BASE,
       id: item._baseStakeId.toNumber()
@@ -48,36 +48,38 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
   };
 
   useEffect(() => {
-    library.on('accountsChanged', () => console.log('account changed'));
+    // The "any" network will allow spontaneous network changes
+    const provider = etnyStakingContract.getProvider();
+    provider.on('accountsChanged', onAccountChanged);
+
+    return () => {
+      provider.removeAllListeners('accountsChanged');
+    };
   }, []);
 
+  const onAccountChanged = async (accounts) => {
+    console.log('accountChanged');
+    if (accounts.length === 1) await initialize();
+  };
+
   useEffect(() => {
-    const initialize = async () => {
-      setIsLoading(true);
-      const filtered = await getBaseStakesFilteredByStatus(status);
-      setStakes(filtered);
-      setIsLoading(false);
-    };
     initialize();
   }, []);
 
-  const getPercentOfDaysUntil = (createdOn, months) => {
-    const currentDate = moment();
-    const lastDate = moment(createdOn).add(months, 'M');
+  useEffect(() => {
+    if (updating) {
+      // console.log('loading staking pots');
+      initialize();
+      onUpdateFinished();
+    }
+  }, [updating]);
 
-    const daysUntil = lastDate.diff(currentDate, 'days');
-
-    return 365 / daysUntil;
+  const initialize = async () => {
+    setIsLoading(true);
+    const filtered = await getBaseStakesFilteredByStatus(status);
+    setStakes(filtered);
+    setIsLoading(false);
   };
-
-  const getDaysUntil = (createdOn, months) => {
-    const currentDate = moment();
-    const lastDate = moment(createdOn).add(months, 'M');
-
-    return lastDate.diff(currentDate, 'days');
-  };
-
-  const getRatePerYear = (createdOn) => ratesPerYear[moment(createdOn).year()];
 
   const onApproveFormSubmited = async (values) => {
     await etnyStakingContract.approveBaseStakeRequest(currentSelected, values.rewardAddress);
@@ -90,6 +92,12 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
   };
 
   const onApprove = (id) => {
+    notification.success({
+      placement: 'bottomRight',
+      message: `Ethernity`,
+      description: `Offer for staking pot ${id + 1} has been rejected.`
+    });
+    console.log('hellllo');
     Modal.confirm({
       title: 'Warning',
       icon: <ExclamationCircleOutlined />,
@@ -173,7 +181,7 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
         notification.success({
           placement: 'bottomRight',
           message: `Ethernity`,
-          description: `Offer for staking pot ${id} has been canceled.`
+          description: `Offer for staking pot ${id + 1} has been canceled.`
         });
       }
     });
@@ -183,7 +191,7 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
     notification.success({
       placement: 'bottomRight',
       message: `Ethernity`,
-      description: `Offer for staking pot ${id} has been rejected.`
+      description: `Offer for staking pot ${id + 1} has been rejected.`
     });
   };
 
@@ -214,53 +222,57 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
   }
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+  if (isLoading)
+    return (
+      <Row className="w-full mt-20" justify="center" align="middle">
+        <Spin indicator={antIcon} />
+      </Row>
+    );
 
   return (
     <Row gutter={16}>
       <Col span={24}>
         <div className="py-4 antFadeIn">
-          {isLoading && <Spin indicator={antIcon} />}
-          {!isLoading && (
-            <Row justify="start" gutter={[16, 16]}>
-              {filteredByStatusStakes.map((stake, index) => (
-                <Col key={index} xl={6} lg={8} md={12} sm={24} xs={24}>
-                  <MarketplaceOfferCardV1
-                    loading={isLoading}
-                    nodeAddress={stake.nodeAddress}
-                    stakeHolderAddress={stake.stakeHolderAddress}
-                    isMarketplace={isMarketplace}
-                    title={`Staking pot 000${stake.id + 1}`}
-                    status={stake.status}
-                    subtitle={stake.type}
-                    // description="Some short description that needs to be added"
-                    secondaryLeftValue={getRatePerYear(stake.timestamp)}
-                    secondaryLeftValueSuffix="%"
-                    secondaryLeftLabel="APR FIRST YEAR"
-                    secondaryRightValue={stake.period}
-                    secondaryRightValueSuffix="M"
-                    secondaryRightLabel="maturity period"
-                    mainLeftLabel="REWARD SPLIT"
-                    mainLeftValue={stake.split || 100}
-                    mainLeftUnit="%"
-                    mainLeftValueSuffix="OPER."
-                    mainRightLabel="AMOUNT"
-                    mainRightValue={formatNumber(stake.amount)}
-                    mainRightUnit=""
-                    mainRightValueSuffix="ETNY"
-                    percent={getPercentOfDaysUntil(stake.timestamp, stake.period)}
-                    percentValue={getDaysUntil(stake.timestamp, stake.period)}
-                    percentLabel="Time till maturity"
-                    percentLabelSuffix="days"
-                    onApprove={() => onApprove(stake.id)}
-                    onDecline={() => onDecline(stake.id)}
-                    onCancel={() => onCancel(stake.id)}
-                    onDetails={() => onDetails(stake.id)}
-                    onWithdraw={onWithdraw}
-                  />
-                </Col>
-              ))}
-            </Row>
-          )}
+          <Row justify="start" gutter={[16, 16]}>
+            {filteredByStatusStakes.map((stake, index) => (
+              <Col key={index} xl={6} lg={8} md={12} sm={24} xs={24}>
+                <MarketplaceOfferCardV1
+                  loading={isLoading}
+                  nodeAddress={stake.nodeAddress}
+                  stakeHolderAddress={stake.stakeHolderAddress}
+                  isMarketplace={isMarketplace}
+                  title={`Staking pot 000${stake.id + 1}`}
+                  type={stake.type}
+                  status={stake.status}
+                  subtitle={stake.type}
+                  // description="Some short description that needs to be added"
+                  secondaryLeftValue={getRatePerYear(stake.timestamp)}
+                  secondaryLeftValueSuffix="%"
+                  secondaryLeftLabel="APR FIRST YEAR"
+                  secondaryRightValue={stake.period}
+                  secondaryRightValueSuffix="M"
+                  secondaryRightLabel="maturity period"
+                  mainLeftLabel="REWARD SPLIT"
+                  mainLeftValue={stake.split || 100}
+                  mainLeftUnit="%"
+                  mainLeftValueSuffix="OPER."
+                  mainRightLabel="AMOUNT"
+                  mainRightValue={formatNumber(stake.amount)}
+                  mainRightUnit=""
+                  mainRightValueSuffix="ETNY"
+                  percent={getPercentOfDaysUntil(stake.timestamp, stake.period)}
+                  percentValue={getDaysUntil(stake.timestamp, stake.period)}
+                  percentLabel="Time till maturity"
+                  percentLabelSuffix="days"
+                  onApprove={() => onApprove(stake.id)}
+                  onDecline={() => onDecline(stake.id)}
+                  onCancel={() => onCancel(stake.id)}
+                  onDetails={() => onDetails(stake.id)}
+                  onWithdraw={onWithdraw}
+                />
+              </Col>
+            ))}
+          </Row>
         </div>
       </Col>
     </Row>
@@ -270,7 +282,9 @@ const StakingOffers = ({ status, onOpenDrawer, isMarketplace }) => {
 StakingOffers.propTypes = {
   // status: PropTypes.oneOf([0, 1, 2, 3]),
   status: PropTypes.oneOfType([PropTypes.number, PropTypes.array]),
+  updating: PropTypes.bool,
   onOpenDrawer: PropTypes.func,
+  onUpdateFinished: PropTypes.func,
   isMarketplace: PropTypes.bool
 };
 

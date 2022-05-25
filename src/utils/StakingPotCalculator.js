@@ -88,3 +88,21 @@ export const calculate = (type, amount, periods, split) => {
 
   return rewardPerYear;
 };
+
+export const getPercentOfDaysUntil = (createdOn, months) => {
+  const currentDate = moment();
+  const lastDate = moment(createdOn).add(months, 'M');
+
+  const daysUntil = lastDate.diff(currentDate, 'days');
+
+  return 365 / daysUntil;
+};
+
+export const getDaysUntil = (createdOn, months) => {
+  const currentDate = moment();
+  const lastDate = moment(createdOn).add(months, 'M');
+
+  return lastDate.diff(currentDate, 'days');
+};
+
+export const getRatePerYear = (createdOn) => ratesPerYear[moment(createdOn).year()];

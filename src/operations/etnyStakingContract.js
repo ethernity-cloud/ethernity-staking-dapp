@@ -8,10 +8,19 @@ class EtnyStakingContract {
 
   stakingContractWithSigner = null;
 
+  ethereum = null;
+
   constructor(library) {
     this.library = library;
     this.stakingContract = new ethers.Contract(contract.address, contract.abi, library);
     this.stakingContractWithSigner = new ethers.Contract(contract.address, contract.abi, library.getSigner());
+    this.ethereum = window.ethereum;
+  }
+
+  getProvider() {
+    const provider = new ethers.providers.Web3Provider(this.ethereum, 'any');
+    const { provider: ethereum } = provider;
+    return ethereum;
   }
 
   async getMinBaseStakeAmount() {

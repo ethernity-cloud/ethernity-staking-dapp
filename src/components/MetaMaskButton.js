@@ -270,8 +270,8 @@ const MetaMaskButton = ({ className }) => {
   };
 
   const menu = (
-    <Menu className="w-48 bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
-      <Menu.Item key={1} className="text-black dark:text-white dark:hover:bg-gray-800">
+    <Menu className="w-48 bg-etny-200 dark:bg-etny-900 text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
+      <Menu.Item key={1} className="text-white hover:bg-etny-200 dark:hover:bg-etny-900">
         <QRCode
           value="0x56312e27367c059ae2719def4d247845ba0a671d"
           removeQrCodeBehindLogo
@@ -284,7 +284,7 @@ const MetaMaskButton = ({ className }) => {
       <Menu.Item
         key={2}
         icon={<CopyOutlined className="text-blue-500" />}
-        className="text-black dark:text-white dark:hover:bg-gray-800"
+        className="text-white hover:bg-etny-200 dark:hover:bg-etny-900"
         onClick={disconnect}
       >
         Copy Wallet Address
@@ -292,7 +292,7 @@ const MetaMaskButton = ({ className }) => {
       <Menu.Item
         key={3}
         icon={<LogoutOutlined className="text-red-500" />}
-        className="text-black dark:text-white dark:hover:bg-gray-800"
+        className="text-white hover:bg-etny-200 dark:hover:bg-etny-900"
         onClick={disconnect}
       >
         Logout
@@ -308,7 +308,7 @@ const MetaMaskButton = ({ className }) => {
         <Dropdown overlay={menu} trigger="click" className="hidden md:block">
           <Button
             type="primary"
-            className="h-16 w-48 rounded-lg bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]"
+            className="h-16 w-48 rounded-lg bg-etny-200 dark:bg-etny-900 text-white dark:text-white border-2 border-etny-200 dark:border-etny-blue-gray-600"
           >
             {loading && (
               <Row justify="center" align="middle">
@@ -322,7 +322,7 @@ const MetaMaskButton = ({ className }) => {
                 </Row>
                 <Row align="middle" justify="space-between" className="w-full">
                   <Badge dot status="success" size="default" />
-                  <span className="px-2">
+                  <span className="px-2 text-white dark:text-success">
                     {account.substring(0, 6)}...{account.substring(account.length - 4)}
                   </span>
                   <WalletFilled />

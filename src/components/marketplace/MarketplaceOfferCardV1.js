@@ -1,17 +1,23 @@
 import PropTypes from 'prop-types';
-import { Button, Card, Progress } from 'antd';
-import { RightOutlined, StopOutlined, CloseOutlined } from '@ant-design/icons';
+import { Card, Progress } from 'antd';
 import { useWeb3React } from '@web3-react/core';
 import { NotCheckmarkSvg } from '../common/svg/NotCheckmarkSvg';
 import { CheckmarkSvg } from '../common/svg/CheckmarkSvg';
 import { StakingPotStatus } from '../../utils/StakingPotStatus';
 import StakingStatusTag from '../staking/StakingStatusTag';
+import { DetailsButton } from '../buttons/DetailsButton';
+import { CancelButton } from '../buttons/CancelButton';
+import { DeclineButton } from '../buttons/DeclineButton';
+import { ApproveButton } from '../buttons/ApproveButton';
+import { StakingPotIcon } from '../buttons/StakingPotIcon';
+import { StakingRequestType } from '../../utils/StakingRequestType';
 
 const MarketplaceOfferCardV1 = ({
   loading,
   nodeAddress,
   stakeHolderAddress,
   isMarketplace,
+  type,
   title,
   status,
   subtitle,
@@ -49,23 +55,25 @@ const MarketplaceOfferCardV1 = ({
 
   return (
     <Card
-      className="rounded-lg bg-gray-100 dark:bg-etny-blue-gray-500 border-2 border-etny-orange-500 cursor-pointer"
+      // border-2 border-etny-orange-500
+      className="rounded-lg bg-gray-100 dark:bg-etny-blue-gray-500 border-0 cursor-pointer"
       loading={loading}
     >
-      <div className="flex items-center justify-between space-x-4 mb-4">
-        <p className="uppercase text-gray-800 dark:text-gray-50 text-2xl font-medium m-0">{title}</p>
-        <StakingStatusTag status={status} />
+      <div className="flex items-start justify-start space-x-4 mb-4">
+        <StakingPotIcon label={type === StakingRequestType.BASE ? 'B' : 'E'} />
+        <p className="uppercase text-gray-800 dark:text-gray-50 text-2xl font-medium m-0 ml-2">{title}</p>
+        {/* <StakingStatusTag status={status} /> */}
       </div>
       <p className="text-gray-800 dark:text-gray-50 text-xl font-medium mb-4">{subtitle || 'Staking'}</p>
       {description !== '' && <p className="text-gray-600 dark:text-gray-100 text-md font-bold mt-4">{description}</p>}
       <div className="flex items-center justify-between py-2 space-x-4">
         <div className="border-b border-gray-200 mt-6 md:mt-0 text-black dark:text-white font-bold text-2xl">
-          {secondaryLeftValue}
+          <span className="font-grotesk slashed-zero font-bold">{secondaryLeftValue}</span>
           {secondaryLeftValueSuffix} <span className="text-xs text-gray-400 font-bold">{secondaryLeftLabel}</span>
         </div>
 
-        <div className="border-b border-gray-200 mt-6 md:mt-0 text-black dark:text-white font-bold text-xl text-right">
-          {secondaryRightValue}
+        <div className="border-b border-gray-200 mt-6 md:mt-0 text-black dark:text-white font-bold text-2xl text-right">
+          <span className="font-grotesk slashed-zero font-bold">{secondaryRightValue}</span>
           {secondaryRightValueSuffix} <span className="uppercase text-xs text-gray-400">{secondaryRightLabel}</span>
         </div>
       </div>
@@ -93,7 +101,7 @@ const MarketplaceOfferCardV1 = ({
         <div>
           <p className="uppercase text-gray-800 dark:text-blue-400 text-lg font-medium mb-1">{mainLeftLabel}</p>
           <p className="uppercase text-gray-800 dark:text-gray-50 text-4xl font-medium mb-4">
-            {mainLeftValue}
+            <span className="font-grotesk slashed-zero font-bold">{mainLeftValue}</span>
             {mainLeftUnit}
             <span className="block text-xl">{mainLeftValueSuffix}</span>
           </p>
@@ -102,7 +110,7 @@ const MarketplaceOfferCardV1 = ({
         <div className="ml-0 text-right">
           <p className="uppercase text-gray-800 dark:text-blue-400 text-lg font-medium mb-1">{mainRightLabel}</p>
           <p className="uppercase text-gray-800 dark:text-gray-50 text-4xl font-medium mb-4">
-            {mainRightValue}
+            <span className="font-grotesk slashed-zero font-bold"> {mainRightValue}</span>
             {mainRightUnit}
             <span className="block text-xl">{mainRightValueSuffix}</span>
           </p>
@@ -132,67 +140,68 @@ const MarketplaceOfferCardV1 = ({
       <div className="flex items-center justify-between w-full space-x-2">
         {status === StakingPotStatus.PENDING && isStakeHolder() && (
           <>
-            <Button type="danger" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onCancel}>
-              Cancel
-              <CloseOutlined />
-            </Button>
-            <Button type="warning" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onApprove}>
-              Details
-              <RightOutlined />
-            </Button>
+            <CancelButton onCancel={onCancel} />
+            <DetailsButton onDetails={onDetails} />
           </>
         )}
 
         {status === StakingPotStatus.PENDING && isNodeOwner() && (
           <>
-            <Button type="danger" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onDecline}>
-              Decline
-              <StopOutlined />
-            </Button>
-            <Button type="primary" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onApprove}>
-              Approve
-              <RightOutlined />
-            </Button>
-            <Button type="warning" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onDetails}>
-              Details
-              <RightOutlined />
-            </Button>
+            <DeclineButton onCancel={onDecline} />
+            <ApproveButton onCancel={onApprove} />
+            <DetailsButton onDetails={onDetails} />
           </>
         )}
 
         {status === StakingPotStatus.APPROVED && isStakeHolder() && (
           <>
-            <Button type="danger" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onCancel}>
-              Cancel
-              <CloseOutlined />
-            </Button>
-            <Button type="warning" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onApprove}>
-              Details
-              <RightOutlined />
-            </Button>
+            <CancelButton onDetails={onCancel} />
+            <DetailsButton onDetails={onDetails} />
           </>
         )}
 
-        {status === StakingPotStatus.APPROVED && isNodeOwner() && (
-          <Button type="primary" className="w-full text-green-500 font-bold hover:bg-green-100" onClick={onDetails}>
-            Details
-            <RightOutlined />
-          </Button>
-        )}
+        {status === StakingPotStatus.APPROVED && isNodeOwner() && <DetailsButton onDetails={onDetails} />}
+
+        {status === StakingPotStatus.DECLINED && <DetailsButton onDetails={onDetails} />}
+
+        {status === StakingPotStatus.CANCELED && <DetailsButton onDetails={onDetails} />}
       </div>
-      )}
     </Card>
   );
 };
 
 MarketplaceOfferCardV1.propTypes = {
-  type: PropTypes.oneOf(['base', 'extended']),
+  type: PropTypes.string,
   nodeAddress: PropTypes.string.isRequired,
   stakeHolderAddress: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  status: PropTypes.number,
+  subtitle: PropTypes.string,
   description: PropTypes.string,
   pro: PropTypes.array,
-  cons: PropTypes.array
+  cons: PropTypes.array,
+  secondaryLeftLabel: PropTypes.string,
+  secondaryLeftValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  secondaryLeftValueSuffix: PropTypes.string,
+  secondaryRightLabel: PropTypes.string,
+  secondaryRightValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  secondaryRightValueSuffix: PropTypes.string,
+  mainLeftLabel: PropTypes.string,
+  mainLeftValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  mainLeftUnit: PropTypes.string,
+  mainLeftValueSuffix: PropTypes.string,
+  mainRightLabel: PropTypes.string,
+  mainRightValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  mainRightUnit: PropTypes.string,
+  mainRightValueSuffix: PropTypes.string,
+  percent: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  percentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  percentLabel: PropTypes.string,
+  percentLabelSuffix: PropTypes.string,
+  onApprove: PropTypes.func,
+  onDecline: PropTypes.func,
+  onCancel: PropTypes.func,
+  onDetails: PropTypes.func
 };
 
 MarketplaceOfferCardV1.defaultProps = {
