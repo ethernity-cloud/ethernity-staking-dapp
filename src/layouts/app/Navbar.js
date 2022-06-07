@@ -128,8 +128,9 @@ const Navbar = ({ onMenuClick }) => {
     }
   };
 
+  const backgroundColor = isMetamaskLoggedIn ? `bg-etny-500 dark:bg-etny-800` : `bg-white dark:bg-etny-background`;
   return (
-    <div className="fixed z-10 h-20 w-full bg-white dark:bg-etny-background">
+    <div className={`fixed z-10 h-20 w-full ${backgroundColor}`}>
       <Row justify="space-between" align="middle" className="h-20 w-full md:w-4/5 mx-auto px-4">
         {active && isMetamaskLoggedIn && isMobile && (
           <MenuUnfoldOutlined
@@ -145,7 +146,7 @@ const Navbar = ({ onMenuClick }) => {
             theme={theme}
             mode="horizontal"
             defaultSelectedKeys={['/staking']}
-            className="h-10 w-72 bg-[#FFFFFF] dark:bg-[#191C1F] text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
+            className="h-10 w-72 bg-white dark:bg-etny-primary-button-focus text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
           >
             {authRoutes.map((route, index) =>
               // eslint-disable-next-line no-nested-ternary
@@ -179,20 +180,20 @@ const Navbar = ({ onMenuClick }) => {
           {theme === THEME_LIGHT && (
             <Button
               shape="circle"
-              style={{ boxShadow: 'inset 0px 0px 2px rgba(255, 255, 255, 0.23)' }}
-              className="bg-[#F0F0F0] dark:bg-[#191C1F] border-0 hover:bg-gray-500"
+              className="bg-etny-200  border-0
+              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
               onClick={onThemeChanged}
-              icon={<FaMoon className="w-4 h-4 text-black dark:text-white pt-1" />}
+              icon={<FaMoon className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
           )}
 
           {theme === THEME_DARK && (
             <Button
               shape="circle"
-              style={{ boxShadow: 'inset 0px 0px 2px rgba(255, 255, 255, 0.23)' }}
-              className="bg-white dark:bg-[#191C1F] border-0 hover:bg-gray-500"
+              className="bg-etny-200  border-0
+              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
               onClick={onThemeChanged}
-              icon={<FaSun className="w-4 h-4 text-black dark:text-white pt-1" />}
+              icon={<FaSun className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
           )}
 
@@ -201,7 +202,8 @@ const Navbar = ({ onMenuClick }) => {
               <Badge count={99}>
                 <Button
                   shape="circle"
-                  className="bg-[#0F0F0F] border-0 hover:bg-gray-500"
+                  className="bg-etny-200  border-0
+                  dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
                   icon={<BellFilled className="text-white" />}
                 />
               </Badge>

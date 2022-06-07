@@ -12,7 +12,7 @@ const AccountTab = () => (
       <Col xs={{ span: 24 }} sm={24} md={12} lg={12} xl={6}>
         <WalletCard
           type="available"
-          title="Available tokens"
+          title="Total tokens"
           prefix={<ArrowUpOutlined />}
           suffix="ETNY"
           className="bg-[#BEECFF]"
@@ -22,7 +22,7 @@ const AccountTab = () => (
       <Col xs={{ span: 24 }} sm={24} md={12} lg={12} xl={6}>
         <WalletCard
           type="available"
-          title="Available tokens"
+          title="Total staked"
           prefix={<ArrowUpOutlined />}
           suffix="ETNY"
           className="bg-[#BEECFF]"
@@ -32,7 +32,7 @@ const AccountTab = () => (
       <Col xs={24} sm={24} md={12} lg={12} xl={6}>
         <WalletCard
           type="total"
-          title="Total tokens"
+          title="Available tokens"
           prefix={<ArrowUpOutlined />}
           suffix="ETNY"
           className="bg-[#FFC7BA]"

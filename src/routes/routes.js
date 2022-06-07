@@ -5,6 +5,7 @@ import StakingPage from '../pages/app/StakingPage';
 import MarketplacePage from '../pages/app/MarketplacePage';
 import WelcomePage from '../pages/WelcomePage';
 import { ProtectedRoute } from './ProtectedRoute';
+import StakingPotDetailsPage from '../pages/app/StakingPotDetailsPage';
 
 const authRoutes = [
   {
@@ -25,6 +26,17 @@ const authRoutes = [
       </ProtectedRoute>
     ),
     visible: true
+  },
+  {
+    path: '/staking/:id',
+    name: 'Staking pot details',
+    icon: BankOutlined,
+    element: (
+      <ProtectedRoute>
+        <StakingPotDetailsPage />
+      </ProtectedRoute>
+    ),
+    visible: false
   },
   {
     path: '/marketplace',

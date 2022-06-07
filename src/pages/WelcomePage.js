@@ -65,7 +65,7 @@ const WelcomePage = () => (
       </Row>
 
       <div className="bg-white dark:bg-etny-background my-12">
-        <div className="mx-auto mx-12 py-16 bg-etny-500 dark:bg-etny-900 bg-pattern-1 bg-cover bg-no-repeat bg-center rounded-lg">
+        <div className="mx-auto mx-12 py-16 bg-etny-500 dark:bg-etny-800 bg-pattern-1 bg-cover bg-no-repeat bg-center rounded-lg">
           <div className="max-w-screen-lg mx-auto py-16 bg-transparent">
             <Row justify="center" align="bottom" className="space-x-6">
               <SectionIcon />
@@ -131,7 +131,7 @@ const WelcomePage = () => (
         </div>
       </div>
 
-      <div className="bg-etny-500 dark:bg-etny-900">
+      <div className="bg-etny-500 dark:bg-etny-800">
         <div className="max-w-screen-xl mx-auto mt-20 py-16 px-3">
           <Row justify="center" align="bottom" className="space-x-6">
             <p className="text-center text-4xl font-bold text-white">Frequently Asked Questions</p>

@@ -1,5 +1,5 @@
 export const contract = {
-  address: '0x193536d0D91309092A6CBed44c06A2eed57F65cF',
+  address: '0xEd84B2CC141dFD05d132F903C2a402C64BCab19A',
   abi: [
     {
       inputs: [],
@@ -158,6 +158,35 @@ export const contract = {
       inputs: [
         {
           internalType: 'uint256',
+          name: 'extendedStakeID',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'amount',
+          type: 'uint64'
+        },
+        {
+          internalType: 'address',
+          name: 'rewardAddress',
+          type: 'address'
+        }
+      ],
+      name: 'applyExtendedStakeRequest',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
           name: 'baseStakeId',
           type: 'uint256'
         },
@@ -168,6 +197,30 @@ export const contract = {
         }
       ],
       name: 'approveBaseStakeRequest',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'extendedStakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'address',
+          name: 'rewardAddress',
+          type: 'address'
+        }
+      ],
+      name: 'approveExtendedStakeRequest',
       outputs: [
         {
           internalType: 'bool',
@@ -201,11 +254,49 @@ export const contract = {
       inputs: [
         {
           internalType: 'uint256',
+          name: 'extendedStakeID',
+          type: 'uint256'
+        }
+      ],
+      name: 'cancelExtendedStakeRequest',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
           name: 'baseStakeId',
           type: 'uint256'
         }
       ],
       name: 'declineBaseStakeRequest',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'extendedStakeID',
+          type: 'uint256'
+        }
+      ],
+      name: 'declineExtendedStakeRequest',
       outputs: [
         {
           internalType: 'bool',
@@ -265,6 +356,11 @@ export const contract = {
           internalType: 'enum Statuses.BaseStakeStatus',
           name: 'status',
           type: 'uint8'
+        },
+        {
+          internalType: 'enum Statuses.StakeType',
+          name: 'stakeType',
+          type: 'uint8'
         }
       ],
       stateMutability: 'view',
@@ -313,7 +409,7 @@ export const contract = {
         },
         {
           internalType: 'address',
-          name: 'stakeHolder',
+          name: 'stakeHolderAddress',
           type: 'address'
         },
         {
@@ -334,6 +430,11 @@ export const contract = {
         {
           internalType: 'uint64',
           name: 'amount',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'amountBooked',
           type: 'uint64'
         },
         {
@@ -360,6 +461,60 @@ export const contract = {
           internalType: 'enum Statuses.ExtendedStakeStatus',
           name: 'status',
           type: 'uint8'
+        },
+        {
+          internalType: 'uint64',
+          name: 'stakingContracts',
+          type: 'uint64'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'extendedStakeId',
+          type: 'uint256'
+        }
+      ],
+      name: 'getExtendedStakeRequestContractStats',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '_extendedStakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'allContracts',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'pendingContracts',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'approvedContracts',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'declinedContracts',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'canceledContracts',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'terminatedContracts',
+          type: 'uint64'
         }
       ],
       stateMutability: 'view',
@@ -411,6 +566,80 @@ export const contract = {
         {
           internalType: 'uint8',
           name: '',
+          type: 'uint8'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'stakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'stakeContract',
+          type: 'uint64'
+        }
+      ],
+      name: 'getStakeContractForStake',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '_stakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: '_stakeContract',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint256',
+          name: 'stakeContractId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'address',
+          name: 'stakeHolderAddress',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'stakeHolderRewardAddress',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'nodeAddress',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'nodeRewardAddress',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'timestamp',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'amount',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'period',
+          type: 'uint64'
+        },
+        {
+          internalType: 'enum Statuses.StakeContractStatus',
+          name: 'status',
           type: 'uint8'
         }
       ],

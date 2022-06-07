@@ -7,6 +7,7 @@ import { Badge, Button, Dropdown, Menu, notification, Row, Spin } from 'antd';
 import { QRCode } from 'react-qrcode-logo';
 import { injectedConnector } from '../connectors/connectors';
 import useLocalStorage from '../hooks/useLocalStorage';
+import useCopyToClipboard from '../hooks/useCopyToClipboard';
 import EtnyContract from '../operations/etnyContract';
 
 const MetaMaskButton = ({ className }) => {
@@ -21,6 +22,7 @@ const MetaMaskButton = ({ className }) => {
   const etnyContract = new EtnyContract(library);
   const [isMetamaskLoggedIn, setIsMetamaskLoggedIn] = useLocalStorage('etny-metamask-logged-in', null);
   const [loading, setLoading] = useState(false);
+  const [copiedText, copy] = useCopyToClipboard();
 
   const bloxbergChainId = `0x${Number(8995).toString(16)}`;
   const bloxbergNetwork = {
@@ -38,7 +40,6 @@ const MetaMaskButton = ({ className }) => {
 
   const ropstenChainId = `0x${Number(3).toString(16)}`;
   const ropstenNetwork = {
-    // '0x2323'
     chainId: ropstenChainId,
     chainName: 'Ropsten',
     nativeCurrency: {
@@ -49,6 +50,8 @@ const MetaMaskButton = ({ className }) => {
     rpcUrls: [`https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`],
     blockExplorerUrls: ['https://ropsten.etherscan.io']
   };
+
+  console.log(account);
 
   // here we use a useEffect so that on page load we can check if there is
   // an account in local storage. if there is we call the connect onLoad func
@@ -269,11 +272,39 @@ const MetaMaskButton = ({ className }) => {
     }
   };
 
+  const onCopyWalletAddress = async () => {
+    try {
+      await copy(account);
+      console.log(copiedText);
+      if (copiedText) {
+        notification.success({
+          placement: 'bottomRight',
+          className: 'bg-white dark:bg-black text-black dark:text-white',
+          message: <span className="text-black dark:text-white">MetaMask</span>,
+          description: 'Successfully copied wallet address'
+        });
+      } else {
+        notification.error({
+          placement: 'bottomRight',
+          className: 'bg-white dark:bg-black text-black dark:text-white',
+          message: <span className="text-black dark:text-white">MetaMask</span>,
+          description: 'An error occurred while trying to copy wallet address'
+        });
+      }
+    } catch (e) {
+      notification.error({
+        placement: 'bottomRight',
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">MetaMask</span>,
+        description: 'An error occurred while trying to copy wallet address'
+      });
+    }
+  };
   const menu = (
-    <Menu className="w-48 bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
-      <Menu.Item key={1} className="text-black dark:text-white dark:hover:bg-gray-800">
+    <Menu className="w-48 bg-etny-200 dark:bg-etny-primary-button-focus text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
+      <Menu.Item key={1} className="text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover">
         <QRCode
-          value="0x56312e27367c059ae2719def4d247845ba0a671d"
+          value={account}
           removeQrCodeBehindLogo
           ecLevel="H"
           logoWidth={48}
@@ -284,15 +315,15 @@ const MetaMaskButton = ({ className }) => {
       <Menu.Item
         key={2}
         icon={<CopyOutlined className="text-blue-500" />}
-        className="text-black dark:text-white dark:hover:bg-gray-800"
-        onClick={disconnect}
+        className="text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover"
+        onClick={onCopyWalletAddress}
       >
         Copy Wallet Address
       </Menu.Item>
       <Menu.Item
         key={3}
         icon={<LogoutOutlined className="text-red-500" />}
-        className="text-black dark:text-white dark:hover:bg-gray-800"
+        className="text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover"
         onClick={disconnect}
       >
         Logout
@@ -308,7 +339,7 @@ const MetaMaskButton = ({ className }) => {
         <Dropdown overlay={menu} trigger="click" className="hidden md:block">
           <Button
             type="primary"
-            className="h-16 w-48 rounded-lg bg-gray-100 dark:bg-[#181C1E] text-black dark:text-white border-1 border-black dark:border-[#2D2F31]"
+            className="h-16 w-48 rounded-lg bg-etny-200 dark:bg-etny-dark-100 text-white dark:text-white border-0"
           >
             {loading && (
               <Row justify="center" align="middle">
@@ -322,7 +353,7 @@ const MetaMaskButton = ({ className }) => {
                 </Row>
                 <Row align="middle" justify="space-between" className="w-full">
                   <Badge dot status="success" size="default" />
-                  <span className="px-2">
+                  <span className="px-2 text-white dark:text-success">
                     {account.substring(0, 6)}...{account.substring(account.length - 4)}
                   </span>
                   <WalletFilled />
