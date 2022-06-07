@@ -181,7 +181,7 @@
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item {
     background-color: transparent;
-    color: #000000
+    color: #030363
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
@@ -191,17 +191,17 @@
 
 .ant-menu.ant-menu-dark .ant-menu-item-selected {
     background-color: #ffffff;
-    color: #000000;
+    color: #3B46B3;
 }
 
 .ant-menu-dark.ant-menu-horizontal {
-    background-color: #131345;
+    background-color: #27278B;
     border: 1px solid #203345;
 }
 
 .ant-menu-dark .ant-menu-horizontal > .ant-menu-item {
     background-color: transparent;
-    color: #000000
+    color: #030363
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item > span > a {
@@ -211,7 +211,7 @@
 
 .ant-menu-dark .ant-menu-horizontal > .ant-menu-item > span > a:hover {
     background-color: transparent;
-    color: #000000;
+    color: #FFFFFF;
 }
 
 .ant-menu-dark .ant-menu-horizontal > .ant-menu-item-active > span > a {
@@ -278,7 +278,7 @@
 
 .ant-menu-horizontal > .ant-menu-item > span > a:hover {
     background-color: transparent;
-    color: #FFFFFF;
+    color: #000000;
 }
 
 .ant-menu-horizontal > .ant-menu-item-active > span > a {
@@ -341,7 +341,7 @@
 
 /*ANTD TABS DARK*/
 .dark .dark\:etny-tabs .ant-tabs-nav-list {
-    background-color: #191C1F;
+    background-color: #101D39;
     border-radius: 8px;
     border: 2px #26292C solid;
 }

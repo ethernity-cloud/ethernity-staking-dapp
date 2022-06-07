@@ -6,7 +6,7 @@ export const DetailsButton = ({ className, onDetails, hasIcon }) => (
   <Button
     className={`bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
                   text-white hover:text-white focus:text-white
-                  border-0 rounded-md w-full font-bold ${className}`}
+                  border-0 rounded-sm font-bold ${className}`}
     onClick={onDetails}
   >
     Details

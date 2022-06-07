@@ -56,18 +56,42 @@ const StakingForm = ({ onClose }) => {
       // style: `backgroundColor: ${theme === THEME_LIGHT ? '#FFFFFF' : '#0F0F0F'}`,
       wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: (
-        <span>
-          Are you sure you want to create a new STAKING POT for the amount of{' '}
-          <span className="bg-amber-300 p-1 font-semibold">{values.amount} ETNY</span> ? The amount of gas fee used for
-          this transaction is 0.005 ETNY
-        </span>
+        <>
+          <p>
+            Users interacting with digital assets as financial investment should be aware that investment involves
+            risks, including the possible loss of some or all assets. Losses are not insured.
+          </p>
+          <p>
+            Users are advised to exercise caution, conduct research and not invest more than they can afford to lose.
+          </p>
+          <p>
+            Are you sure you want to create a new STAKING POT for the amount of{' '}
+            <span className="font-grotesk bg-red-500 p-1 font-semibold">{values.amount} ETNY</span> ?
+          </p>
+        </>
       ),
-      okText: 'Confirm',
+      okButtonProps: { type: 'primary', danger: true },
+      okText: 'I agree',
       cancelText: 'Cancel',
       onOk: async () => {
         if (values.type === StakingRequestType.BASE) {
           const res = await etnyStakingContract.addBaseStakeRequest(values.nodeAddress, values.amount, values.period);
           console.log(res);
+        }
+
+        if (values.type === StakingRequestType.EXTENDED) {
+          if (values.nodeAddress === undefined || values.nodeAddress === null || values.nodeAddress === '')
+            values.nodeAddress = '0x0000000000000000000000000000000000000000';
+          const res = await etnyStakingContract.addExtendedStakeRequest(
+            values.nodeAddress,
+            values.amount,
+            values.rewardAddress,
+            values.period,
+            values.split,
+            values.canBeSplitted,
+            values.isPreApproved
+          );
+          // console.log(res);
         }
 
         notification.success({
@@ -102,7 +126,8 @@ const StakingForm = ({ onClose }) => {
           stakingAddress: account,
           nodeAddress: '',
           rewardAddress: account,
-          approved: false
+          canBeSplitted: true,
+          isPreApproved: false
         }}
         onFinish={onFinish}
       >
@@ -159,12 +184,12 @@ const StakingForm = ({ onClose }) => {
             {requestType === StakingRequestType.EXTENDED && (
               <Form.Item
                 name="split"
-                label={<span className="text-black dark:text-white">Reward split (%)</span>}
+                label={<span className="text-black dark:text-white">Reward split for operator (%)</span>}
                 rules={[{ required: true, message: 'Please choose the reward split' }]}
               >
                 <Select
                   className="dark:select"
-                  placeholder="Reward split"
+                  placeholder="Reward split for operator"
                   disabled={requestType === StakingRequestType.BASE}
                   onChange={onSplitChanged}
                 >
@@ -219,41 +244,43 @@ const StakingForm = ({ onClose }) => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="nodeAddress"
-          label={<span className="text-black dark:text-white">Node wallet address</span>}
-          rules={[
-            { required: true, message: 'Please provide node wallet address' },
-            {
-              message: 'The provided input is not a valid address!',
-              validator(_, value) {
-                if (value && isAddress(value)) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error('The provided input is not a valid address!'));
-              }
-            }
-          ]}
-        >
-          <Input
-            className="w-full input-calculator dark:input-calculator"
-            // addonBefore="0x"
-            addonAfter={
-              <Tooltip title="Copy node wallet address">
-                <CopyOutlined
-                  onClick={() =>
-                    notification.success({
-                      placement: 'bottomRight',
-                      message: `Ethernity`,
-                      description: `Wallet address has been copied.`
-                    })
+        {requestType === StakingRequestType.BASE && (
+          <Form.Item
+            name="nodeAddress"
+            label={<span className="text-black dark:text-white">Node wallet address</span>}
+            rules={[
+              { required: true, message: 'Please provide node wallet address' },
+              {
+                message: 'The provided input is not a valid address!',
+                validator(_, value) {
+                  if (value && isAddress(value)) {
+                    return Promise.resolve();
                   }
-                />
-              </Tooltip>
-            }
-            placeholder="Node wallet address"
-          />
-        </Form.Item>
+                  return Promise.reject(new Error('The provided input is not a valid address!'));
+                }
+              }
+            ]}
+          >
+            <Input
+              className="w-full input-calculator dark:input-calculator"
+              // addonBefore="0x"
+              addonAfter={
+                <Tooltip title="Copy node wallet address">
+                  <CopyOutlined
+                    onClick={() =>
+                      notification.success({
+                        placement: 'bottomRight',
+                        message: `Ethernity`,
+                        description: `Wallet address has been copied.`
+                      })
+                    }
+                  />
+                </Tooltip>
+              }
+              placeholder="Node wallet address"
+            />
+          </Form.Item>
+        )}
         {requestType === StakingRequestType.EXTENDED && (
           <Form.Item
             name="rewardAddress"
@@ -279,9 +306,19 @@ const StakingForm = ({ onClose }) => {
             />
           </Form.Item>
         )}
+
         {requestType === StakingRequestType.EXTENDED && (
           <Form.Item
-            name="approved"
+            name="canBeSplitted"
+            label={<span className="text-black dark:text-white">Can staking pot be splitted?</span>}
+          >
+            <Switch checkedChildren="YES" unCheckedChildren="NO" checked />
+          </Form.Item>
+        )}
+
+        {requestType === StakingRequestType.EXTENDED && (
+          <Form.Item
+            name="isPreApproved"
             label={<span className="text-black dark:text-white">Is staking pot pre-approved?</span>}
           >
             <Switch checkedChildren="YES" unCheckedChildren="NO" />

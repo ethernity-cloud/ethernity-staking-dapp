@@ -68,33 +68,36 @@ const WalletRewardCard = ({ requestType, amount, period, split, value, actionLab
 
   return (
     <Card
-      className={`bg-white dark:bg-etny-blue-gray-500 border-2 border-etny-blue-gray-450 rounded-lg
-      bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center  ${className}`}
+      className={`bg-white dark:bg-etny-700 border-2 border-etny-blue-gray-450 rounded-lg
+      bg-dotted-pattern bg-cover bg-no-repeat bg-center 
+      ${className}`}
       loading={loading}
     >
-      <div className="bg-card-etny-logo-pattern bg-no-repeat bg-right-bottom">
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <div>
-              <p className="uppercase text-gray-800 dark:text-blue-400 text-sm font-medium mb-1">Estimated Reward</p>
-              <p className="uppercase text-gray-800 dark:text-gray-50 text-xl font-medium mb-4">
-                <span className="font-grotesk slashed-zero font-bold">{estimatedReward}</span>
-                <span className="font-grotesk block font-bold text-xl">ETNY</span>
-              </p>
-            </div>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <div>
-              <p className="uppercase text-gray-800 dark:text-blue-400 text-sm font-medium mb-1 text-right">
-                Account Balance
-              </p>
-              <p className="uppercase text-gray-800 dark:text-gray-50 text-xl font-medium mb-4 text-right">
-                <span className="font-grotesk slashed-zero font-bold">{value || balance}</span>
-                <span className="font-grotesk block font-bold text-xl">ETNY</span>
-              </p>
-            </div>
-          </Col>
-        </Row>
+      <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center">
+        <div className="bg-card-etny-logo-pattern bg-no-repeat bg-right-bottom">
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+              <div>
+                <p className="uppercase text-gray-800 dark:text-blue-400 text-sm font-medium mb-1">Estimated Reward</p>
+                <p className="uppercase text-gray-800 dark:text-gray-50 text-xl font-medium mb-4">
+                  <span className="font-grotesk slashed-zero font-bold">{estimatedReward}</span>
+                  <span className="font-grotesk block font-bold text-xl">ETNY</span>
+                </p>
+              </div>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+              <div>
+                <p className="uppercase text-gray-800 dark:text-blue-400 text-sm font-medium mb-1 text-right">
+                  Account Balance
+                </p>
+                <p className="uppercase text-gray-800 dark:text-gray-50 text-xl font-medium mb-4 text-right">
+                  <span className="font-grotesk slashed-zero font-bold">{value || balance}</span>
+                  <span className="font-grotesk block font-bold text-xl">ETNY</span>
+                </p>
+              </div>
+            </Col>
+          </Row>
+        </div>
       </div>
     </Card>
   );

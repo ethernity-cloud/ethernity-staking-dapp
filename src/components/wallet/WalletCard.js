@@ -57,44 +57,46 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
     }
   };
 
-  const onRefresh = () => {
-    getAccountBalance();
+  const onRefresh = async () => {
+    await getAccountBalance();
   };
 
   return (
     <Card
-      className={`bg-white dark:bg-etny-blue-gray-500 border-2 border-etny-blue-gray-450 rounded-lg
-      bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center 
+      className={`bg-white dark:bg-etny-700 border-2 border-etny-blue-gray-450 rounded-lg
+      bg-dotted-pattern bg-cover bg-no-repeat bg-center 
       ${className}`}
       loading={loading}
     >
-      <div className="bg-card-etny-logo-pattern bg-no-repeat bg-left-bottom">
-        <Statistic
-          title={<span className="text-black dark:text-white">{title}</span>}
-          value={value || balance}
-          precision={2}
-          valueStyle={{
-            fontFamily: 'Space Grotesk',
-            fontWeight: 'bold',
-            fontFeatureSettings: `'zero' 1`,
-            fontVariantNumeric: 'slashed-zero',
-            color: theme === THEME_LIGHT ? '#000000' : '#FFFFFF'
-          }}
-          style={{ fontWeight: 500 }}
-          prefix={prefix}
-          suffix={suffix}
-        />
-        <Row justify="end" align="middle">
-          <Button
-            type="primary"
-            className="bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+      <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center ">
+        <div className="bg-card-etny-logo-pattern bg-no-repeat bg-left-bottom">
+          <Statistic
+            title={<span className="text-black dark:text-white uppercase">{title}</span>}
+            value={value || balance}
+            precision={2}
+            valueStyle={{
+              fontFamily: 'Space Grotesk',
+              fontWeight: 'bold',
+              fontFeatureSettings: `'zero' on, 'cv01' on, 'cv02' on, 'cv03' on, 'cv04' on`,
+              fontVariantNumeric: 'slashed-zero',
+              color: theme === THEME_LIGHT ? '#000000' : '#FFFFFF'
+            }}
+            style={{ fontWeight: 500 }}
+            prefix={prefix}
+            suffix={suffix}
+          />
+          <Row justify="end" align="middle">
+            <Button
+              type="primary"
+              className="bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
                   text-white hover:text-white focus:text-white
-                  border-0 rounded-lg mt-4"
-            onClick={onRefresh}
-          >
-            {actionLabel}
-          </Button>
-        </Row>
+                  border-0 rounded-sm mt-4"
+              onClick={onRefresh}
+            >
+              {actionLabel}
+            </Button>
+          </Row>
+        </div>
       </div>
     </Card>
   );

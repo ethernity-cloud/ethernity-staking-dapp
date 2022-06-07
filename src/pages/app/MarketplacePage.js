@@ -30,14 +30,24 @@ const MarketplacePage = () => {
         }
         extra={[
           <RangePicker key="1" />,
-          <Button key="2" type="primary" onClick={onCreateStake}>
+          <Button
+            className="bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
+                  text-white hover:text-white focus:text-white
+                  border-0 rounded-sm
+                  uppercase font-semibold w-28"
+            key="2"
+            type="primary"
+            onClick={onCreateStake}
+          >
             <Space>
               <ReloadOutlined />
               Refresh
             </Space>
           </Button>
         ]}
-        footer={<StakingOffers status={StakingPotStatus.PENDING} isMarketplace />}
+        footer={
+          <StakingOffers status={StakingPotStatus.PENDING} isMarketplace hasProgressBar={false} hasStatisticsDetails />
+        }
       />
     </Page>
   );

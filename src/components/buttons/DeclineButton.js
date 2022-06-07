@@ -6,7 +6,7 @@ export const DeclineButton = ({ className, onDecline, hasIcon }) => (
   <Button
     className={`bg-white hover:bg-red-100 focus:bg-red-200
                 text-red-500 hover:text-red-500 focus:text-red-500
-                border-2 border-primary hover:border-primary dark:border-0 rounded-md ${className}`}
+                border-2 border-primary hover:border-primary dark:border-0 rounded-sm ${className}`}
     onClick={onDecline}
   >
     Decline

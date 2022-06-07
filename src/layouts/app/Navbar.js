@@ -146,7 +146,7 @@ const Navbar = ({ onMenuClick }) => {
             theme={theme}
             mode="horizontal"
             defaultSelectedKeys={['/staking']}
-            className="h-10 w-72 bg-[#FFFFFF] dark:bg-[#191C1F] text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
+            className="h-10 w-72 bg-white dark:bg-etny-primary-button-focus text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
           >
             {authRoutes.map((route, index) =>
               // eslint-disable-next-line no-nested-ternary
@@ -180,8 +180,8 @@ const Navbar = ({ onMenuClick }) => {
           {theme === THEME_LIGHT && (
             <Button
               shape="circle"
-              style={{ boxShadow: 'inset 0px 0px 2px rgba(255, 255, 255, 0.23)' }}
-              className="bg-etny-200 dark:bg-etny-dark-100 border-2 border-etny-200 dark:border-etny-blue-gray-600 hover:bg-gray-500"
+              className="bg-etny-200  border-0
+              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
               onClick={onThemeChanged}
               icon={<FaMoon className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
@@ -190,7 +190,8 @@ const Navbar = ({ onMenuClick }) => {
           {theme === THEME_DARK && (
             <Button
               shape="circle"
-              className="bg-etny-200 dark:bg-etny-dark-100 border-2 border-etny-200 dark:border-etny-blue-gray-600 hover:bg-gray-500"
+              className="bg-etny-200  border-0
+              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
               onClick={onThemeChanged}
               icon={<FaSun className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
@@ -201,7 +202,8 @@ const Navbar = ({ onMenuClick }) => {
               <Badge count={99}>
                 <Button
                   shape="circle"
-                  className="bg-etny-200 dark:bg-etny-dark-100 border-2 border-etny-200 dark:border-etny-blue-gray-600 hover:bg-gray-500"
+                  className="bg-etny-200  border-0
+                  dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
                   icon={<BellFilled className="text-white" />}
                 />
               </Badge>

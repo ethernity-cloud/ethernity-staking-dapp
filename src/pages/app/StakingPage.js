@@ -58,40 +58,40 @@ const StakingPage = () => {
         extra={[
           <Button
             key="3"
-            className="bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+            className="bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
                         text-white hover:text-white focus:text-white
-                        border-0 rounded-lg
+                        border-0 rounded-sm
                         uppercase font-semibold w-28"
           >
             <Space>
-              <FaArrowUp className="pt-1" />
               Send
+              <FaArrowUp className="pt-1" />
             </Space>
           </Button>,
           <Button
             key="2"
-            className="bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+            className="bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
                   text-white hover:text-white focus:text-white
-                  border-0 rounded-lg
+                  border-0 rounded-sm
                   uppercase font-semibold w-28"
           >
             <Space>
-              <FaArrowDown className="pt-1" />
               Receive
+              <FaArrowDown className="pt-1" />
             </Space>
           </Button>,
           <Button
             key="1"
             type="primary"
-            className="uppercase font-semibold w-28
-                bg-white hover:bg-etny-secondary-button-hover focus:bg-etny-secondary-button-focus
-                text-etny-orange-500 hover:text-etny-orange-500 focus:text-etny-orange-500
-                border-2 border-primary hover:border-primary dark:border-0 rounded-md"
+            className="bg-white hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
+                text-black hover:text-white focus:text-white
+                border-2 border-primary hover:border-primary dark:border-0 rounded-sm
+                uppercase font-semibold w-28"
             onClick={onCreateStake}
           >
             <Space>
-              <FaCoins className="pt-1" />
               Stake
+              <FaCoins className="pt-1" />
             </Space>
           </Button>
         ]}

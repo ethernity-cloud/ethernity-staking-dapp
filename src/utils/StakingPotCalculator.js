@@ -106,3 +106,5 @@ export const getDaysUntil = (createdOn, months) => {
 };
 
 export const getRatePerYear = (createdOn) => ratesPerYear[moment(createdOn).year()];
+
+export const formatDate = (createdOn) => moment(createdOn).format('YYYY-MM-DD | HH:mm');
