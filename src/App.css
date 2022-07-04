@@ -1,232 +1,234 @@
 .text-left {
-    text-align: left !important;
+  text-align: left !important;
 }
 
 .text-right {
-    text-align: right !important;
+  text-align: right !important;
 }
 
 .text-center {
-    text-align: center !important;
+  text-align: center !important;
 }
 
 .m-0 {
-    margin: 0 !important;
+  margin: 0 !important;
 }
 
 .mt-0,
 .my-0 {
-    margin-top: 0 !important;
+  margin-top: 0 !important;
 }
 
 .mr-0,
 .mx-0 {
-    margin-right: 0 !important;
+  margin-right: 0 !important;
 }
 
 .mb-0,
 .my-0 {
-    margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .ml-0,
 .mx-0 {
-    margin-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 .m-1 {
-    margin: 0.25rem !important;
+  margin: 0.25rem !important;
 }
 
 .mt-1,
 .my-1 {
-    margin-top: 0.25rem !important;
+  margin-top: 0.25rem !important;
 }
 
 .mr-1,
 .mx-1 {
-    margin-right: 0.25rem !important;
+  margin-right: 0.25rem !important;
 }
 
 .mb-1,
 .my-1 {
-    margin-bottom: 0.25rem !important;
+  margin-bottom: 0.25rem !important;
 }
 
 .ml-1,
 .mx-1 {
-    margin-left: 0.25rem !important;
+  margin-left: 0.25rem !important;
 }
 
 .m-2 {
-    margin: 0.5rem !important;
+  margin: 0.5rem !important;
 }
 
 .mt-2,
 .my-2 {
-    margin-top: 0.5rem !important;
+  margin-top: 0.5rem !important;
 }
 
 .mr-2,
 .mx-2 {
-    margin-right: 0.5rem !important;
+  margin-right: 0.5rem !important;
 }
 
 .mb-2,
 .my-2 {
-    margin-bottom: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .ml-2,
 .mx-2 {
-    margin-left: 0.5rem !important;
+  margin-left: 0.5rem !important;
 }
 
 .m-3 {
-    margin: 1rem !important;
+  margin: 1rem !important;
 }
 
 .mt-3,
 .my-3 {
-    margin-top: 1rem !important;
+  margin-top: 1rem !important;
 }
 
 .mr-3,
 .mx-3 {
-    margin-right: 1rem !important;
+  margin-right: 1rem !important;
 }
 
 .mb-3,
 .my-3 {
-    margin-bottom: 1rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .ml-3,
 .mx-3 {
-    margin-left: 1rem !important;
+  margin-left: 1rem !important;
 }
 
 .m-4 {
-    margin: 1.5rem !important;
+  margin: 1.5rem !important;
 }
 
 .mt-4,
 .my-4 {
-    margin-top: 1.5rem !important;
+  margin-top: 1.5rem !important;
 }
 
 .mr-4,
 .mx-4 {
-    margin-right: 1.5rem !important;
+  margin-right: 1.5rem !important;
 }
 
 .mb-4,
 .my-4 {
-    margin-bottom: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
 }
 
 .ml-4,
 .mx-4 {
-    margin-left: 1.5rem !important;
+  margin-left: 1.5rem !important;
 }
 
 .m-5 {
-    margin: 3rem !important;
+  margin: 3rem !important;
 }
 
 .mt-5,
 .my-5 {
-    margin-top: 3rem !important;
+  margin-top: 3rem !important;
 }
 
 .mr-5,
 .mx-5 {
-    margin-right: 3rem !important;
+  margin-right: 3rem !important;
 }
 
 .mb-5,
 .my-5 {
-    margin-bottom: 3rem !important;
+  margin-bottom: 3rem !important;
 }
 
 .ml-5,
 .mx-5 {
-    margin-left: 3rem !important;
+  margin-left: 3rem !important;
 }
 
 .logo {
-    float: left;
-    width: 160px;
-    height: 30px;
+  float: left;
+  width: 160px;
+  height: 30px;
 }
 
 .ant-drawer-title {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .ant-drawer-close {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .ant-badge-status-dot {
-    width: 10px;
-    height: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 .ant-popover-inner-content {
-    padding: 0;
+  padding: 0;
 }
 
 /*ANTD MENU DARK*/
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item {
-    background-color: transparent;
-    color: #030363
+  background-color: transparent;
+  color: #030363;
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
-    background-color: #ffffff;
-    color: black;
+  background-color: #ffffff;
+  color: black;
 }
 
 .ant-menu.ant-menu-dark .ant-menu-item-selected {
-    background-color: #ffffff;
-    color: #3B46B3;
+  background-color: #ffffff;
+  color: #3b46b3;
 }
 
 .ant-menu-dark.ant-menu-horizontal {
-    background-color: #27278B;
-    border: 1px solid #203345;
+  background-color: #27278b;
+  border: 1px solid #203345;
 }
 
 .ant-menu-dark .ant-menu-horizontal > .ant-menu-item {
-    background-color: transparent;
-    color: #030363
+  background-color: transparent;
+  color: #030363;
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item > span > a {
-    background-color: transparent;
-    color: #FFFFFF;
+  background-color: transparent;
+  color: #ffffff;
 }
 
 .ant-menu-dark .ant-menu-horizontal > .ant-menu-item > span > a:hover {
-    background-color: transparent;
-    color: #FFFFFF;
+  background-color: transparent;
+  color: #ffffff;
 }
 
 .ant-menu-dark .ant-menu-horizontal > .ant-menu-item-active > span > a {
-    color: #000000;
+  color: #000000;
 }
 
 .ant-menu-dark .ant-menu-horizontal > .ant-menu-item-selected > span > a > .ant-icon {
-    color: #000000;
+  color: #000000;
 }
 
-.ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon, .ant-menu-dark .ant-menu-item-selected .anticon {
-    color: black;
+.ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon,
+.ant-menu-dark .ant-menu-item-selected .anticon {
+  color: black;
 }
-.ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon + span, .ant-menu-dark .ant-menu-item-selected .anticon + span {
-    color: black;
+.ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon + span,
+.ant-menu-dark .ant-menu-item-selected .anticon + span {
+  color: black;
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-active,
@@ -234,8 +236,8 @@
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-open,
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-selected {
-    background-color: white;
-    color: #000000 !important;
+  background-color: white;
+  color: #000000 !important;
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover,
@@ -246,54 +248,56 @@
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-open,
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-selected {
-    background-color: white;
-    color: #000000 !important;
+  background-color: white;
+  color: #000000 !important;
 }
 
 /*ANTD MENU LIGHT*/
 .ant-menu-horizontal > .ant-menu-item {
-    background-color: transparent;
-    color: #ffffff
+  background-color: transparent;
+  color: #ffffff;
 }
 
 .ant-menu .ant-menu-item-selected {
-    background-color: #40A9FC;
-    color: #000000;
+  background-color: #40a9fc;
+  color: #000000;
 }
 
 .ant-menu-horizontal {
-    background-color: #48A4FF;
-    border: 1px solid #D4EAFF;
+  background-color: #48a4ff;
+  border: 1px solid #d4eaff;
 }
 
 .ant-menu-horizontal > .ant-menu-item {
-    background-color: #FFFFFF;
-    color: #FFFFFF
+  background-color: #ffffff;
+  color: #ffffff;
 }
 
 .ant-menu-horizontal > .ant-menu-item > span > a {
-    background-color: transparent;
-    color: #000000;
+  background-color: transparent;
+  color: #000000;
 }
 
 .ant-menu-horizontal > .ant-menu-item > span > a:hover {
-    background-color: transparent;
-    color: #000000;
+  background-color: transparent;
+  color: #000000;
 }
 
 .ant-menu-horizontal > .ant-menu-item-active > span > a {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 
 .ant-menu-horizontal > .ant-menu-item-selected > span > a > .ant-icon {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 
-.ant-menu-item-selected .ant-menu-item-icon, .ant-menu-item-selected .anticon {
-    color: #FFFFFF;
+.ant-menu-item-selected .ant-menu-item-icon,
+.ant-menu-item-selected .anticon {
+  color: #ffffff;
 }
-.ant-menu-item-selected .ant-menu-item-icon + span, .ant-menu-item-selected .anticon + span {
-    color: #FFFFFF;
+.ant-menu-item-selected .ant-menu-item-icon + span,
+.ant-menu-item-selected .anticon + span {
+  color: #ffffff;
 }
 
 .ant-menu-horizontal > .ant-menu-submenu-active,
@@ -301,8 +305,8 @@
 .ant-menu-horizontal > .ant-menu-submenu-open,
 .ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-horizontal > .ant-menu-submenu-selected {
-    background-color: #40A9FC;
-    color: #FFFFFF !important;
+  background-color: #40a9fc;
+  color: #ffffff !important;
 }
 
 .ant-menu-horizontal > .ant-menu-item:hover,
@@ -313,8 +317,8 @@
 .ant-menu-horizontal > .ant-menu-submenu-open,
 .ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-horizontal > .ant-menu-submenu-selected {
-    background-color: #40A9FC;
-    color: #FFFFFF !important;
+  background-color: #40a9fc;
+  color: #ffffff !important;
 }
 
 /*@media (prefers-color-scheme: dark) {*/
@@ -341,311 +345,366 @@
 
 /*ANTD TABS DARK*/
 .dark .dark\:etny-tabs .ant-tabs-nav-list {
-    background-color: #101D39;
-    border-radius: 8px;
-    border: 2px #26292C solid;
+  background-color: #101d39;
+  border-radius: 8px;
+  border: 2px #26292c solid;
 }
 
 .dark .dark\:etny-tabs .ant-tabs-ink-bar {
-    background: none;
+  background: none;
 }
 
 .dark .dark\:etny-tabs .ant-tabs-tab {
-    padding-left: 12px;
-    padding-right: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .dark .dark\:etny-tabs .ant-tabs-tab-active {
-    background-color: #0F0F0F;
-    border: none;
-    padding-left: 12px;
-    padding-right: 12px;
-    color: white;
-    border-radius: 8px;
+  background-color: #0f0f0f;
+  border: none;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: white;
+  border-radius: 8px;
 }
 .dark .dark\:etny-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: white;
+  color: white;
 }
 
 /*ANTD TABS LIGHT*/
 .etny-tabs .ant-tabs-nav-list {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    /*border: 2px #26292C solid;*/
+  background-color: #ffffff;
+  border-radius: 8px;
+  /*border: 2px #26292C solid;*/
 }
 
 .etny-tabs .ant-tabs-ink-bar {
-    background: none;
+  background: none;
 }
 
 .etny-tabs .ant-tabs-tab {
-    padding-left: 12px;
-    padding-right: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .etny-tabs .ant-tabs-tab-active {
-    background-color: #40A9FC;
-    border: none;
-    padding-left: 12px;
-    padding-right: 12px;
-    color: white;
-    border-radius: 8px;
+  background-color: #40a9fc;
+  border: none;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: white;
+  border-radius: 8px;
 }
 .etny-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: white;
+  color: white;
 }
 
 /*ANTD COLLAPSE*/
 .ant-collapse-borderless {
-    background-color: transparent;
-    border: 0;
+  background-color: transparent;
+  border: 0;
 }
 
 .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-    background-color: #FFFFFF;
-    color: white;
-    font-size: 22px;
+  background-color: #ffffff;
+  color: white;
+  font-size: 22px;
 }
 
 .ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content {
-    background-color: #FFFFFF;
-    color: white;
-    font-size: 16px;
+  background-color: #ffffff;
+  color: white;
+  font-size: 16px;
 }
 
 .ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
-    color: #0C86FF;
-    font-weight: bold;
-    font-size: 16px;
+  color: #0c86ff;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .welcome-faq-collapse .welcome-faq-collapse-panel {
-    margin-bottom: 24px;
-    padding: 22px;
-    overflow: hidden;
-    background: #FFFFFF;
-    box-shadow: inset 0px 0px 4.63297px rgba(255, 255, 255, 0.23);
-    color: #000000;
-    border: 0;
-    border-radius: 2px;
+  margin-bottom: 24px;
+  padding: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: inset 0px 0px 4.63297px rgba(255, 255, 255, 0.23);
+  color: #000000;
+  border: 0;
+  border-radius: 2px;
 }
 
 .dark .welcome-faq-collapse .dark\:welcome-faq-collapse-panel {
-    margin-bottom: 24px;
-    padding: 22px;
-    overflow: hidden;
-    background: #FFFFFF;
-    color: #ffffff;
-    border: transparent;
-    border-radius: 2px;
+  margin-bottom: 24px;
+  padding: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  color: #ffffff;
+  border: transparent;
+  border-radius: 2px;
 }
 
 /*TABLE DARK MODE*/
 .dark .dark\:welcome-calculator .ant-table-content {
-    background-color: #070E1D;
-    color: white;
-    text-align: center;
-    border-radius: 0;
+  background-color: #070e1d;
+  color: white;
+  text-align: center;
+  border-radius: 0;
 }
 
 .dark .dark\:welcome-calculator .ant-table-thead > tr > th {
-    background-color: #070E1D !important;
-    border-radius: 0;
-    color: #0C86FF;
-    text-align: center;
+  background-color: #070e1d !important;
+  border-radius: 0;
+  color: #0c86ff;
+  text-align: center;
 }
 
 .dark .dark\:welcome-calculator .ant-table-thead {
-    background-color: #070E1D;
-    border-radius: 0;
+  background-color: #070e1d;
+  border-radius: 0;
 }
 
 .dark .dark\:welcome-calculator .ant-table-cell {
-    text-align: center;
+  text-align: center;
 }
 .dark .dark\:welcome-calculator .ant-table-tbody > tr > td.ant-table-cell-row-hover {
-    background-color: #070E1D;
-    border-radius: 0;
-    color: #0C86FF;
-    /*font-weight: bold;*/
-    text-align: center;
+  background-color: #070e1d;
+  border-radius: 0;
+  color: #0c86ff;
+  /*font-weight: bold;*/
+  text-align: center;
 }
 
 /*TABLE LIGHT MODE*/
 .ant-table-container table > thead > tr:first-child th:last-child {
-    color: #F89430;
+  color: #f89430;
 }
 
 .welcome-calculator .ant-table-content {
-    background-color: #ffffff;
-    color: black;
-    text-align: center;
-    border: none;
-    border-radius: 0;
+  background-color: #ffffff;
+  color: black;
+  text-align: center;
+  border: none;
+  border-radius: 0;
 }
 
 .welcome-calculator .ant-table-thead > tr > th {
-    background-color: #ffffff !important;
-    border: none;
-    border-radius: 0;
-    color: #0C86FF;
-    text-align: center;
+  background-color: #ffffff !important;
+  border: none;
+  border-radius: 0;
+  color: #0c86ff;
+  text-align: center;
 }
 
 .welcome-calculator .ant-table-thead {
-    background-color: #ffffff;
-    border: none;
-    border-radius: 0;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0;
 }
 
 .welcome-calculator .ant-table-cell {
-    text-align: center;
+  text-align: center;
 }
 .welcome-calculator .ant-table-tbody > tr > td.ant-table-cell-row-hover {
-    background-color: #ffffff;
-    border-radius: 0;
-    color: #0C86FF;
-    /*font-weight: bold;*/
-    text-align: center;
+  background-color: #ffffff;
+  border-radius: 0;
+  color: #0c86ff;
+  /*font-weight: bold;*/
+  text-align: center;
 }
 
 /*SELECT DARK THEME*/
 .dark .dark\:select.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: #01014F;
-    border-color: transparent;
-    border-radius: 6px;
+  background-color: #01014f;
+  border-color: transparent;
+  border-radius: 6px;
 }
 .dark .dark\:select.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: #0B1324;
-    border-color: transparent;
-    border-radius: 6px;
-    color: #828282;
+  background-color: #0b1324;
+  border-color: transparent;
+  border-radius: 6px;
+  color: #828282;
 }
 
 .dark .dark\:select.ant-select {
-    background-color: transparent;
-    color: #0C86FF;
-    border-radius: 6px;
+  background-color: transparent;
+  color: #0c86ff;
+  border-radius: 6px;
 }
 
 .dark .dark\:select.ant-select-arrow {
-    color: #0C86FF;
+  color: #0c86ff;
 }
 
 /*SELECT LIGHT THEME*/
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: #C4E2FF;
-    border-color: transparent;
-    border-radius: 6px;
+  background-color: #c4e2ff;
+  border-color: transparent;
+  border-radius: 6px;
 }
 .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: #F3F3F3;
-    border-color: transparent;
-    border-radius: 6px;
-    color: #8A8A8A;
+  background-color: #f3f3f3;
+  border-color: transparent;
+  border-radius: 6px;
+  color: #8a8a8a;
 }
 
 .ant-select {
-    background-color: #C4E2FF;
-    color: #0C86FF;
-    border-radius: 6px;
+  background-color: #c4e2ff;
+  color: #0c86ff;
+  border-radius: 6px;
 }
 
 .ant-select-arrow {
-    color: #0C86FF;
+  color: #0c86ff;
 }
 
 /*INPUT*/
 .dark .dark\:input-calculator .ant-input-group .ant-input {
-    background-color: #01014F;
-    border-color: transparent;
-    color: #0C86FF;
+  background-color: #01014f;
+  border-color: transparent;
+  color: #0c86ff;
 }
 
 .dark .dark\:input-calculator .ant-input-group .ant-input-disabled {
-    background-color: transparent;
-    border-color: #393939;
-    color: #0C86FF;
+  background-color: transparent;
+  border-color: #393939;
+  color: #0c86ff;
 }
 
 .dark .dark\:input-calculator .ant-input-group-addon {
-    color: #0C86FF;
-    background-color: #01014F;
-    border: 1px solid #393939;
-    border-radius: 2px;
+  color: #0c86ff;
+  background-color: #01014f;
+  border: 1px solid #393939;
+  border-radius: 2px;
 }
 
 .ant-input-group-addon {
-    color: #0C86FF;
-    background-color: #F4F4F4;
-    border: 1px solid #393939;
-    border-radius: 2px;
+  color: #0c86ff;
+  background-color: #f4f4f4;
+  border: 1px solid #393939;
+  border-radius: 2px;
 }
 
 .ant-input-group .ant-input {
-    background-color: #F4F4F4;
-    border-color: transparent;
-    color: #0C86FF;
+  background-color: #f4f4f4;
+  border-color: transparent;
+  color: #0c86ff;
 }
 
 .ant-input-group .ant-input-disabled {
-    background-color: #F4F4F4;
-    border-color: transparent;
-    color: #0C86FF;
+  background-color: #f4f4f4;
+  border-color: transparent;
+  color: #0c86ff;
 }
-
 
 /*INPUT NUMBER*/
 .dark .dark\:input-number-calculator.ant-input-number {
-    background-color: #01014F;
-    border-color: transparent;
-    color: #0C86FF;
+  background-color: #01014f;
+  border-color: transparent;
+  color: #0c86ff;
 }
 
 .ant-input-number {
-    background-color: #C4E2FF;
-    border-color: transparent;
-    border-radius: 6px;
-    color: #0C86FF;
+  background-color: #c4e2ff;
+  border-color: transparent;
+  border-radius: 6px;
+  color: #0c86ff;
 }
-
 
 /*LIGHT MODAL*/
 .etny-modal .ant-modal-content {
-    background-color: #fff;
-    color: #000000;
+  background-color: #fff;
+  color: #000000;
 }
 
 /*DARK MODAL*/
 .dark .dark\:etny-modal .ant-modal-content {
-    background-color: #191C1F;
-    color: #FFFFFF;
+  background-color: #191c1f;
+  color: #ffffff;
 }
 
 .dark .ant-modal-confirm-body .ant-modal-confirm-title {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 
 .dark .ant-modal-confirm-body .ant-modal-confirm-content {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 
 /*WELCOME PAGE*/
 .dark .dark\:welcome-section-1 {
-    /*background: linear-gradient(174.18deg, rgba(16, 16, 52, 0) -34.8%, #101034 96.41%);*/
+  /*background: linear-gradient(174.18deg, rgba(16, 16, 52, 0) -34.8%, #101034 96.41%);*/
 }
 
 .dark .dark\:welcome-section-2 {
-    background: linear-gradient(174.26deg, rgba(16, 16, 52, 0) -37.34%, #101034 95.13%);
+  background: linear-gradient(174.26deg, rgba(16, 16, 52, 0) -37.34%, #101034 95.13%);
 }
 
+/* changing qr code radius */
+.qr-code-container canvas {
+  border-radius: 10px;
+}
 
+/* notifications */
+.notifications-card {
+  background: #070e1d;
+  border: 4px solid #101d39;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.notifications-list {
+  max-height: 500px;
+}
+.notifications-list__item {
+  padding-left: 30px !important;
+  padding-right: 10px;
+  border-bottom: 1px solid #232a33 !important;
+}
+.notifications-list__item-title {
+  border-bottom: none !important;
+}
+.notifications-list__item > .notifications-title {
+  color: white;
+}
+.notifications-list__item-read {
+  display: flex;
+  justify-content: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+.notifications-list__item-read > .notifications-title {
+  color: #0c86ff;
+}
+.notifications-list__item-old svg path {
+  fill: #ffffff;
+}
+.notifications-list::-webkit-scrollbar {
+  width: 5px;
+}
+.notifications-meta {
+}
+.notifications-meta > .ant-list-item-meta-content > .ant-list-item-meta-title {
+  color: #0c86ff;
+}
+.notifications-meta > .ant-list-item-meta-content > .ant-list-item-meta-description {
+  color: #0c86ff;
+}
+.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-title {
+  color: #ffffff;
+}
+.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-description {
+  color: #ffffff;
+}
 
+.notifications-list::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-
-
-
-
+.notifications-list::-webkit-scrollbar-thumb {
+  background: #fff;
+  border-radius: 5px;
+}
 
 /*!*ANTD COLLAPSE LIGHT*!*/
 /*.ant-collapse-borderless {*/

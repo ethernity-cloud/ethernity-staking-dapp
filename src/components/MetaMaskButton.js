@@ -303,14 +303,19 @@ const MetaMaskButton = ({ className }) => {
   const menu = (
     <Menu className="w-48 bg-etny-200 dark:bg-etny-primary-button-focus text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
       <Menu.Item key={1} className="text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover">
-        <QRCode
-          value={account}
-          removeQrCodeBehindLogo
-          ecLevel="H"
-          logoWidth={48}
-          logoHeight={48}
-          logoImage="/static/logo/logo_200x200.png"
-        />
+        <div className="qr-code-container">
+          <QRCode
+            value={account}
+            removeQrCodeBehindLogo
+            bgColor="#0B83FF"
+            fgColor="#FFF"
+            ecLevel="H"
+            logoWidth={48}
+            logoHeight={48}
+            logoImage="/static/logo/logo_200x200.png"
+            className="qr-code"
+          />
+        </div>
       </Menu.Item>
       <Menu.Item
         key={2}

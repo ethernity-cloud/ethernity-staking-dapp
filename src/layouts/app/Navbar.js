@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Icon, { MenuUnfoldOutlined, EditOutlined, ClearOutlined, BellFilled } from '@ant-design/icons';
-import { Avatar, Badge, Button, Card, Col, Layout, List, Menu, Popover, Row, Tag } from 'antd';
+import Icon, { MenuUnfoldOutlined, BellFilled } from '@ant-design/icons';
+import { Badge, Button, Card, Layout, List, Menu, Popover, Row, Typography } from 'antd';
 import { useWeb3React } from '@web3-react/core';
 import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router-dom';
@@ -8,12 +8,13 @@ import { FaMoon, FaSun } from 'react-icons/fa';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import MetaMaskButton from '../../components/MetaMaskButton';
 import useTheme from '../../hooks/useTheme';
-import { randomIntFromInterval } from '../../utils/Math';
 import { authRoutes } from '../../routes/routes';
 import Logo from '../../components/Logo';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { ReactComponent as NotificationIcon } from '../../assets/icons/notification_icon.svg';
 
 const { Header } = Layout;
+const { Title } = Typography;
 
 const data = [
   {
@@ -56,48 +57,46 @@ const data = [
     datetime: '10/02/2022'
   }
 ];
-const tabList = [
-  {
-    key: 'tab1',
-    tab: 'Notifications'
-  },
-  {
-    key: 'tab2',
-    tab: 'News'
-  }
-];
+
 const menu = (
-  <Card
-    style={{ width: 320 }}
-    tabList={tabList}
-    actions={[<ClearOutlined key="setting" />, <EditOutlined key="edit" />]}
-    bodyStyle={{ padding: 0 }}
-  >
-    <List
-      className="max-h-80 overflow-auto"
-      dataSource={data}
-      renderItem={(item, i) => (
-        <List.Item key={item.key || i} className="hover:bg-gray-100">
+  <Card style={{ width: 409, maxHeight: 500 }} bodyStyle={{ padding: 0 }} className="notifications-card">
+    <List className="max-h-80 overflow-auto notifications-list" title="New Notifications">
+      <List.Item className="notifications-list__item-title notifications-list__item">
+        <Title level={3} className="notifications-title">
+          New Notifications
+        </Title>
+      </List.Item>
+      {data.map((item, i) => (
+        <List.Item key={item.key || i} className="notifications-list__item">
           <List.Item.Meta
-            className="px-2"
-            avatar={
-              <Avatar src={`https://ui-avatars.com/api/?name=${randomIntFromInterval(0, 100)}&background=random`} />
-            }
+            avatar={<NotificationIcon height={20} width={20} />}
+            className="px-2 notifications-meta"
             title={item.title || 'New staking offer'}
-            description={
-              <Row>
-                <Col span={12}>
-                  <Tag color="gold">{item.description}</Tag>
-                </Col>
-                <Col span={12} className="font-bold text-right pr-1">
-                  <span>1day ago</span>
-                </Col>
-              </Row>
-            }
+            description="7 hours ago"
           />
         </List.Item>
-      )}
-    />
+      ))}
+      <List.Item className="notifications-list__item-title notifications-list__item">
+        <Title level={3} className="notifications-title text-white">
+          Old Notifications
+        </Title>
+      </List.Item>
+      {data.map((item, i) => (
+        <List.Item key={item.key || i} className="notifications-list__item notifications-list__item-old">
+          <List.Item.Meta
+            avatar={<NotificationIcon height={20} width={20} />}
+            className="px-2 notifications-meta notifications-meta-old"
+            title={item.title || 'New staking offer'}
+            description="7 hours ago"
+          />
+        </List.Item>
+      ))}
+      <List.Item className="notifications-list__item-read">
+        <Title level={3} className="notifications-title">
+          Mark all as read
+        </Title>
+      </List.Item>
+    </List>
   </Card>
 );
 
