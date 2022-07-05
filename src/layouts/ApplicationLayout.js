@@ -2,7 +2,7 @@ import React, { useState, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Drawer, Layout, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { authRoutes } from '../routes/routes';
+import { routes } from '../routes/routes';
 import Navbar from './app/Navbar';
 import MobileSidebarMenu from './app/MobileSidebarMenu';
 
@@ -42,7 +42,7 @@ const ApplicationLayout = () => {
         <Content className="bg-white dark:bg-etny-background">
           <Suspense fallback={loading()}>
             <Routes>
-              {authRoutes.map((route, index) => (
+              {routes.map((route, index) => (
                 <Route key={index} {...route} />
               ))}
             </Routes>

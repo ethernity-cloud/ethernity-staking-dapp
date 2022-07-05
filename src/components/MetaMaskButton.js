@@ -58,7 +58,7 @@ const MetaMaskButton = ({ className }) => {
   useEffect(() => {
     if (isMetamaskLoggedIn !== null) {
       console.log(isMetamaskLoggedIn);
-      connectOnLoad();
+      // connectOnLoad();
     }
     // in case we want to auto connect disable the code below
     // connectWalletHandler();
@@ -192,25 +192,6 @@ const MetaMaskButton = ({ className }) => {
 
   // function that is called on page load if and only if their exists and
   // item for the user account in local storage
-  const connectOnLoad = async () => {
-    try {
-      // here we use activate to create the connection
-      await activate(injectedConnector);
-      navigate('/staking');
-    } catch (ex) {
-      console.log(ex);
-      notification.error({
-        placement: 'bottomRight',
-        className: 'bg-white dark:bg-black text-black dark:text-white',
-        message: <span className="text-black dark:text-white">MetaMask</span>,
-        description: 'An error occurred while trying to connect to MetaMask Wallet'
-      });
-    }
-
-    // we use web3.eth to get the accounts to store it in local storage
-    // const accounts = await library.listAccounts();
-    setIsMetamaskLoggedIn(account);
-  };
 
   const connectOnClick = async () => {
     try {

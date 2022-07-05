@@ -4,9 +4,8 @@ import useLocalStorage from '../hooks/useLocalStorage';
 
 export const ProtectedRoute = ({ redirectPath = '/welcome', children }) => {
   const [isMetamaskLoggedIn] = useLocalStorage('etny-metamask-logged-in', null);
-  const { active } = useWeb3React();
 
-  if (!isMetamaskLoggedIn || !active) {
+  if (!isMetamaskLoggedIn) {
     return <Navigate to={redirectPath} replace />;
   }
 

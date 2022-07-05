@@ -1,10 +1,6 @@
 import { Col, Row, Tabs } from 'antd';
 import { ArrowUpOutlined } from '@ant-design/icons';
 import WalletCard from '../../wallet/WalletCard';
-import StakingOffers from './StakingOffers';
-import { StakingPotStatus } from '../../../utils/StakingPotStatus';
-
-const { TabPane } = Tabs;
 
 const AccountTab = () => (
   <div className="my-4 mx-0">

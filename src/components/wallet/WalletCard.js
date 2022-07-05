@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import { Button, Card, notification, Row, Statistic } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
+import { LoadingContext } from '../../App';
 import useTheme from '../../hooks/useTheme';
 import EtnyContract from '../../operations/etnyContract';
 
 // this card should handle all kind of operation like displaying data about account balance / available tokens, staked tokens, reward claimed
 const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction, className }) => {
+  const isActivating = useContext(LoadingContext);
   const { account, library } = useWeb3React();
   const etnyContract = new EtnyContract(library);
   const [loading, setLoading] = useState(false);
@@ -29,8 +31,8 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
   }, []);
 
   useEffect(() => {
-    getAccountBalance();
-  }, []);
+    if (!isActivating) getAccountBalance();
+  }, [isActivating]);
 
   const getAccountBalance = async (accountFromEvent) => {
     try {
@@ -66,7 +68,7 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
       className={`bg-white dark:bg-etny-700 border-2 border-etny-blue-gray-450 rounded-lg
       bg-dotted-pattern bg-cover bg-no-repeat bg-center 
       ${className}`}
-      loading={loading}
+      loading={isActivating || loading}
     >
       <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center ">
         <div className="bg-card-etny-logo-pattern bg-no-repeat bg-left-bottom">

@@ -8,7 +8,7 @@ import { FaMoon, FaSun } from 'react-icons/fa';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import MetaMaskButton from '../../components/MetaMaskButton';
 import useTheme from '../../hooks/useTheme';
-import { authRoutes } from '../../routes/routes';
+import { routes } from '../../routes/routes';
 import Logo from '../../components/Logo';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { ReactComponent as NotificationIcon } from '../../assets/icons/notification_icon.svg';
@@ -147,7 +147,7 @@ const Navbar = ({ onMenuClick }) => {
             defaultSelectedKeys={['/staking']}
             className="h-10 w-72 bg-white dark:bg-etny-primary-button-focus text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
           >
-            {authRoutes.map((route, index) =>
+            {routes.map((route, index) =>
               // eslint-disable-next-line no-nested-ternary
               route.visible && !route.welcome ? (
                 index % 2 === 0 ? (
@@ -209,7 +209,7 @@ const Navbar = ({ onMenuClick }) => {
             </Popover>
           )}
 
-          <MetaMaskButton />
+          {window.ethereum ? <MetaMaskButton /> : <span>blank</span>}
         </div>
       </Row>
     </div>

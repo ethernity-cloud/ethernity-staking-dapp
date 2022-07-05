@@ -7,7 +7,7 @@ import WelcomePage from '../pages/WelcomePage';
 import { ProtectedRoute } from './ProtectedRoute';
 import StakingPotDetailsPage from '../pages/app/StakingPotDetailsPage';
 
-const authRoutes = [
+const routes = [
   {
     exact: true,
     path: '/welcome',
@@ -67,4 +67,4 @@ const welcomeRoutes = [
 ];
 // const StakingPage = Loadable(lazy(() => import('../pages/app/StakingPage')));
 
-export { authRoutes, welcomeRoutes };
+export { routes, welcomeRoutes };

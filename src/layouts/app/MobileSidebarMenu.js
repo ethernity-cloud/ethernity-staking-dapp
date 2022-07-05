@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import Icon from '@ant-design/icons';
 
-import { authRoutes } from '../../routes/routes';
+import { routes } from '../../routes/routes';
 
 const MobileSidebarMenu = ({ className, onMenuItemSelect }) => {
   const location = useLocation();
@@ -11,7 +11,7 @@ const MobileSidebarMenu = ({ className, onMenuItemSelect }) => {
   return (
     <Layout.Sider className={`${className} bg-white w-80`}>
       <Menu selectedKeys={[location.pathname]} mode="inline" className="w-80" onSelect={onMenuItemSelect}>
-        {authRoutes.map((route, index) =>
+        {routes.map((route, index) =>
           route.visible ? (
             <Menu.Item key={route.path || '/404'}>
               <Link to={route.path || '/404'}>
