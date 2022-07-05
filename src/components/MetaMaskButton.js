@@ -65,7 +65,7 @@ const MetaMaskButton = ({ className }) => {
   }, [isMetamaskLoggedIn]);
 
   useEffect(() => {
-    subscribeToEvents();
+    if (window.ethereum) subscribeToEvents();
   }, []);
 
   const trySwitchOrAddBloxbergNetwork = async () => {
@@ -351,6 +351,7 @@ const MetaMaskButton = ({ className }) => {
       ) : (
         <Button
           onClick={connectOnClick}
+          disabled={!window.ethereum}
           loading={loading}
           size="large"
           className="hidden md:block

@@ -209,7 +209,7 @@ const Navbar = ({ onMenuClick }) => {
             </Popover>
           )}
 
-          {window.ethereum ? <MetaMaskButton /> : <span>blank</span>}
+          <MetaMaskButton />
         </div>
       </Row>
     </div>
