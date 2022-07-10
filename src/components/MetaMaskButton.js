@@ -5,12 +5,14 @@ import { useWeb3React } from '@web3-react/core';
 import { WalletFilled, LogoutOutlined, CopyOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Badge, Button, Dropdown, Menu, notification, Row, Spin } from 'antd';
 import { QRCode } from 'react-qrcode-logo';
+import useTheme from '../hooks/useTheme';
 import { injectedConnector } from '../connectors/connectors';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useCopyToClipboard from '../hooks/useCopyToClipboard';
 import EtnyContract from '../operations/etnyContract';
 
 const MetaMaskButton = ({ className }) => {
+  const { theme, THEME_DARK } = useTheme();
   const navigate = useNavigate();
   const useBloxberg = process.env.USE_BLOXBERG;
   // here we can destructure out various things from web3React such as
@@ -205,7 +207,6 @@ const MetaMaskButton = ({ className }) => {
         await activate(injectedConnector);
         // const accounts = await library.listAccounts();
         setIsMetamaskLoggedIn(account);
-        navigate('/staking');
 
         setTimeout(() => {
           setLoading(false);
@@ -215,6 +216,7 @@ const MetaMaskButton = ({ className }) => {
             message: <span className="text-black dark:text-white">MetaMask</span>,
             description: 'Successfully logged in'
           });
+          navigate('/staking');
         }, 2000); // wait 2 seconds
       } else {
         await disconnect();
@@ -282,34 +284,37 @@ const MetaMaskButton = ({ className }) => {
     }
   };
   const menu = (
-    <Menu className="w-48 bg-etny-200 dark:bg-etny-primary-button-focus text-black dark:text-white border-1 border-black dark:border-[#2D2F31]">
-      <Menu.Item key={1} className="text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover">
+    <Menu className="w-48 bg-white dark:bg-etny-primary-button-focus text-black dark:text-white border-1 dark:border-[#2D2F31]">
+      <Menu.Item
+        key={1}
+        className="text-black bg-white dark:text-white dark:bg-etny-navbar hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover"
+      >
         <div className="qr-code-container">
           <QRCode
             value={account}
             removeQrCodeBehindLogo
-            bgColor="#0B83FF"
-            fgColor="#FFF"
+            bgColor={theme === THEME_DARK ? '#070E1D' : '#FFF'}
+            fgColor={theme === THEME_DARK ? '#FFF' : '#000'}
             ecLevel="H"
+            logoImage={theme === THEME_DARK ? '/static/logo/Group103.svg' : '/static/logo/Group104.svg'}
             logoWidth={48}
             logoHeight={48}
-            logoImage="/static/logo/logo_200x200.png"
             className="qr-code"
           />
         </div>
       </Menu.Item>
       <Menu.Item
         key={2}
-        icon={<CopyOutlined className="text-blue-500" />}
-        className="text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover"
+        icon={<CopyOutlined style={{ fontSize: 16 }} size={21} className="text-blue-500" />}
+        className="text-black bg-white text-sm dark:text-white dark:bg-etny-navbar hover:text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover"
         onClick={onCopyWalletAddress}
       >
         Copy Wallet Address
       </Menu.Item>
       <Menu.Item
         key={3}
-        icon={<LogoutOutlined className="text-red-500" />}
-        className="text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover"
+        icon={<LogoutOutlined style={{ fontSize: 16 }} className="text-red-500" />}
+        className="text-black bg-white text-sm dark:text-white dark:bg-etny-navbar hover:text-white hover:bg-etny-200 dark:hover:bg-etny-primary-button-hover"
         onClick={disconnect}
       >
         Logout

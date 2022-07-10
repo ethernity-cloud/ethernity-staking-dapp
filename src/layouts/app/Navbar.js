@@ -58,48 +58,6 @@ const data = [
   }
 ];
 
-const menu = (
-  <Card style={{ width: 409, maxHeight: 500 }} bodyStyle={{ padding: 0 }} className="notifications-card">
-    <List className="max-h-80 overflow-auto notifications-list" title="New Notifications">
-      <List.Item className="notifications-list__item-title notifications-list__item">
-        <Title level={3} className="notifications-title">
-          New Notifications
-        </Title>
-      </List.Item>
-      {data.map((item, i) => (
-        <List.Item key={item.key || i} className="notifications-list__item">
-          <List.Item.Meta
-            avatar={<NotificationIcon height={20} width={20} />}
-            className="px-2 notifications-meta"
-            title={item.title || 'New staking offer'}
-            description="7 hours ago"
-          />
-        </List.Item>
-      ))}
-      <List.Item className="notifications-list__item-title notifications-list__item">
-        <Title level={3} className="notifications-title text-white">
-          Old Notifications
-        </Title>
-      </List.Item>
-      {data.map((item, i) => (
-        <List.Item key={item.key || i} className="notifications-list__item notifications-list__item-old">
-          <List.Item.Meta
-            avatar={<NotificationIcon height={20} width={20} />}
-            className="px-2 notifications-meta notifications-meta-old"
-            title={item.title || 'New staking offer'}
-            description="7 hours ago"
-          />
-        </List.Item>
-      ))}
-      <List.Item className="notifications-list__item-read">
-        <Title level={3} className="notifications-title">
-          Mark all as read
-        </Title>
-      </List.Item>
-    </List>
-  </Card>
-);
-
 const Navbar = ({ onMenuClick }) => {
   const { isCollapsed, onToggleCollapse } = useCollapseDrawer();
   const [isMetamaskLoggedIn] = useLocalStorage('etny-metamask-logged-in', null);
@@ -111,6 +69,65 @@ const Navbar = ({ onMenuClick }) => {
     if (!active) return 60;
     return isCollapsed ? 80 : 200;
   };
+  const menu = (
+    <Card
+      style={{ width: 409, maxHeight: 500 }}
+      bodyStyle={{ padding: 0 }}
+      className={`${theme === THEME_LIGHT ? 'notifications-card-light' : ''} notifications-card`}
+    >
+      <List className="max-h-80 overflow-auto notifications-list" title="New Notifications">
+        <List.Item
+          className={`${
+            theme === THEME_DARK ? 'notifications-list__item-dark' : ''
+          } notifications-list__item-title notifications-list__item`}
+        >
+          <Title level={3} className="notifications-title">
+            New Notifications
+          </Title>
+        </List.Item>
+        {data.map((item, i) => (
+          <List.Item key={item.key || i} className="notifications-list__item">
+            <List.Item.Meta
+              avatar={<NotificationIcon height={20} width={20} />}
+              className="px-2 notifications-meta"
+              title={item.title || 'New staking offer'}
+              description="7 hours ago"
+            />
+          </List.Item>
+        ))}
+        <List.Item
+          className={`${
+            theme === THEME_DARK ? 'notifications-list__item-dark' : ''
+          } notifications-list__item-title notifications-list__item`}
+        >
+          <Title level={3} className="notifications-title text-white">
+            Old Notifications
+          </Title>
+        </List.Item>
+        {data.map((item, i) => (
+          <List.Item
+            key={item.key || i}
+            className={` ${theme === THEME_DARK ? 'notifications-list__item-old-dark' : ''}
+            notifications-list__item notifications-list__item-old`}
+          >
+            <List.Item.Meta
+              avatar={<NotificationIcon height={20} width={20} />}
+              className={`${
+                theme === THEME_DARK ? 'notifications-meta-old-dark' : ''
+              } px-2 notifications-meta notifications-meta-old`}
+              title={item.title || 'New staking offer'}
+              description="7 hours ago"
+            />
+          </List.Item>
+        ))}
+        <List.Item className="notifications-list__item-read">
+          <Title level={3} className="notifications-title">
+            Mark all as read
+          </Title>
+        </List.Item>
+      </List>
+    </Card>
+  );
   const onNavMenuClick = () => {
     if (!isMobile) {
       onToggleCollapse();
@@ -145,7 +162,7 @@ const Navbar = ({ onMenuClick }) => {
             theme={theme}
             mode="horizontal"
             defaultSelectedKeys={['/staking']}
-            className="h-10 w-72 bg-white dark:bg-etny-primary-button-focus text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
+            className="h-10 w-72 bg-white dark:bg-etny-primary-button-focus text-black dark:text-white border-2 border-gray-600 rounded-lg p-1 navbar-menu ant-menu"
           >
             {routes.map((route, index) =>
               // eslint-disable-next-line no-nested-ternary
@@ -197,7 +214,7 @@ const Navbar = ({ onMenuClick }) => {
           )}
 
           {active && isMetamaskLoggedIn && (
-            <Popover content={menu} trigger="click">
+            <Popover content={menu} trigger="click" className="notifications">
               <Badge count={99}>
                 <Button
                   shape="circle"

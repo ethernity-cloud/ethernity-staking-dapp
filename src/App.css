@@ -190,8 +190,8 @@
 }
 
 .ant-menu.ant-menu-dark .ant-menu-item-selected {
-  background-color: #ffffff;
-  color: #3b46b3;
+  background-color: #ffffff !important;
+  color: #3b46b3 !important;
 }
 
 .ant-menu-dark.ant-menu-horizontal {
@@ -248,7 +248,7 @@
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-open,
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-selected {
-  background-color: white;
+  background-color: white !important;
   color: #000000 !important;
 }
 
@@ -653,6 +653,10 @@
   border-radius: 6px;
   cursor: pointer;
 }
+.notifications-card.notifications-card-light {
+  background: white;
+  border-color: white;
+}
 .notifications-list {
   max-height: 500px;
 }
@@ -664,8 +668,11 @@
 .notifications-list__item-title {
   border-bottom: none !important;
 }
-.notifications-list__item > .notifications-title {
+.notifications-list__item-dark.notifications-list__item > .notifications-title {
   color: white;
+}
+.notifications-list__item > .notifications-title {
+  color: black;
 }
 .notifications-list__item-read {
   display: flex;
@@ -677,6 +684,9 @@
   color: #0c86ff;
 }
 .notifications-list__item-old svg path {
+  fill: #000;
+}
+.notifications-list__item-old-dark.notifications-list__item-old svg path {
   fill: #ffffff;
 }
 .notifications-list::-webkit-scrollbar {
@@ -690,23 +700,42 @@
 .notifications-meta > .ant-list-item-meta-content > .ant-list-item-meta-description {
   color: #0c86ff;
 }
-.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-title {
+.notifications-meta-old-dark.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-title {
   color: #ffffff;
 }
-.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-description {
+.notifications-meta-old-dark.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-description {
   color: #ffffff;
+}
+.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-title {
+  color: #000000;
+}
+.notifications-meta-old > .ant-list-item-meta-content > .ant-list-item-meta-description {
+  color: #000000;
 }
 
 .notifications-list::-webkit-scrollbar-track {
   background: transparent;
 }
-
+.ant-popover-inner {
+  border-radius: 8px;
+}
+.ant-popover-arrow span:before {
+  background: #101d39;
+}
 .notifications-list::-webkit-scrollbar-thumb {
   background: #fff;
   border-radius: 5px;
 }
+.notifications-card-light .notifications-list::-webkit-scrollbar-thumb {
+  background: gray;
+}
+.ant-popover-content .ant-popover-arrow span:before {
+  background: #fff !important;
+}
 
-/*!*ANTD COLLAPSE LIGHT*!*/
+/* .navbar-menu */
+/*   .ant-menu-item-selected; 
+*   /*!*ANTD COLLAPSE LIGHT*!*/
 /*.ant-collapse-borderless {*/
 /*    background-color: transparent;*/
 /*    border: 0;*/

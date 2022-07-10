@@ -11,7 +11,6 @@ const AccountTab = () => (
           title="Total tokens"
           prefix={<ArrowUpOutlined />}
           suffix="ETNY"
-          className="bg-[#BEECFF]"
           actionLabel="Refresh"
         />
       </Col>
@@ -21,7 +20,6 @@ const AccountTab = () => (
           title="Total staked"
           prefix={<ArrowUpOutlined />}
           suffix="ETNY"
-          className="bg-[#BEECFF]"
           actionLabel="Refresh"
         />
       </Col>
@@ -31,7 +29,6 @@ const AccountTab = () => (
           title="Available tokens"
           prefix={<ArrowUpOutlined />}
           suffix="ETNY"
-          className="bg-[#FFC7BA]"
           actionLabel="Refresh"
         />
       </Col>
@@ -42,7 +39,6 @@ const AccountTab = () => (
           prefix={<ArrowUpOutlined />}
           value={2322.3}
           suffix="ETNY"
-          className="bg-[#DEF0BF]"
           actionLabel="Refresh"
         />
       </Col>

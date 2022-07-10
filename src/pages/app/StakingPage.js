@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button, Drawer, PageHeader, Space, Tabs } from 'antd';
-import { FaCoins, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { HomeOutlined } from '@ant-design/icons';
 import Page from '../../components/Page';
 import StakingForm from '../../components/staking/StakingForm';
@@ -8,6 +7,9 @@ import useTheme from '../../hooks/useTheme';
 import AccountTab from '../../components/staking/tabs/AccountTab';
 import StakingOffers from '../../components/staking/tabs/StakingOffers';
 import { StakingPotStatus } from '../../utils/StakingPotStatus';
+import { ReactComponent as SendIcon } from '../../assets/icons/Send.svg';
+import { ReactComponent as ReceiveIcon } from '../../assets/icons/Receive.svg';
+import { ReactComponent as StakIcon } from '../../assets/icons/Staking.svg';
 
 const { TabPane } = Tabs;
 
@@ -58,40 +60,40 @@ const StakingPage = () => {
         extra={[
           <Button
             key="3"
-            className="bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
+            className="bg-etny-200 dark:bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
                         text-white hover:text-white focus:text-white
-                        border-0 rounded-sm
-                        uppercase font-semibold w-28"
+                        border-0 
+                        uppercase font-semibold w-28 rounded-md"
           >
             <Space>
               Send
-              <FaArrowUp className="pt-1" />
+              <SendIcon className="pt-1" />
             </Space>
           </Button>,
           <Button
             key="2"
-            className="bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
+            className="bg-etny-200 dark:bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
                   text-white hover:text-white focus:text-white
-                  border-0 rounded-sm
-                  uppercase font-semibold w-28"
+                  border-0 
+                  uppercase font-semibold w-28 rounded-md"
           >
             <Space>
               Receive
-              <FaArrowDown className="pt-1" />
+              <ReceiveIcon className="pt-1" />
             </Space>
           </Button>,
           <Button
             key="1"
             type="primary"
-            className="bg-white hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
-                text-black hover:text-white focus:text-white
-                border-2 border-primary hover:border-primary dark:border-0 rounded-sm
-                uppercase font-semibold w-28"
+            className="bg-white text-etny-500
+                dark:text-etny-dark-500 
+                border-2 dark:border-etny-800 border-etny-500
+                uppercase font-semibold w-28 rounded-md"
             onClick={onCreateStake}
           >
             <Space>
               Stake
-              <FaCoins className="pt-1" />
+              <StakIcon className="pt-1" />
             </Space>
           </Button>
         ]}

@@ -65,7 +65,7 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
 
   return (
     <Card
-      className={`bg-white dark:bg-etny-700 border-2 border-etny-blue-gray-450 rounded-lg
+      className={`bg-etny-500 dark:bg-etny-dark-500 border-2 border-etny-blue-gray-450 rounded-lg
       bg-dotted-pattern bg-cover bg-no-repeat bg-center 
       ${className}`}
       loading={isActivating || loading}
@@ -73,7 +73,7 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
       <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center ">
         <div className="bg-card-etny-logo-pattern bg-no-repeat bg-left-bottom">
           <Statistic
-            title={<span className="text-black dark:text-white uppercase">{title}</span>}
+            title={<span className="text-white uppercase">{title}</span>}
             value={value || balance}
             precision={2}
             valueStyle={{
@@ -81,7 +81,7 @@ const WalletCard = ({ type, title, prefix, value, suffix, actionLabel, onAction,
               fontWeight: 'bold',
               fontFeatureSettings: `'zero' on, 'cv01' on, 'cv02' on, 'cv03' on, 'cv04' on`,
               fontVariantNumeric: 'slashed-zero',
-              color: theme === THEME_LIGHT ? '#000000' : '#FFFFFF'
+              color: '#FFFFFF'
             }}
             style={{ fontWeight: 500 }}
             prefix={prefix}
