@@ -5,7 +5,7 @@ import { forwardRef } from 'react';
 // ----------------------------------------------------------------------
 
 const Page = forwardRef(({ children, title = '', className, ...other }, ref) => (
-  <div ref={ref} {...other} className={`bg-white dark:bg-etny-background h-full ${className}`}>
+  <div ref={ref} {...other} className={`bg-etny-light-background dark:bg-etny-background h-full ${className}`}>
     <Helmet>
       <title>{title}</title>
     </Helmet>
@@ -15,7 +15,8 @@ const Page = forwardRef(({ children, title = '', className, ...other }, ref) => 
 
 Page.propTypes = {
   children: PropTypes.node.isRequired,
-  title: PropTypes.string
+  title: PropTypes.string,
+  className: PropTypes.string
 };
 
 export default Page;

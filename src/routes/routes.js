@@ -1,5 +1,6 @@
 import { AreaChartOutlined, BankOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Navigate } from 'react-router-dom';
+import { IoBagCheckSharp, IoHomeSharp } from 'react-icons/io5';
 import NotFoundPage from '../pages/NotFoundPage';
 import StakingPage from '../pages/app/StakingPage';
 import MarketplacePage from '../pages/app/MarketplacePage';
@@ -19,7 +20,7 @@ const authRoutes = [
   {
     path: '/staking',
     name: 'Staking',
-    icon: BankOutlined,
+    icon: IoHomeSharp,
     element: (
       <ProtectedRoute>
         <StakingPage />
@@ -39,9 +40,20 @@ const authRoutes = [
     visible: false
   },
   {
+    path: '/marketplace/:id',
+    name: 'Marketplace Staking pot details',
+    icon: BankOutlined,
+    element: (
+      <ProtectedRoute>
+        <StakingPotDetailsPage />
+      </ProtectedRoute>
+    ),
+    visible: false
+  },
+  {
     path: '/marketplace',
     name: 'Marketplace',
-    icon: ShoppingCartOutlined,
+    icon: IoBagCheckSharp,
     element: (
       <ProtectedRoute>
         <MarketplacePage />

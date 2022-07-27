@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { authRoutes, welcomeRoutes } from '../routes/routes';
 import Navbar from './app/Navbar';
 import MobileSidebarMenu from './app/MobileSidebarMenu';
+import NavbarNotLoggedIn from './app/NavbarNotLoggedIn';
 
 const { Content } = Layout;
 
@@ -16,21 +17,15 @@ const loading = () => (
   </div>
 );
 
-const ApplicationLayout = ({ active }) => {
+const ApplicationNotAuthorizedLayout = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const isConnected = active && isLoggedIn;
-
-  const handleLoggedIn = (isLoggedIn) => {
-    setIsLoggedIn(isLoggedIn);
-  };
 
   const onDrawerClosed = () => {
     setMobileMenuVisible(false);
   };
 
   const renderRoutes = () => (
-    <Layout className="pt-24 bg-etny-light-background dark:bg-etny-background h-full min-h-screen">
+    <Layout className="pt-24 bg-white dark:bg-etny-background h-full min-h-screen">
       <Drawer
         className="md:hidden"
         width={320}
@@ -43,30 +38,24 @@ const ApplicationLayout = ({ active }) => {
       >
         <MobileSidebarMenu onMenuItemSelect={onDrawerClosed} />
       </Drawer>
-      <Content className="bg-etny-light-background dark:bg-etny-background">
+      <Content className="bg-white dark:bg-etny-background">
         <Suspense fallback={loading()}>
           <Routes>
-            {active && authRoutes.map((route, index) => <Route key={index} {...route} />)}
-            {!active && welcomeRoutes.map((route, index) => <Route key={index} {...route} />)}
+            {authRoutes.map((route, index) => (
+              <Route key={index} {...route} />
+            ))}
           </Routes>
         </Suspense>
       </Content>
     </Layout>
   );
 
-  if (active) {
-    return (
-      <Layout className="h-full font-sans">
-        <Navbar onMenuClick={() => setMobileMenuVisible(!mobileMenuVisible)} onLoggedIn={handleLoggedIn} />
-        {renderRoutes()}
-      </Layout>
-    );
-  }
-
-  return <></>;
-};
-ApplicationLayout.propTypes = {
-  active: PropTypes.bool
+  return (
+    <Layout className="h-full font-sans">
+      <NavbarNotLoggedIn />
+      {renderRoutes()}
+    </Layout>
+  );
 };
 
-export default ApplicationLayout;
+export default ApplicationNotAuthorizedLayout;

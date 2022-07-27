@@ -69,6 +69,16 @@ class EtnyStakingContract {
     }
   }
 
+  async getLockedBalanceAtStake() {
+    try {
+      const lockedOnStake = await this.stakingContract.getLockedBalanceAtStake();
+      return lockedOnStake.toNumber();
+    } catch (ex) {
+      console.log(ex);
+      return ex.message;
+    }
+  }
+
   // BASE STAKING REQUEST
   async getBaseStake(baseStakeId) {
     try {
@@ -92,6 +102,30 @@ class EtnyStakingContract {
     }
   }
 
+  async getStakeContractForBaseStake(stakeId, stakeContract) {
+    try {
+      const item = await this.stakingContract.getStakeContractForBaseStake(stakeId, stakeContract);
+      return {
+        amount: item.amount.toNumber(),
+        nodeAddress: item.nodeAddress,
+        nodeRewardAddress: item.nodeRewardAddress,
+        period: item.period.toNumber(),
+        stakeContractId: item.stakeContractId.toNumber(),
+        stakeHolderAddress: item.stakeHolderAddress,
+        status: item.status,
+        // split: item.operatorReward || 100,
+        // isPreApproved: item.autoConfirm,
+        // canBeSplitted: item.allowMultipleOp,
+        // timestamp received is in seconds, so we have to convert it to milliseconds
+        timestamp: item.timestamp.toNumber() * 1000,
+        // type: item.stakeType === 0 ? StakingRequestType.BASE : StakingRequestType.EXTENDED,
+        id: item._stakeId.toNumber()
+      };
+    } catch (ex) {
+      return ex.message;
+    }
+  }
+
   async getBaseStakeRequestTotal() {
     try {
       const total = await this.stakingContract.getBaseStakeRequestTotal();
@@ -102,39 +136,39 @@ class EtnyStakingContract {
   }
 
   async addBaseStakeRequest(nodeAddress, amount, period) {
-    try {
-      // const receipt = await transaction.wait();
-      return await this.stakingContractWithSigner.addBaseStakeRequest(nodeAddress, amount, period);
-    } catch (ex) {
-      return ex.message;
-    }
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.addBaseStakeRequest(nodeAddress, amount, period);
   }
 
   async approveBaseStakeRequest(baseStakeId, rewardAddress) {
-    try {
-      return await this.stakingContractWithSigner.approveBaseStakeRequest(baseStakeId, rewardAddress);
-    } catch (ex) {
-      return ex.message;
-    }
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.approveBaseStakeRequest(baseStakeId, rewardAddress);
   }
 
   async cancelBaseStakeRequest(baseStakeId) {
-    try {
-      return await this.stakingContractWithSigner.cancelBaseStakeRequest(baseStakeId);
-    } catch (ex) {
-      return ex.message;
-    }
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.cancelBaseStakeRequest(baseStakeId);
   }
 
   async declineBaseStakeRequest(baseStakeId) {
-    try {
-      return await this.stakingContractWithSigner.declineBaseStakeRequest(baseStakeId);
-    } catch (ex) {
-      return ex.message;
-    }
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.declineBaseStakeRequest(baseStakeId);
   }
 
   // EXTENDED STAKING REQUEST
+  async addExtendedStakeRequest(nodeAddress, amount, rewardAddress, period, opReward, allowPotSplitting, autoConfirm) {
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.addExtendedStakeRequest(
+      nodeAddress,
+      amount,
+      rewardAddress,
+      period,
+      opReward,
+      allowPotSplitting,
+      autoConfirm
+    );
+  }
+
   async getExtendedStake(extendedStakeId) {
     try {
       const item = await this.stakingContract.getExtendedStake(extendedStakeId);
@@ -178,7 +212,7 @@ class EtnyStakingContract {
     }
   }
 
-  async getStakeContractForStake(extendedStakeId, stakeContract) {
+  async getStakeContractForExtendedStake(extendedStakeId, stakeContract) {
     try {
       const item = await this.stakingContract.getStakeContractForStake(extendedStakeId, stakeContract);
       return {
@@ -191,8 +225,8 @@ class EtnyStakingContract {
         stakeHolderRewardAddress: item.stakeHolderRewardAddress,
         status: item.status,
         // split: item.operatorReward || 100,
-        // isPreApproved: item.autoConfirm,
-        // canBeSplitted: item.allowMultipleOp,
+        isPreApproved: item.autoConfirm,
+        canBeSplitted: item.allowMultipleOp,
         // timestamp received is in seconds, so we have to convert it to milliseconds
         timestamp: item.timestamp.toNumber() * 1000,
         // type: item.stakeType === 0 ? StakingRequestType.BASE : StakingRequestType.EXTENDED,
@@ -212,53 +246,34 @@ class EtnyStakingContract {
     }
   }
 
-  async addExtendedStakeRequest(nodeAddress, amount, rewardAddress, period, opReward, allowPotSplitting, autoConfirm) {
-    try {
-      // const receipt = await transaction.wait();
-      return await this.stakingContractWithSigner.addExtendedStakeRequest(
-        nodeAddress,
-        amount,
-        rewardAddress,
-        period,
-        opReward,
-        allowPotSplitting,
-        autoConfirm
-      );
-    } catch (ex) {
-      return ex.message;
-    }
-  }
-
   async applyExtendedStakeRequest(extendedStakeId, amount, rewardAddress) {
-    try {
-      return await this.stakingContractWithSigner.applyExtendedStakeRequest(extendedStakeId, amount, rewardAddress);
-    } catch (ex) {
-      return ex.message;
-    }
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.applyExtendedStakeRequest(extendedStakeId, amount, rewardAddress);
   }
 
-  async approveExtendedStakeRequest(extendedStakeId, rewardAddress) {
-    try {
-      return await this.stakingContractWithSigner.approveExtendedStakeRequest(extendedStakeId, rewardAddress);
-    } catch (ex) {
-      return ex.message;
-    }
+  async approveExtendedStakeContract(stakeId, stakeContract, rewardAddress) {
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.approveExtendedStakeContract(stakeId, stakeContract, rewardAddress);
   }
 
   async cancelExtendedStakeRequest(extendStakeId) {
-    try {
-      return await this.stakingContractWithSigner.cancelExtendedStakeRequest(extendStakeId);
-    } catch (ex) {
-      return ex.message;
-    }
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.cancelExtendedStakeRequest(extendStakeId);
   }
 
   async declineExtendedStakeRequest(extendStakeId) {
-    try {
-      return await this.stakingContractWithSigner.declineExtendedStakeRequest(extendStakeId);
-    } catch (ex) {
-      return ex.message;
-    }
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.declineExtendedStakeRequest(extendStakeId);
+  }
+
+  async cancelExtendedStakeContract(stakeId, stakeContract) {
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.cancelExtendedStakeContract(stakeId, stakeContract);
+  }
+
+  async declineExtendedStakeContract(stakeId, stakeContract) {
+    // eslint-disable-next-line no-return-await
+    return await this.stakingContractWithSigner.declineExtendedStakeContract(stakeId, stakeContract);
   }
 }
 

@@ -30,10 +30,13 @@ const MarketplaceOfferCard = ({ index, status, type }) => {
     Modal.confirm({
       title: 'Warning',
       icon: <ExclamationCircleOutlined />,
+      width: 520,
       wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: 'Are you sure you want to decline staking pot #001?',
-      okText: 'Confirm',
+      okText: 'Agree',
+      okButtonProps: { type: 'primary', style: { backgroundColor: '#F89430' } },
       cancelText: 'Cancel',
+      cancelButtonProps: { type: 'default', danger: true },
       onOk: () => {
         notification.success({
           className: 'bg-white dark:bg-black text-black dark:text-white',
@@ -48,10 +51,13 @@ const MarketplaceOfferCard = ({ index, status, type }) => {
     Modal.confirm({
       title: 'Warning',
       icon: <ExclamationCircleOutlined />,
+      width: 520,
       wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: 'Are you sure you want to approve staking pot #001?',
-      okText: 'Confirm',
+      okText: 'Agree',
+      okButtonProps: { type: 'primary', style: { backgroundColor: '#F89430' } },
       cancelText: 'Cancel',
+      cancelButtonProps: { type: 'default', danger: true },
       onOk: () => {
         notification.error({
           className: 'bg-white dark:bg-black text-black dark:text-white',
@@ -153,7 +159,7 @@ const MarketplaceOfferCard = ({ index, status, type }) => {
       </Card>
       <Drawer
         title="Create new staking pot"
-        width={480}
+        width={520}
         onClose={onDrawerClosed}
         visible={stakingDrawerVisible}
         bodyStyle={{ paddingBottom: 80 }}

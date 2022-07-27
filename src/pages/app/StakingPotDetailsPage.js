@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Col, PageHeader, Row, Tabs } from 'antd';
 import { FaArrowLeft } from 'react-icons/fa';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import Page from '../../components/Page';
 import { StakingPotStatus } from '../../utils/StakingPotStatus';
 import MarketplaceOfferCardV1 from '../../components/marketplace/MarketplaceOfferCardV1';
 import { getDaysUntil, getPercentOfDaysUntil, getRatePerYear } from '../../utils/StakingPotCalculator';
 import { formatNumber } from '../../utils/numberFormatter';
-import { StakingRequestType } from '../../utils/StakingRequestType';
+import { StakingRequestType, StakingRequestTypeEnum } from '../../utils/StakingRequestType';
 import EtnyStakingContract from '../../operations/etnyStakingContract';
 import StakingPotContracts from '../../components/contract/StakingPotContracts';
 
 const { TabPane } = Tabs;
 
 const StakingPotDetailsPage = () => {
-  const { id } = useParams();
   const { account, library } = useWeb3React();
+  const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const type = parseInt(searchParams.get('type'), 10);
+  const isMarketplace = searchParams.get('isMarketplace');
   const etnyStakingContract = new EtnyStakingContract(library);
   const [stake, setStake] = useState({
     type: StakingRequestType.BASE,
@@ -46,26 +49,35 @@ const StakingPotDetailsPage = () => {
 
   const getStakingPotDetails = async (id) => {
     setIsLoading(true);
-    const item = await etnyStakingContract.getExtendedStake(id - 1);
-    const stats = await etnyStakingContract.getExtendedStakeRequestContractStats(id - 1);
-    item.total = stats.total;
-    item.approvedContracts = stats.approvedContracts;
-    item.canceledContracts = stats.canceledContracts;
-    item.declinedContracts = stats.declinedContracts;
-    item.pendingContracts = stats.pendingContracts;
-    item.terminatedContracts = stats.terminatedContracts;
+    let item = null;
+    // base stake
+    if (type === StakingRequestTypeEnum.BASE) {
+      item = await etnyStakingContract.getBaseStake(id - 1);
+      // there will be only one staking contract for base staking so the last param will be zero
+      const contract = await etnyStakingContract.getStakeContractForBaseStake(id - 1, 0);
+      setContracts([{ type: StakingRequestType.BASE, index: 0, ...contract }]);
+    } else {
+      item = await etnyStakingContract.getExtendedStake(id - 1);
+      const stats = await etnyStakingContract.getExtendedStakeRequestContractStats(id - 1);
+      item.total = stats.total;
+      item.approvedContracts = stats.approvedContracts;
+      item.canceledContracts = stats.canceledContracts;
+      item.declinedContracts = stats.declinedContracts;
+      item.pendingContracts = stats.pendingContracts;
+      item.terminatedContracts = stats.terminatedContracts;
+
+      const contractsPromises = [];
+      for (let i = 0; i < item.total; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const contract = await etnyStakingContract.getStakeContractForExtendedStake(id - 1, i);
+        contractsPromises.push({ index: i, ...contract });
+      }
+      const contractsResult = await Promise.all(contractsPromises);
+
+      setContracts(contractsResult);
+    }
 
     setStake(item);
-
-    const contractsPromises = [];
-    for (let i = 0; i < item.total; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
-      contractsPromises.push(await etnyStakingContract.getStakeContractForStake(id - 1, i));
-    }
-    const contractsResult = await Promise.all(contractsPromises);
-    console.log(contractsResult);
-
-    setContracts(contractsResult);
 
     setIsLoading(false);
   };
@@ -87,6 +99,83 @@ const StakingPotDetailsPage = () => {
     }
   };
 
+  const pendingContracts = contracts.filter((contract) => contract.status === StakingPotStatus.PENDING);
+  const approvedContracts = contracts.filter((contract) => contract.status === StakingPotStatus.APPROVED);
+  const terminatedContracts = contracts.filter(
+    (contract) => contract.status === StakingPotStatus.CANCELED || contract.status === StakingPotStatus.DECLINED
+  );
+
+  const renderTabsForBaseStake = () => (
+    <>
+      <TabPane tab={<span>Pending ({pendingContracts.length})</span>} key="1">
+        <StakingPotContracts
+          id={id}
+          status={StakingPotStatus.PENDING}
+          contracts={pendingContracts}
+          onUpdateFinished={() => setUpdatingPending(false)}
+          updating={updatingPending}
+        />
+      </TabPane>
+      <TabPane tab={<span>Approved ({approvedContracts.length})</span>} key="2">
+        <StakingPotContracts
+          id={id}
+          status={StakingPotStatus.APPROVED}
+          contracts={approvedContracts}
+          onUpdateFinished={() => setUpdatingPending(false)}
+          updating={updatingPending}
+        />
+      </TabPane>
+      <TabPane tab={<span>Terminated ({terminatedContracts.length})</span>} key="3">
+        <StakingPotContracts
+          id={id}
+          status={StakingPotStatus.CANCELED}
+          contracts={terminatedContracts}
+          onUpdateFinished={() => setUpdatingPending(false)}
+          updating={updatingPending}
+        />
+      </TabPane>
+    </>
+  );
+
+  const renderTabsForExtendedStake = () => (
+    <>
+      <TabPane tab={<span>Pending ({stake.pendingContracts})</span>} key="2">
+        <StakingPotContracts
+          id={id}
+          isPreApproved={stake.isPreApproved}
+          status={StakingPotStatus.PENDING}
+          contracts={contracts.filter((contract) => contract.status === StakingPotStatus.PENDING)}
+          onUpdateFinished={() => setUpdatingPending(false)}
+          updating={updatingPending}
+        />
+      </TabPane>
+      <TabPane tab={<span>Approved ({stake.approvedContracts})</span>} key="3">
+        <StakingPotContracts
+          id={id}
+          isPreApproved={stake.isPreApproved}
+          status={StakingPotStatus.APPROVED}
+          contracts={contracts.filter((contract) => contract.status === StakingPotStatus.APPROVED)}
+          onUpdateFinished={() => setUpdatingApproved(false)}
+          updating={updatingApproved}
+        />
+      </TabPane>
+      <TabPane tab={<span>Terminated ({stake.declinedContracts})</span>} key="4">
+        <StakingPotContracts
+          id={id}
+          isPreApproved={stake.isPreApproved}
+          status={StakingPotStatus.TERMINATED}
+          contracts={contracts.filter(
+            (contract) => contract.status === StakingPotStatus.CANCELED || contract.status === StakingPotStatus.DECLINED
+          )}
+          onUpdateFinished={() => setUpdatingCanceled(false)}
+          updating={updatingCanceled}
+        />
+      </TabPane>
+    </>
+  );
+
+  const pageTitle = isMarketplace ? 'Back to Marketplace' : 'Back to Staking';
+
   return (
     <Page title="Staking overview | ETNY" className="w-4/5 mx-auto my-4">
       <PageHeader
@@ -98,36 +187,13 @@ const StakingPotDetailsPage = () => {
             className="etny-tabs dark:etny-tabs text-black dark:text-white"
             onChange={onStakingTabChanged}
           >
-            <TabPane tab={<span>Pending ({stake.pendingContracts})</span>} key="2">
-              <StakingPotContracts
-                status={StakingPotStatus.PENDING}
-                contracts={contracts.filter((contract) => contract.status === StakingPotStatus.PENDING)}
-                onUpdateFinished={() => setUpdatingPending(false)}
-                updating={updatingPending}
-              />
-            </TabPane>
-            <TabPane tab={<span>Approved ({stake.approvedContracts})</span>} key="3">
-              <StakingPotContracts
-                status={StakingPotStatus.APPROVED}
-                contracts={contracts.filter((contract) => contract.status === StakingPotStatus.APPROVED)}
-                onUpdateFinished={() => setUpdatingApproved(false)}
-                updating={updatingApproved}
-              />
-            </TabPane>
-            <TabPane tab={<span>Declined ({stake.declinedContracts})</span>} key="4">
-              <StakingPotContracts
-                status={StakingPotStatus.CANCELED}
-                contracts={contracts.filter((contract) => contract.status === StakingPotStatus.CANCELED)}
-                onUpdateFinished={() => setUpdatingCanceled(false)}
-                updating={updatingCanceled}
-              />
-            </TabPane>
+            {type === 1 ? renderTabsForBaseStake() : renderTabsForExtendedStake()}
           </Tabs>
         }
-        title={<span className="uppercase text-black dark:text-white">Back to Marketplace</span>}
+        title={<span className="uppercase text-black dark:text-white">{pageTitle}</span>}
       >
         <Row justify="start" gutter={[16, 16]}>
-          <Col xl={6} lg={8} md={12} sm={24} xs={24}>
+          <Col xxl={6} xl={8} lg={8} md={12} sm={24} xs={24}>
             <MarketplaceOfferCardV1
               loading={isLoading}
               hasActionButtons={false}
@@ -150,7 +216,7 @@ const StakingPotDetailsPage = () => {
               secondaryRightValueSuffix="M"
               secondaryRightLabel="maturity period"
               mainLeftLabel="Available"
-              mainLeftValue={formatNumber(stake.amount - stake.amountBooked)}
+              mainLeftValue={formatNumber(stake.amount - stake.amountBooked) || formatNumber(stake.amount)}
               mainLeftUnit=""
               mainLeftValueSuffix="ETNY"
               mainRightLabel="AMOUNT"

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Icon, { MenuUnfoldOutlined, EditOutlined, ClearOutlined, BellFilled } from '@ant-design/icons';
 import { Avatar, Badge, Button, Card, Col, Layout, List, Menu, Popover, Row, Tag } from 'antd';
 import { useWeb3React } from '@web3-react/core';
@@ -6,12 +6,11 @@ import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router-dom';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-import MetaMaskButton from '../../components/MetaMaskButton';
 import useTheme from '../../hooks/useTheme';
 import { randomIntFromInterval } from '../../utils/Math';
 import { authRoutes } from '../../routes/routes';
 import Logo from '../../components/Logo';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import MetaMaskWallet from '../../components/MetaMaskWallet';
 
 const { Header } = Layout;
 
@@ -103,9 +102,17 @@ const menu = (
 
 const Navbar = ({ onMenuClick }) => {
   const { isCollapsed, onToggleCollapse } = useCollapseDrawer();
-  const [isMetamaskLoggedIn] = useLocalStorage('etny-metamask-logged-in', null);
-  const { active } = useWeb3React();
   const { theme, onThemeChange, THEME_LIGHT, THEME_DARK } = useTheme();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { active } = useWeb3React();
+
+  // console.log(`isloggein: ${isLoggedIn}`);
+  // const isConnected = active && isLoggedIn;
+
+  // const handleLoggedIn = (isLoggedIn) => {
+  //   setIsLoggedIn(isLoggedIn);
+  //   onLoggedIn(isLoggedIn);
+  // };
 
   const logoWidth = () => {
     if (isMobile) return 0;
@@ -128,11 +135,11 @@ const Navbar = ({ onMenuClick }) => {
     }
   };
 
-  const backgroundColor = isMetamaskLoggedIn ? `bg-etny-500 dark:bg-etny-800` : `bg-white dark:bg-etny-background`;
+  const backgroundColor = active ? `bg-etny-500 dark:bg-etny-800` : `bg-white dark:bg-etny-background`;
   return (
     <div className={`fixed z-10 h-20 w-full ${backgroundColor}`}>
       <Row justify="space-between" align="middle" className="h-20 w-full md:w-4/5 mx-auto px-4">
-        {active && isMetamaskLoggedIn && isMobile && (
+        {isMobile && (
           <MenuUnfoldOutlined
             className="px-2 py-6 text-white text-base cursor-pointer float-left hover:text-white"
             onClick={onNavMenuClick}
@@ -141,47 +148,34 @@ const Navbar = ({ onMenuClick }) => {
 
         <Logo />
 
-        {active && isMetamaskLoggedIn && (
-          <Menu
-            theme={theme}
-            mode="horizontal"
-            defaultSelectedKeys={['/staking']}
-            className="h-10 w-72 bg-white dark:bg-etny-primary-button-focus text-black dark:text-white border-2 border-gray-600 rounded-lg p-1"
-          >
-            {authRoutes.map((route, index) =>
-              // eslint-disable-next-line no-nested-ternary
-              route.visible && !route.welcome ? (
-                index % 2 === 0 ? (
-                  <Menu.Item
-                    key={route.path || '/404'}
-                    className="w-1/2 bg-[#3FA9FF] dark:bg-white leading-8 rounded-lg text-center"
-                  >
-                    <Link to={route.path || '/404'} className="h-1">
-                      <Icon component={route.icon} className="font-bold text-lg" />
-                      <span className="font-bold">{route.name}</span>
-                    </Link>
-                  </Menu.Item>
-                ) : (
-                  <Menu.Item key={route.path || '/404'} className="w-1/2 leading-8 rounded-lg text-center">
-                    <Link to={route.path || '/404'} className="h-1">
-                      <Icon component={route.icon} className="font-bold text-lg" />
-                      <span className="font-bold">{route.name}</span>
-                    </Link>
-                  </Menu.Item>
-                )
-              ) : (
-                <Fragment key={index} />
-              )
-            )}
-          </Menu>
-        )}
+        <Menu
+          theme={theme}
+          mode="horizontal"
+          defaultSelectedKeys={['/staking']}
+          className="h-10 w-72
+          bg-white dark:bg-etny-primary-button-focus
+          text-etny-500 dark:text-white
+          border-2 rounded-lg p-1"
+        >
+          {authRoutes
+            .filter((route) => route.visible)
+            .map((route, index) => (
+              <Menu.Item key={route.path || '/404'} className="w-1/2 leading-8 rounded-lg text-center">
+                <Link to={route.path || '/404'} className="h-1">
+                  <Icon component={route.icon} className="font-bold text-lg" />
+                  <span className="font-bold">{route.name}</span>
+                </Link>
+              </Menu.Item>
+            ))}
+        </Menu>
 
         <div className="flex justify-between items-center space-x-6">
           {theme === THEME_LIGHT && (
             <Button
               shape="circle"
-              className="bg-etny-200  border-0
-              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
+              className="bg-etny-primary-light-button-primary hover:bg-etny-primary-light-button-hover focus:bg-etny-primary-light-button-focus
+              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus
+              border-0"
               onClick={onThemeChanged}
               icon={<FaMoon className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
@@ -190,27 +184,27 @@ const Navbar = ({ onMenuClick }) => {
           {theme === THEME_DARK && (
             <Button
               shape="circle"
-              className="bg-etny-200  border-0
-              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
+              className="bg-etny-primary-light-button-primary hover:bg-etny-primary-light-button-hover focus:bg-etny-primary-light-button-focus
+              dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus
+              border-0"
               onClick={onThemeChanged}
               icon={<FaSun className="w-4 h-4 text-white dark:text-white pt-1" />}
             />
           )}
 
-          {active && isMetamaskLoggedIn && (
-            <Popover content={menu} trigger="click">
-              <Badge count={99}>
-                <Button
-                  shape="circle"
-                  className="bg-etny-200  border-0
-                  dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus"
-                  icon={<BellFilled className="text-white" />}
-                />
-              </Badge>
-            </Popover>
-          )}
+          {/* <Popover content={menu} trigger="click"> */}
+          {/*  <Badge count={99}> */}
+          {/*    <Button */}
+          {/*      shape="circle" */}
+          {/*      className="bg-etny-primary-light-button-primary hover:bg-etny-primary-light-button-hover focus:bg-etny-primary-light-button-focus */}
+          {/*      dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus */}
+          {/*      border-0" */}
+          {/*      icon={<BellFilled className="text-white hover:text-etny-125" />} */}
+          {/*    /> */}
+          {/*  </Badge> */}
+          {/* </Popover> */}
 
-          <MetaMaskButton />
+          <MetaMaskWallet />
         </div>
       </Row>
     </div>

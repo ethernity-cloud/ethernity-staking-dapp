@@ -1,23 +1,49 @@
-import { useState } from 'react';
-import { Button, Drawer, PageHeader, Space, Tabs } from 'antd';
+import React, { useState } from 'react';
+import { Button, Col, Drawer, Modal, PageHeader, Row, Space, Tabs, Tooltip } from 'antd';
 import { FaCoins, FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import { HomeOutlined } from '@ant-design/icons';
+import { useWeb3React } from '@web3-react/core';
+import { CloseOutlined, HomeOutlined, ReloadOutlined } from '@ant-design/icons';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { IoHomeSharp, IoArrowDown, IoLayers, IoArrowDownCircle } from 'react-icons/io5';
 import Page from '../../components/Page';
 import StakingForm from '../../components/staking/StakingForm';
 import useTheme from '../../hooks/useTheme';
 import AccountTab from '../../components/staking/tabs/AccountTab';
 import StakingOffers from '../../components/staking/tabs/StakingOffers';
 import { StakingPotStatus } from '../../utils/StakingPotStatus';
+import EtnyQRCode from '../../components/EtnyQRCode';
 
 const { TabPane } = Tabs;
 
 const StakingPage = () => {
   const [stakingDrawerVisible, setStakingDrawerVisible] = useState(false);
   const { theme, THEME_LIGHT } = useTheme();
+  const { account } = useWeb3React();
   const [updatingPending, setUpdatingPending] = useState(false);
   const [updatingApproved, setUpdatingApproved] = useState(false);
   const [updatingCanceled, setUpdatingCanceled] = useState(false);
   const [updatingDeclined, setUpdatingDeclined] = useState(false);
+
+  const [activeTab, setActiveTab] = useState('1');
+
+  const onHandleRefresh = () => {
+    console.log(activeTab);
+    // eslint-disable-next-line default-case
+    switch (parseInt(activeTab, 10)) {
+      case 2:
+        setUpdatingPending(true);
+        break;
+      case 3:
+        setUpdatingApproved(true);
+        break;
+      case 4:
+        setUpdatingCanceled(true);
+        break;
+      case 5:
+        setUpdatingDeclined(true);
+        break;
+    }
+  };
 
   const onCreateStake = () => {
     setStakingDrawerVisible(true);
@@ -28,6 +54,7 @@ const StakingPage = () => {
   };
 
   const onStakingTabChanged = (activeKey) => {
+    setActiveTab(activeKey);
     // eslint-disable-next-line default-case
     switch (parseInt(activeKey, 10)) {
       case 2:
@@ -45,53 +72,131 @@ const StakingPage = () => {
     }
   };
 
+  const onCopyWalletAddress = async () => {
+    // notification.success({
+    //   placement: 'bottomRight',
+    //   className: 'bg-white dark:bg-black text-black dark:text-white',
+    //   message: <span className="text-black dark:text-white">MetaMask</span>,
+    //   description: 'Successfully copied wallet address'
+    // });
+  };
+
+  const handleReceive = () => {
+    Modal.confirm({
+      title: (
+        <Row justify="center">
+          <span className="text-center text-xl">RECEIVE</span>
+        </Row>
+      ),
+      icon: null,
+      width: 520,
+      closable: true,
+      closeIcon: <CloseOutlined style={{ color: theme === THEME_LIGHT ? '#000000' : '#FFFFFF' }} />,
+      maskClosable: true,
+      wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
+      content: (
+        <Col>
+          <Row justify="center">
+            <EtnyQRCode size={220} account={account} />{' '}
+          </Row>
+          <Row justify="center" className="w-full">
+            <span className="px-2 text-success">{account}</span>
+          </Row>
+          <Row justify="center">
+            <CopyToClipboard text={account} onCopy={onCopyWalletAddress()}>
+              <Tooltip title="Copy Wallet Address">
+                <Button
+                  size="large"
+                  type="primary"
+                  className="w-full bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
+                  text-white hover:text-white focus:text-white
+                  border-0 rounded-sm mt-4"
+                  onClick={onCopyWalletAddress}
+                >
+                  Copy Wallet Address
+                </Button>
+              </Tooltip>
+            </CopyToClipboard>
+          </Row>
+        </Col>
+      ),
+      okButtonProps: { style: { display: 'none' } },
+      cancelButtonProps: { style: { display: 'none' } }
+    });
+  };
   return (
     <Page title="Staking overview | ETNY" className="w-4/5 mx-auto my-4">
       {/* <HeaderBreadcrumbs links={[{ name: 'Staking Overview', href: '/staking' }]} /> */}
       <PageHeader
         title={
           <span className="uppercase text-black dark:text-white">
-            <HomeOutlined className="text-black dark:text-white mr-2" />
+            <IoHomeSharp className="text-black dark:text-white mr-2" />
             Staking Overview
           </span>
         }
         extra={[
+          // <Button
+          //   key="4"
+          //   size="large"
+          //   className="bg-etny-primary-light-button-primary hover:bg-etny-primary-light-button-hover focus:bg-etny-primary-light-button-focus
+          //               dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus
+          //               text-white hover:text-white focus:text-white
+          //               border-0 rounded-md
+          //               uppercase font-semibold w-36"
+          // >
+          //   <Space>
+          //     Send
+          //     <FaArrowUp className="pt-1" />
+          //   </Space>
+          // </Button>,
           <Button
             key="3"
-            className="bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
+            size="large"
+            className="bg-etny-primary-light-button-primary hover:bg-etny-primary-light-button-hover focus:bg-etny-primary-light-button-focus
+                        dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus
                         text-white hover:text-white focus:text-white
-                        border-0 rounded-sm
-                        uppercase font-semibold w-28"
+                        border-0 rounded-md
+                        uppercase font-semibold w-36"
+            onClick={handleReceive}
           >
             <Space>
-              Send
-              <FaArrowUp className="pt-1" />
+              Receive
+              <IoArrowDown className="mt-1" />
             </Space>
           </Button>,
           <Button
             key="2"
-            className="bg-etny-primary-button-primary hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
-                  text-white hover:text-white focus:text-white
-                  border-0 rounded-sm
-                  uppercase font-semibold w-28"
+            type="primary"
+            size="large"
+            className="bg-etny-primary-light-button-primary hover:bg-etny-primary-light-button-hover focus:bg-etny-primary-light-button-focus
+                        dark:bg-etny-primary-button-primary dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus
+                        text-white hover:text-white focus:text-white
+                        border-0 rounded-md
+                        uppercase font-semibold w-36"
+            onClick={onHandleRefresh}
           >
             <Space>
-              Receive
-              <FaArrowDown className="pt-1" />
+              Refresh
+              <ReloadOutlined />
             </Space>
           </Button>,
           <Button
             key="1"
             type="primary"
-            className="bg-white hover:bg-etny-primary-button-hover focus:bg-etny-primary-button-focus
-                text-black hover:text-white focus:text-white
-                border-2 border-primary hover:border-primary dark:border-0 rounded-sm
-                uppercase font-semibold w-28"
+            size="large"
+            className="bg-white hover:bg-etny-primary-light-button-hover focus:bg-etny-primary-light-button-focus
+                dark:bg-white dark:hover:bg-etny-primary-button-hover dark:focus:bg-etny-primary-button-focus
+                text-etny-200 hover:text-white focus:text-white
+                dark:text-black dark:hover:text-white dark:focus:text-white
+                border-2 border-etny-200
+                dark:border-0
+                rounded-md
+                uppercase font-semibold w-36"
             onClick={onCreateStake}
           >
             <Space>
-              Stake
-              <FaCoins className="pt-1" />
+              New Stake
+              <IoLayers className="mt-1" />
             </Space>
           </Button>
         ]}
@@ -142,7 +247,7 @@ const StakingPage = () => {
 
       <Drawer
         title="Create new staking pot"
-        width={420}
+        width={520}
         destroyOnClose
         onClose={onDrawerClosed}
         visible={stakingDrawerVisible}

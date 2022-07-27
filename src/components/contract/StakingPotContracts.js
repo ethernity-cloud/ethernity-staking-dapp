@@ -1,20 +1,25 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Form, Input, Modal, notification, Row, Spin, Tooltip } from 'antd';
-import { CopyOutlined, ExclamationCircleOutlined, LoadingOutlined } from '@ant-design/icons';
+import { CopyOutlined, ExclamationCircleFilled, LoadingOutlined } from '@ant-design/icons';
 import { useWeb3React } from '@web3-react/core';
 import MarketplaceOfferCardV1 from '../marketplace/MarketplaceOfferCardV1';
 import { formatNumber } from '../../utils/numberFormatter';
 import StakingStatusTag from '../staking/StakingStatusTag';
 import { formatDate, getDaysUntil, getPercentOfDaysUntil, getRatePerYear } from '../../utils/StakingPotCalculator';
 import EtnyStakingContract from '../../operations/etnyStakingContract';
+import { StakingRequestType } from '../../utils/StakingRequestType';
+import { parseExceptionReason } from '../../utils/parsing';
+import { formatAddress } from '../../utils/web3Utils';
+import { StakingPotStatus } from '../../utils/StakingPotStatus';
 
-const StakingPotContracts = ({ status, contracts }) => {
+const StakingPotContracts = ({ id, isPreApproved, status, contracts }) => {
   const { account, library } = useWeb3React();
   const etnyStakingContract = new EtnyStakingContract(library);
+  const [filteredByStatusContracts, setFilteredByStatusContracts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
-  const [currentSelected, setCurrentSelected] = useState(null);
+  let currentSelectedContract = null;
 
   useEffect(() => {
     // The "any" network will allow spontaneous network changes
@@ -31,24 +36,40 @@ const StakingPotContracts = ({ status, contracts }) => {
     // if (accounts.length === 1) await initialize();
   };
 
-  const onApproveFormSubmited = async (values) => {
-    await etnyStakingContract.approveBaseStakeRequest(currentSelected, values.rewardAddress);
-    notification.success({
-      placement: 'bottomRight',
-      className: 'bg-white dark:bg-black text-black dark:text-white',
-      message: <span className="text-black dark:text-white">Ethernity</span>,
-      description: `Offer for staking pot ${currentSelected + 1} has been approved.`
-    });
+  const onApproveFormSubmitted = async (stakingPot) => {
+    try {
+      const rewardAddress = form.getFieldValue('rewardAddress');
+      if (stakingPot.type === StakingRequestType.BASE) {
+        await etnyStakingContract.approveBaseStakeRequest(stakingPot.index, rewardAddress);
+      } else {
+        await etnyStakingContract.approveExtendedStakeContract(id - 1, stakingPot.index, rewardAddress);
+      }
+
+      notification.success({
+        placement: 'bottomRight',
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">Ethernity</span>,
+        description: `Offer for staking pot ${currentSelectedContract + 1} has been approved.`
+      });
+    } catch (e) {
+      notification.error({
+        placement: 'bottomRight',
+        className: 'bg-white dark:bg-black text-black dark:text-white',
+        message: <span className="text-black dark:text-white">Ethernity</span>,
+        description: parseExceptionReason(e.reason)
+      });
+    }
   };
 
-  const onApprove = (stakingPot) => {
+  const onApprove = (contract) => {
     Modal.confirm({
-      title: 'Warning',
-      icon: <ExclamationCircleOutlined />,
+      title: <span className="uppercase">Warning</span>,
+      icon: <ExclamationCircleFilled />,
+      width: 520,
       wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
       content: (
         <>
-          <p>{`Are you sure you want to approve the offer for the staking pot ${stakingPot.id + 1}?`}</p>
+          <p>{`Are you sure you want to approve the offer for the staking pot ${contract.id + 1}?`}</p>
           <Form
             form={form}
             layout="vertical"
@@ -56,7 +77,7 @@ const StakingPotContracts = ({ status, contracts }) => {
             initialValues={{
               rewardAddress: account
             }}
-            onFinish={onApproveFormSubmited}
+            onFinish={() => onApproveFormSubmitted(contract)}
           >
             <Form.Item
               name="rewardAddress"
@@ -84,63 +105,108 @@ const StakingPotContracts = ({ status, contracts }) => {
           </Form>
         </>
       ),
-      okText: 'Confirm',
+      okText: 'Agree',
+      okButtonProps: { type: 'primary', style: { backgroundColor: '#F89430', borderRadius: 6 } },
       cancelText: 'Cancel',
+      cancelButtonProps: { type: 'default', danger: true, style: { borderRadius: 6 } },
       onOk: () => {
-        setCurrentSelected(stakingPot.id);
+        currentSelectedContract = contract.id;
         form.submit();
       }
     });
   };
 
-  const onDecline = (stakingPot) => {
+  const onDecline = (contract) => {
     Modal.confirm({
-      title: 'Warning',
-      icon: <ExclamationCircleOutlined />,
+      title: <span className="uppercase">Warning</span>,
+      icon: <ExclamationCircleFilled />,
+      width: 520,
       wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
-      content: `Are you sure you want to decline the offer for the staking pot ${stakingPot.id + 1}?`,
-      okText: 'Confirm',
+      content: `Are you sure you want to decline the offer for the staking pot ${contract.id + 1}?`,
+      okText: 'Agree',
+      okButtonProps: { type: 'primary', style: { backgroundColor: '#F89430', borderRadius: 6 } },
       cancelText: 'Cancel',
+      cancelButtonProps: { type: 'default', danger: true, style: { borderRadius: 6 } },
       onOk: async () => {
-        // if (stakingPot.type === StakingRequestType.BASE) {
-        //   await etnyStakingContract.declineBaseStakeRequest(stakingPot.id);
-        // } else {
-        //   await etnyStakingContract.declineExtendedStakeRequest(stakingPot.id);
-        // }
-        notification.success({
-          placement: 'bottomRight',
-          message: `Ethernity`,
-          description: `Offer for staking pot ${stakingPot.id + 1} has been declined.`
-        });
+        try {
+          if (contract.type === StakingRequestType.BASE) {
+            await etnyStakingContract.declineBaseStakeRequest(contract.index);
+          } else {
+            await etnyStakingContract.declineExtendedStakeContract(id - 1, contract.index);
+          }
+          notification.success({
+            placement: 'bottomRight',
+            message: `Ethernity`,
+            description: `Offer for staking pot ${contract.id + 1} has been declined.`
+          });
+        } catch (e) {
+          notification.error({
+            placement: 'bottomRight',
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
+            description: parseExceptionReason(e.reason)
+          });
+        }
       }
     });
   };
 
-  const onCancel = (stakingPot) => {
+  const onCancel = (contract) => {
     Modal.confirm({
-      title: 'Warning',
-      icon: <ExclamationCircleOutlined />,
+      title: <span className="uppercase">Warning</span>,
+      icon: <ExclamationCircleFilled />,
+      width: 520,
       wrapClassName: 'shadow-md dark:shadow-gray-500 etny-modal dark:etny-modal',
-      content: `Are you sure you want to cancel the offer for the staking pot ${stakingPot.id + 1}?`,
-      okText: 'Confirm',
+      content: `Are you sure you want to cancel the offer for the staking pot ${contract.id + 1}?`,
+      okText: 'Agree',
+      okButtonProps: { type: 'primary', style: { backgroundColor: '#F89430', borderRadius: 6 } },
       cancelText: 'Cancel',
+      cancelButtonProps: { type: 'default', danger: true, style: { borderRadius: 6 } },
       onOk: async () => {
-        // if (stakingPot.type === StakingRequestType.BASE) {
-        //   await etnyStakingContract.cancelBaseStakeRequest(stakingPot.id);
-        // } else {
-        //   await etnyStakingContract.cancelExtendedStakeRequest(stakingPot.id);
-        // }
-        notification.success({
-          placement: 'bottomRight',
-          message: `Ethernity`,
-          description: `Offer for staking pot ${stakingPot.id + 1} has been canceled.`
-        });
+        try {
+          console.log(contract);
+          if (contract.type === StakingRequestType.BASE) {
+            await etnyStakingContract.cancelBaseStakeRequest(contract.index);
+          } else {
+            await etnyStakingContract.cancelExtendedStakeContract(id - 1, contract.index);
+          }
+          notification.success({
+            placement: 'bottomRight',
+            message: `Ethernity`,
+            description: `Offer for staking pot ${contract.id + 1} has been canceled.`
+          });
+        } catch (e) {
+          notification.error({
+            placement: 'bottomRight',
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
+            description: parseExceptionReason(e.reason)
+          });
+        }
       }
     });
   };
 
-  const filteredByStatusStakes = contracts.filter((stake) => stake.status === status);
-  if (filteredByStatusStakes.length === 0) {
+  useEffect(() => {
+    const filtered =
+      status === StakingPotStatus.TERMINATED
+        ? contracts.filter(
+            (stake) => stake.status === StakingPotStatus.CANCELED || stake.status === StakingPotStatus.DECLINED
+          )
+        : contracts.filter((stake) => stake.status === status);
+    setFilteredByStatusContracts(filtered);
+  }, [contracts, status]);
+
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+  if (isLoading) {
+    return (
+      <Row className="w-full mt-20" justify="center" align="middle">
+        <Spin indicator={antIcon} />
+      </Row>
+    );
+  }
+
+  if (filteredByStatusContracts.length === 0) {
     return (
       <Empty
         className="mt-10"
@@ -157,22 +223,13 @@ const StakingPotContracts = ({ status, contracts }) => {
     );
   }
 
-  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-  if (isLoading) {
-    return (
-      <Row className="w-full mt-20" justify="center" align="middle">
-        <Spin indicator={antIcon} />
-      </Row>
-    );
-  }
-
   return (
     <Row gutter={16}>
       <Col span={24}>
         <div className="py-4 antFadeIn">
           <Row justify="start" gutter={[16, 16]}>
-            {filteredByStatusStakes.map((contract, index) => (
-              <Col key={index} xl={6} lg={8} md={12} sm={24} xs={24}>
+            {filteredByStatusContracts.map((contract, index) => (
+              <Col key={index} xxl={6} xl={8} lg={8} md={12} sm={24} xs={24}>
                 <MarketplaceOfferCardV1
                   loading={isLoading}
                   isContract
@@ -180,13 +237,15 @@ const StakingPotContracts = ({ status, contracts }) => {
                   hasIcon={false}
                   hasProgressBar={false}
                   hasStatisticsDetails={false}
+                  isPreApproved={isPreApproved}
                   nodeAddress={contract.nodeAddress}
                   stakeHolderAddress={contract.stakeHolderAddress}
-                  title={`Staking Request 000${contract.id + 1}`}
+                  // title={`Staking Request 000${contract.index + 1}`}
+                  title={`Contract 000${contract.index + 1}`}
                   type={contract.type}
                   status={contract.status}
-                  subtitle={formatDate(contract.timestamp)}
-                  // description="Some short description that needs to be added"
+                  subtitle={`${formatDate(contract.timestamp)}`}
+                  description={`Node wallet address: ${formatAddress(contract.nodeAddress)}`}
                   secondaryLeftValue={getRatePerYear(contract.timestamp)}
                   secondaryLeftValueSuffix="%"
                   secondaryLeftLabel="APR FIRST YEAR"
@@ -225,7 +284,9 @@ const StakingPotContracts = ({ status, contracts }) => {
 };
 
 StakingPotContracts.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   status: PropTypes.oneOfType([PropTypes.number, PropTypes.array]),
+  isPreApproved: PropTypes.bool,
   contracts: PropTypes.array
 };
 

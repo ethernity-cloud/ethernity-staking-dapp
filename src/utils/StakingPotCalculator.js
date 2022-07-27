@@ -93,9 +93,10 @@ export const getPercentOfDaysUntil = (createdOn, months) => {
   const currentDate = moment();
   const lastDate = moment(createdOn).add(months, 'M');
 
-  const daysUntil = lastDate.diff(currentDate, 'days');
+  const daysDifference = moment(lastDate).diff(createdOn, 'days');
+  const difference = currentDate.diff(createdOn, 'days');
 
-  return 365 / daysUntil;
+  return Math.round((difference / daysDifference) * 100);
 };
 
 export const getDaysUntil = (createdOn, months) => {

@@ -18,7 +18,9 @@ module.exports = {
         'map-pattern': "url('../public/static/world_map.png')",
         'map-pattern-light': "url('../public/static/world_map_light.png')",
         'dotted-pattern': "url('../public/static/dotted_pattern.png')",
-        'card-etny-logo-pattern': "url('../public/static/card_etny_logo.png')"
+        'card-etny-logo-pattern': "url('../public/static/card_etny_logo.png')",
+        'card-etny-logo-pattern-1': "url('../public/static/card_etny_logo_1.png')",
+        'card-etny-logo-white-pattern': "url('../public/static/card_etny_logo_white.png')"
       },
       fontFamily: {
         sans: ['Inter'],
@@ -32,6 +34,7 @@ module.exports = {
       primary: '#F89430',
       'etny-navbar': '#070E1D',
       'etny-background': '#070E1D',
+      'etny-light-background': '#F4FAFF',
       'etny-button': {
         primary: '#F89430',
         hover: '#FFB259',
@@ -41,6 +44,11 @@ module.exports = {
         primary: '#27278B',
         hover: '#3B46B3',
         focus: '#0F0B40'
+      },
+      'etny-primary-light-button': {
+        primary: '#48A4FF',
+        hover: '#93C9FF',
+        focus: '#2060B3'
       },
       'etny-secondary-button': {
         primary: '#FFFFFF',
@@ -80,17 +88,23 @@ module.exports = {
         100: '#27278B',
         200: '#161D2D',
         300: '#101D39',
-        400: '#161D2D',
+        400: '#101D39',
         500: '#161D2D',
-        600: '#161D2D',
+        600: '#2060B3',
         700: '#09142D',
         800: '#161D2D',
         900: '#09142D'
       },
       etny: {
+        50: '#F4FAFF',
+        55: '#ECF6FF',
         100: '#C4E2FF',
+        125: '#AED7FF',
+        150: '#93C9FF',
         200: '#48A4FF',
         500: '#0C86FF',
+        600: '#0A77FF',
+        650: '#1677D7',
         700: '#0F1153',
         800: '#030363',
         900: '#131345'
@@ -111,6 +125,7 @@ module.exports = {
         950: '#1E1F1F'
       },
       black: colors.black,
+      'etny-black': '#45494E',
       white: colors.white,
       gray: colors.gray,
       emerald: colors.emerald,

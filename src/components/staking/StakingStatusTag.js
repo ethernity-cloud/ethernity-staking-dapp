@@ -8,6 +8,7 @@ const StakingStatusTag = ({ status }) => (
     {status === StakingPotStatus.APPROVED && <Tag color="success">APPROVED</Tag>}
     {status === StakingPotStatus.DECLINED && <Tag color="error">DECLINED</Tag>}
     {status === StakingPotStatus.CANCELED && <Tag color="error">CANCELED</Tag>}
+    {status === StakingPotStatus.TERMINATED && <Tag color="error">CANCELED or DECLINED</Tag>}
   </>
 );
 StakingStatusTag.propTypes = {

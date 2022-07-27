@@ -1,19 +1,17 @@
 import PropTypes from 'prop-types';
-import { Button, Card, Col, notification, Row, Statistic } from 'antd';
+import { Card, Col, notification, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
-import useTheme from '../../hooks/useTheme';
 import { calculate } from '../../utils/StakingPotCalculator';
 import EtnyContract from '../../operations/etnyContract';
 
-const WalletRewardCard = ({ requestType, amount, period, split, value, actionLabel, className }) => {
+const WalletRewardCard = ({ requestType, amount, period, split, value, className }) => {
   const { account, library } = useWeb3React();
   const etnyContract = new EtnyContract(library);
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState('0.0');
   const [estimatedReward, setEstimatedReward] = useState(0.0);
-  const { theme, THEME_LIGHT } = useTheme();
 
   const getProvider = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
@@ -39,7 +37,7 @@ const WalletRewardCard = ({ requestType, amount, period, split, value, actionLab
     const rewardsPerYearObject = calculate(requestType, amount, period, split);
     const rewardsPerYear = rewardsPerYearObject.map((rewardObject) => parseFloat(rewardObject.reward));
     const estimatedRewardSum = rewardsPerYear.reduce((prev, current) => prev + current);
-    setEstimatedReward(estimatedRewardSum);
+    setEstimatedReward(estimatedRewardSum.toFixed(4));
   }, [requestType, amount, period, split]);
 
   const getAccountBalance = async (accountFromEvent) => {
@@ -57,7 +55,7 @@ const WalletRewardCard = ({ requestType, amount, period, split, value, actionLab
             description: 'Not able to retrieve wallet balance'
           });
         } else {
-          setBalance(balance);
+          setBalance(parseInt(balance, 10).toFixed(4));
         }
         setLoading(false);
       }, 1000);
@@ -68,36 +66,34 @@ const WalletRewardCard = ({ requestType, amount, period, split, value, actionLab
 
   return (
     <Card
-      className={`bg-white dark:bg-etny-700 border-2 border-etny-blue-gray-450 rounded-lg
-      bg-dotted-pattern bg-cover bg-no-repeat bg-center 
+      className={`bg-etny-500 dark:bg-etny-700 border-2 border-transparent dark:border-etny-blue-gray-450 rounded-lg
+      bg-dotted-pattern bg-cover bg-no-repeat bg-center w-80
       ${className}`}
       loading={loading}
     >
-      <div className="bg-map-pattern-light dark:bg-map-pattern bg-cover bg-no-repeat bg-center">
-        <div className="bg-card-etny-logo-pattern bg-no-repeat bg-right-bottom">
-          <Row gutter={16}>
-            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-              <div>
-                <p className="uppercase text-gray-800 dark:text-blue-400 text-sm font-medium mb-1">Estimated Reward</p>
-                <p className="uppercase text-gray-800 dark:text-gray-50 text-xl font-medium mb-4">
-                  <span className="font-grotesk slashed-zero font-bold">{estimatedReward}</span>
-                  <span className="font-grotesk block font-bold text-xl">ETNY</span>
-                </p>
-              </div>
-            </Col>
-            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-              <div>
-                <p className="uppercase text-gray-800 dark:text-blue-400 text-sm font-medium mb-1 text-right">
-                  Account Balance
-                </p>
-                <p className="uppercase text-gray-800 dark:text-gray-50 text-xl font-medium mb-4 text-right">
-                  <span className="font-grotesk slashed-zero font-bold">{value || balance}</span>
-                  <span className="font-grotesk block font-bold text-xl">ETNY</span>
-                </p>
-              </div>
-            </Col>
-          </Row>
-        </div>
+      <div className="bg-card-etny-logo-pattern-1 bg-no-repeat bg-bottom">
+        <Row gutter={16}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <div>
+              <p className="uppercase text-etny-125 dark:text-blue-400 text-sm font-medium mb-1">Estimated Reward</p>
+              <p className="uppercase text-white dark:text-gray-50 text-xl font-medium mb-4">
+                <span className="font-grotesk slashed-zero font-bold">{estimatedReward}</span>
+                <span className="font-grotesk block font-bold text-xl">ETNY</span>
+              </p>
+            </div>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <div>
+              <p className="uppercase text-etny-125 dark:text-blue-400 text-sm font-medium mb-1 text-right">
+                Account Balance
+              </p>
+              <p className="uppercase text-white dark:text-gray-50 text-xl font-medium mb-4 text-right">
+                <span className="font-grotesk slashed-zero font-bold">{value || balance}</span>
+                <span className="font-grotesk block font-bold text-xl">ETNY</span>
+              </p>
+            </div>
+          </Col>
+        </Row>
       </div>
     </Card>
   );

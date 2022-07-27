@@ -25,11 +25,10 @@ class EtnyContract {
       const balance = await this.etnyContract.balanceOf(account);
 
       // convert a currency unit from wei to ether
-      const balanceFormatted = ethers.utils.formatEther(balance);
+      return ethers.utils.formatEther(balance);
 
-      console.log(`balance: ${balanceFormatted} ETNY`);
-
-      return balanceFormatted;
+      // console.log(`balance: ${balanceFormatted} ETNY`);
+      // return balanceFormatted;
     } catch (ex) {
       return ex.message;
     }

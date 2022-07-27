@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button, Col, Row, Input, Select, Space, InputNumber, Modal, notification, Switch, Tooltip } from 'antd';
-import { CopyOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Form, Col, Row, Input, Select, Space, InputNumber, Modal, notification, Switch, Tooltip } from 'antd';
+import { ExclamationCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useWeb3React } from '@web3-react/core';
+import { IoCopyOutline } from 'react-icons/io5';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import WalletRewardCard from '../wallet/WalletRewardCard';
 import { StakingRequestType } from '../../utils/StakingRequestType';
 import EtnyStakingContract from '../../operations/etnyStakingContract';
-import { isAddress } from '../../utils/web3Utils';
+import { emptyWalletAddress, isAddress } from '../../utils/web3Utils';
 import { PrimaryButton } from '../buttons/PrimaryButton';
 import { CancelButton } from '../buttons/CancelButton';
+import { parseExceptionReason } from '../../utils/parsing';
+import { isNullOrUndefined } from '../../utils/objectUtils';
 
 const { Option } = Select;
 
@@ -22,6 +26,21 @@ const StakingForm = ({ onClose }) => {
   const [period, setPeriod] = useState(6);
   const [split, setSplit] = useState(100);
 
+  const [nodeAddress, setNodeAddress] = useState('');
+  const [rewardAddress, setRewardAddress] = useState('');
+  const [canBeSplitted, setCanBeSplitted] = useState(true);
+  const [initialValues, setInitialValues] = useState({
+    type: StakingRequestType.BASE,
+    amount: 1900,
+    period: 12,
+    split: 100,
+    stakingAddress: account,
+    nodeAddress: '',
+    rewardAddress: account,
+    canBeSplitted: true,
+    isPreApproved: false
+  });
+
   useEffect(() => {
     const initialize = async () => {
       const minAmount = await etnyStakingContract.getMinBaseStakeAmount();
@@ -33,6 +52,13 @@ const StakingForm = ({ onClose }) => {
 
     initialize();
   }, []);
+
+  useEffect(() => {
+    if (requestType === StakingRequestType.EXTENDED && nodeAddress && isAddress(nodeAddress)) {
+      setCanBeSplitted(false);
+    }
+  }, [nodeAddress, requestType]);
+
   const onRequestTypeChanged = (value) => {
     setRequestType(value);
   };
@@ -47,6 +73,11 @@ const StakingForm = ({ onClose }) => {
 
   const onSplitChanged = (value) => {
     setSplit(value);
+  };
+
+  const handleCanBeSplitted = (value) => {
+    console.log(value);
+    setCanBeSplitted(value);
   };
 
   const onFinish = (values) => {
@@ -74,69 +105,68 @@ const StakingForm = ({ onClose }) => {
       okText: 'I agree',
       cancelText: 'Cancel',
       onOk: async () => {
-        if (values.type === StakingRequestType.BASE) {
-          const res = await etnyStakingContract.addBaseStakeRequest(values.nodeAddress, values.amount, values.period);
-          console.log(res);
+        try {
+          if (values.type === StakingRequestType.BASE) {
+            await etnyStakingContract.addBaseStakeRequest(values.nodeAddress, values.amount, values.period);
+          }
+
+          if (values.type === StakingRequestType.EXTENDED) {
+            if (isNullOrUndefined(values.nodeAddress) || values.nodeAddress === '') {
+              values.nodeAddress = emptyWalletAddress;
+            }
+            await etnyStakingContract.addExtendedStakeRequest(
+              values.nodeAddress,
+              values.amount,
+              values.rewardAddress,
+              values.period,
+              values.split,
+              canBeSplitted,
+              values.isPreApproved
+            );
+          }
+
+          notification.success({
+            placement: 'bottomRight',
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
+            description: `A new staking pot was successfully created!`
+          });
+
+          onClose();
+        } catch (e) {
+          notification.error({
+            placement: 'bottomRight',
+            className: 'bg-white dark:bg-black text-black dark:text-white',
+            message: <span className="text-black dark:text-white">Ethernity</span>,
+            description: parseExceptionReason(e.reason)
+          });
         }
-
-        if (values.type === StakingRequestType.EXTENDED) {
-          if (values.nodeAddress === undefined || values.nodeAddress === null || values.nodeAddress === '')
-            values.nodeAddress = '0x0000000000000000000000000000000000000000';
-          const res = await etnyStakingContract.addExtendedStakeRequest(
-            values.nodeAddress,
-            values.amount,
-            values.rewardAddress,
-            values.period,
-            values.split,
-            values.canBeSplitted,
-            values.isPreApproved
-          );
-          // console.log(res);
-        }
-
-        notification.success({
-          placement: 'bottomRight',
-          className: 'bg-white dark:bg-black text-black dark:text-white',
-          message: <span className="text-black dark:text-white">Ethernity</span>,
-          description: `Staking pot 0002 was successfully created!`
-        });
-
-        onClose();
       }
     });
   };
   return (
     <>
-      <WalletRewardCard
-        className="mb-6"
-        requestType={requestType}
-        amount={amount}
-        period={period}
-        split={split}
-        actionLabel="Refresh"
-      />
-      <Form
-        layout="vertical"
-        requiredMark={false}
-        initialValues={{
-          type: StakingRequestType.BASE,
-          amount: 1900,
-          period: 12,
-          split: 100,
-          stakingAddress: account,
-          nodeAddress: '',
-          rewardAddress: account,
-          canBeSplitted: true,
-          isPreApproved: false
-        }}
-        onFinish={onFinish}
-      >
+      <div className="flex items-center justify-center">
+        <WalletRewardCard
+          className="mb-6"
+          requestType={requestType}
+          amount={amount}
+          period={period}
+          split={split}
+          actionLabel="Refresh"
+        />
+      </div>
+      <Form layout="vertical" requiredMark="optional" initialValues={initialValues} onFinish={onFinish}>
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item
               className="w-full font-medium text-gray-500 dark:text-gray-400"
               name="type"
               label={<span className="text-black dark:text-white">Staking request type</span>}
+              tooltip={{
+                title: 'Request type',
+                icon: <InfoCircleOutlined />
+              }}
               rules={[{ required: true, message: 'Please enter amount for staking' }]}
             >
               <Select className="dark:select" placeholder="Staking type" onChange={onRequestTypeChanged}>
@@ -147,8 +177,13 @@ const StakingForm = ({ onClose }) => {
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item
+              className="w-full font-medium text-gray-500 dark:text-gray-400"
               name="amount"
               label={<span className="text-black dark:text-white">Staking amount (ETNY)</span>}
+              tooltip={{
+                title: 'Request type',
+                icon: <InfoCircleOutlined />
+              }}
               rules={[{ required: true, message: 'Please enter amount for staking' }]}
             >
               <InputNumber
@@ -165,8 +200,13 @@ const StakingForm = ({ onClose }) => {
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item
+              className="w-full font-medium text-gray-500 dark:text-gray-400"
               name="period"
-              label={<span className="text-black dark:text-white">Staking period (months)</span>}
+              label={<span className="text-black dark:text-white">Staking period (Months)</span>}
+              tooltip={{
+                title: 'Staking period is the time used to keep tokens blocked using a staking request',
+                icon: <InfoCircleOutlined />
+              }}
               rules={[{ required: true, message: 'Please select staking period' }]}
             >
               <Select className="dark:select" placeholder="Staking period" onChange={onPeriodChanged}>
@@ -183,8 +223,13 @@ const StakingForm = ({ onClose }) => {
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             {requestType === StakingRequestType.EXTENDED && (
               <Form.Item
+                className="w-full font-medium text-gray-500 dark:text-gray-400"
                 name="split"
-                label={<span className="text-black dark:text-white">Reward split for operator (%)</span>}
+                label={<span className="text-black dark:text-white">Reward split for op. (%)</span>}
+                tooltip={{
+                  title: 'The percentage of ETNY tokens gained by staking that goes to the node operator',
+                  icon: <InfoCircleOutlined />
+                }}
                 rules={[{ required: true, message: 'Please choose the reward split' }]}
               >
                 <Select
@@ -210,8 +255,13 @@ const StakingForm = ({ onClose }) => {
         </Row>
 
         <Form.Item
+          className="w-full font-medium text-gray-500 dark:text-gray-400"
           name="stakingAddress"
           label={<span className="text-black dark:text-white">Staking wallet address</span>}
+          tooltip={{
+            title: 'Wallet address is the current address',
+            icon: <InfoCircleOutlined />
+          }}
           rules={[
             { required: true, message: 'Please provide staking wallet address' },
             {
@@ -228,8 +278,10 @@ const StakingForm = ({ onClose }) => {
           <Input
             className="w-full input-calculator dark:input-calculator"
             addonAfter={
-              <Tooltip title="Copy wallet address">
-                <CopyOutlined
+              <CopyToClipboard text={account}>
+                {/* <Tooltip title="Copy wallet address"> */}
+                <IoCopyOutline
+                  className="text-lg cursor-pointer"
                   onClick={() =>
                     notification.success({
                       placement: 'bottomRight',
@@ -238,7 +290,8 @@ const StakingForm = ({ onClose }) => {
                     })
                   }
                 />
-              </Tooltip>
+                {/* </Tooltip> */}
+              </CopyToClipboard>
             }
             disabled
           />
@@ -246,14 +299,19 @@ const StakingForm = ({ onClose }) => {
 
         {requestType === StakingRequestType.BASE && (
           <Form.Item
+            className="w-full font-medium text-gray-500 dark:text-gray-400"
             name="nodeAddress"
             label={<span className="text-black dark:text-white">Node wallet address</span>}
+            tooltip={{
+              title: 'Node address is the address where ...',
+              icon: <InfoCircleOutlined />
+            }}
             rules={[
               { required: true, message: 'Please provide node wallet address' },
               {
                 message: 'The provided input is not a valid address!',
                 validator(_, value) {
-                  if (value && isAddress(value)) {
+                  if (value === '' || (value && isAddress(value))) {
                     return Promise.resolve();
                   }
                   return Promise.reject(new Error('The provided input is not a valid address!'));
@@ -265,61 +323,137 @@ const StakingForm = ({ onClose }) => {
               className="w-full input-calculator dark:input-calculator"
               // addonBefore="0x"
               addonAfter={
-                <Tooltip title="Copy node wallet address">
-                  <CopyOutlined
+                <CopyToClipboard text={nodeAddress}>
+                  {/* <Tooltip title="Copy node wallet address"> */}
+                  <IoCopyOutline
+                    className="text-lg cursor-pointer"
                     onClick={() =>
                       notification.success({
                         placement: 'bottomRight',
                         message: `Ethernity`,
-                        description: `Wallet address has been copied.`
+                        description: `Node wallet address has been copied.`
                       })
                     }
                   />
-                </Tooltip>
+                  {/* </Tooltip> */}
+                </CopyToClipboard>
               }
               placeholder="Node wallet address"
+              onChange={(e) => setNodeAddress(e.target.value)}
             />
           </Form.Item>
         )}
+
         {requestType === StakingRequestType.EXTENDED && (
           <Form.Item
+            className="w-full font-medium text-gray-500 dark:text-gray-400"
+            name="nodeAddress"
+            label={<span className="text-black dark:text-white">Node wallet address</span>}
+            tooltip={{
+              title: 'Node address is the address where ...',
+              icon: <InfoCircleOutlined />
+            }}
+            rules={[
+              {
+                message: 'The provided input is not a valid address!',
+                validator(_, value) {
+                  if (value === '' || (value && isAddress(value))) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('The provided input is not a valid address!'));
+                }
+              }
+            ]}
+          >
+            <Input
+              className="w-full input-calculator dark:input-calculator"
+              // addonBefore="0x"
+              addonAfter={
+                <CopyToClipboard text={nodeAddress}>
+                  {/* <Tooltip title="Copy node wallet address"> */}
+                  <IoCopyOutline
+                    className="text-lg cursor-pointer"
+                    onClick={() =>
+                      notification.success({
+                        placement: 'bottomRight',
+                        message: `Ethernity`,
+                        description: `Node wallet address has been copied.`
+                      })
+                    }
+                  />
+                  {/* </Tooltip> */}
+                </CopyToClipboard>
+              }
+              placeholder="Node wallet address"
+              onChange={(e) => setNodeAddress(e.target.value)}
+            />
+          </Form.Item>
+        )}
+
+        {requestType === StakingRequestType.EXTENDED && (
+          <Form.Item
+            className="w-full font-medium text-gray-500 dark:text-gray-400"
             name="rewardAddress"
             label={<span className="text-black dark:text-white">Reward wallet address</span>}
+            tooltip={{
+              title: 'Reward address is the address where all gained tokens are stored',
+              icon: <InfoCircleOutlined />
+            }}
             rules={[{ required: true, message: 'Please enter the reward wallet address' }]}
           >
             <Input
               className="w-full input-calculator dark:input-calculator"
               addonAfter={
-                <Tooltip title="Copy reward wallet address">
-                  <CopyOutlined
+                <CopyToClipboard text={rewardAddress || account}>
+                  {/* <Tooltip title="Copy reward wallet address"> */}
+                  <IoCopyOutline
+                    className="text-lg cursor-pointer"
                     onClick={() =>
                       notification.success({
                         placement: 'bottomRight',
                         message: `Ethernity`,
-                        description: `Wallet address has been copied.`
+                        description: `Reward wallet address has been copied.`
                       })
                     }
                   />
-                </Tooltip>
+                  {/* </Tooltip> */}
+                </CopyToClipboard>
               }
               placeholder="Reward account address"
+              onChange={(e) => setRewardAddress(e.target.value)}
             />
           </Form.Item>
         )}
 
         {requestType === StakingRequestType.EXTENDED && (
           <Form.Item
+            className="w-full font-medium text-gray-500 dark:text-gray-400"
             name="canBeSplitted"
             label={<span className="text-black dark:text-white">Can staking pot be splitted?</span>}
+            tooltip={{
+              title: 'If true then a staking pot can be splitted and can be used by multiple node operators',
+              icon: <InfoCircleOutlined />
+            }}
           >
-            <Switch checkedChildren="YES" unCheckedChildren="NO" checked />
+            <Switch
+              checkedChildren="YES"
+              unCheckedChildren="NO"
+              defaultChecked
+              checked={canBeSplitted}
+              onChange={handleCanBeSplitted}
+            />
           </Form.Item>
         )}
 
         {requestType === StakingRequestType.EXTENDED && (
           <Form.Item
+            className="w-full font-medium text-gray-500 dark:text-gray-400"
             name="isPreApproved"
             label={<span className="text-black dark:text-white">Is staking pot pre-approved?</span>}
+            tooltip={{
+              title: 'In case that staking pot is pre-approved then is not required to approve contracts by the staker',
+              icon: <InfoCircleOutlined />
+            }}
           >
             <Switch checkedChildren="YES" unCheckedChildren="NO" />
           </Form.Item>
@@ -329,6 +463,7 @@ const StakingForm = ({ onClose }) => {
           <Space size="middle">
             <Form.Item>
               <CancelButton
+                className="w-32"
                 onCancel={() => {
                   onClose();
                 }}
@@ -337,7 +472,7 @@ const StakingForm = ({ onClose }) => {
             </Form.Item>
 
             <Form.Item>
-              <PrimaryButton className="w-28" isSubmitButton label="Review Stake" />
+              <PrimaryButton className="w-32" isSubmitButton label="Review Stake" />
             </Form.Item>
           </Space>
         </Row>

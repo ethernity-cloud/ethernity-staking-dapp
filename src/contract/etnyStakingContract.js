@@ -1,5 +1,5 @@
 export const contract = {
-  address: '0xEd84B2CC141dFD05d132F903C2a402C64BCab19A',
+  address: '0x484eC95c46C9C1709d67c7Fb01994CeAf740282a',
   abi: [
     {
       inputs: [],
@@ -211,6 +211,35 @@ export const contract = {
       inputs: [
         {
           internalType: 'uint256',
+          name: 'stakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'stakeContract',
+          type: 'uint64'
+        },
+        {
+          internalType: 'address',
+          name: 'rewardAddress',
+          type: 'address'
+        }
+      ],
+      name: 'approveExtendedStakeContract',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
           name: 'extendedStakeId',
           type: 'uint256'
         },
@@ -254,6 +283,30 @@ export const contract = {
       inputs: [
         {
           internalType: 'uint256',
+          name: 'stakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'stakeContract',
+          type: 'uint64'
+        }
+      ],
+      name: 'cancelExtendedStakeContract',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
           name: 'extendedStakeID',
           type: 'uint256'
         }
@@ -278,6 +331,30 @@ export const contract = {
         }
       ],
       name: 'declineBaseStakeRequest',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool'
+        }
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'stakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'stakeContract',
+          type: 'uint64'
+        }
+      ],
+      name: 'declineExtendedStakeContract',
       outputs: [
         {
           internalType: 'bool',
@@ -387,6 +464,19 @@ export const contract = {
           internalType: 'uint8',
           name: '',
           type: 'uint8'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
+      name: 'getEtnyPartnershipProgramSmartContractAddress',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address'
         }
       ],
       stateMutability: 'view',
@@ -535,6 +625,19 @@ export const contract = {
     },
     {
       inputs: [],
+      name: 'getLockedBalanceAtStake',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [],
       name: 'getMaxBaseStakeAmount',
       outputs: [
         {
@@ -566,6 +669,75 @@ export const contract = {
         {
           internalType: 'uint8',
           name: '',
+          type: 'uint8'
+        }
+      ],
+      stateMutability: 'view',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'stakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'stakeContract',
+          type: 'uint64'
+        }
+      ],
+      name: 'getStakeContractForBaseStake',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '_stakeId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: '_stakeContract',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint256',
+          name: 'stakeContractId',
+          type: 'uint256'
+        },
+        {
+          internalType: 'address',
+          name: 'stakeHolderAddress',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'nodeAddress',
+          type: 'address'
+        },
+        {
+          internalType: 'address',
+          name: 'nodeRewardAddress',
+          type: 'address'
+        },
+        {
+          internalType: 'uint256',
+          name: 'timestamp',
+          type: 'uint256'
+        },
+        {
+          internalType: 'uint64',
+          name: 'amount',
+          type: 'uint64'
+        },
+        {
+          internalType: 'uint64',
+          name: 'period',
+          type: 'uint64'
+        },
+        {
+          internalType: 'enum Statuses.StakeContractStatus',
+          name: 'status',
           type: 'uint8'
         }
       ],
@@ -701,6 +873,19 @@ export const contract = {
         }
       ],
       name: 'setApyPercentage',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function'
+    },
+    {
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'newValue',
+          type: 'address'
+        }
+      ],
+      name: 'setEtnyPartnershipProgramSmartContractAddress',
       outputs: [],
       stateMutability: 'nonpayable',
       type: 'function'

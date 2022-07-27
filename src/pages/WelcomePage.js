@@ -1,5 +1,5 @@
 import { Button, Col, Collapse, Row, Space } from 'antd';
-import { ArrowRightOutlined, DownOutlined, WalletFilled } from '@ant-design/icons';
+import { ArrowRightOutlined, DownOutlined } from '@ant-design/icons';
 import React from 'react';
 import { FaDiscord, FaFacebook, FaGithub, FaLinkedin, FaTelegram, FaTwitter } from 'react-icons/fa';
 import Page from '../components/Page';
@@ -9,6 +9,7 @@ import SectionIcon from '../components/icons/SectionIcon';
 import CalculatorIcon from '../components/icons/CalculatorIcon';
 import { FooterButton } from '../components/buttons/FooterButton';
 import { SocialIconButton } from '../components/buttons/SocialIconButton';
+import MetaMaskButton from '../components/MetaMaskButton';
 
 const { Panel } = Collapse;
 
@@ -35,17 +36,7 @@ const WelcomePage = () => (
               returns. Rewards are calculated based on staking time: the longer you stake, the more you earn.
             </p>
             <div className="flex items-center justify-between mt-8 w-full space-x-4">
-              <Button
-                size="large"
-                className="h-12 w-full
-                bg-etny-button-primary hover:bg-etny-button-hover focus:bg-etny-button-focus
-                text-white hover:text-white focus:text-white
-                border-0 rounded-md"
-              >
-                Connect Wallet
-                <WalletFilled />
-              </Button>
-
+              <MetaMaskButton isForWelcome />
               <Button
                 size="large"
                 className="h-12 w-full

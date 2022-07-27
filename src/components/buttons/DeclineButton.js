@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 
 export const DeclineButton = ({ className, onDecline, hasIcon }) => (
   <Button
-    className={`bg-white hover:bg-red-100 focus:bg-red-200
-                text-red-500 hover:text-red-500 focus:text-red-500
-                border-2 border-primary hover:border-primary dark:border-0 rounded-sm ${className}`}
+    size="large"
+    className={`bg-white hover:bg-etny-cancel-hover focus:bg-etny-cancel-focus
+                text-etny-cancel-text hover:text-etny-cancel-text focus:text-etny-cancel-text
+                border-2 border-etny-cancel-text hover:border-etny-cancel-text dark:border-0 rounded-md ${className}`}
     onClick={onDecline}
   >
     Decline
