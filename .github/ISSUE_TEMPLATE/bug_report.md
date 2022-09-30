@@ -30,3 +30,6 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+**Bug-bounty required information (optional)**
+Please provide your email address if you wish to join the bug-bounty
